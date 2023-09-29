@@ -1,4 +1,4 @@
-package com.example.jeeth_app
+package com.jeeth.ne
 
 import io.flutter.embedding.android.FlutterActivity
 

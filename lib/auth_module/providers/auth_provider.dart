@@ -11,7 +11,7 @@ import 'package:localstorage/localstorage.dart';
 import '../../api.dart';
 
 class AuthProvider with ChangeNotifier {
-  final LocalStorage storage = LocalStorage('re_household');
+  final LocalStorage storage = LocalStorage('jeeth_app');
   List availableLanguages = [];
 
   String razorpayId = 'rzp_test_T4eGUVSdlEPgNm';

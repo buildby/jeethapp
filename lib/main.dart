@@ -11,7 +11,7 @@ import 'navigation/navigation_service.dart';
 import 'navigation/navigators.dart';
 import 'theme_manager.dart';
 
-final LocalStorage storage = LocalStorage('re_household');
+final LocalStorage storage = LocalStorage('jeeth_app');
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
