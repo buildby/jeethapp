@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:geolocator/geolocator.dart';
-
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:localstorage/localstorage.dart';
+
 import '../../http_helper.dart';
 import '../model/user_model.dart';
-import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 import '../../api.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -17,13 +17,44 @@ class AuthProvider with ChangeNotifier {
   String razorpayId = 'rzp_test_T4eGUVSdlEPgNm';
   String helpAndSuppWhatsApp = '7666136015';
 
-  Map get selectedLanguage => {};
+  Map get selectedLanguage => {
+// Auth Screen
+        "onRide": "We're\ngoing\non a ride.",
+        "areYouIn": "Are you in?",
+        "getStarted": "Get started",
+        "enterYourMobileNumber": "Enter your mobile number",
+        "phoneNumberToVerify":
+            "We need your phone number to verify your identity",
+        "get": "GET",
+        "set": "SET",
+        "go": "GO",
+        "getOtp": "Get OTP",
+        "phoneVerification": "Phone verification",
+        "enterOtpHere": "Enter your OTP code here",
+        "proceed": "Proceed",
+      };
 
   late User user;
 
   String androidVersion = '0';
   String iOSVersion = '0';
   Map? deleteFeature;
+
+  setGuestUser() {
+    user = User(isGuest: true, id: '');
+  }
+
+  void updatePermission({
+    required String permissionType,
+    required bool newValue,
+  }) {
+    if (permissionType == 'location') {
+      user.isLocationAllowed = newValue;
+    } else {
+      user.isNotificationAllowed = newValue;
+    }
+    notifyListeners();
+  }
 
   refreshUser() async {
     final String url = '${webApi['domain']}${endPoint['refreshUser']}';
@@ -46,6 +77,19 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       return {'success': false, 'message': 'failedToRefresh'};
     }
+  }
+
+  fetchMyLocation() async {
+    late LatLng coord;
+    final location = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high)
+        .catchError((e) {
+      print(e);
+    });
+    coord = LatLng(location.latitude, location.longitude);
+    user.coordinates = coord;
+    notifyListeners();
+    return true;
   }
 
   sendOTPtoUser(String mobileNo, {bool business = false}) async {
@@ -226,10 +270,16 @@ class AuthProvider with ChangeNotifier {
       );
 
       if (response['success']) {
-        user = User.jsonToUser(
-          response['result'],
-          accessToken: user.accessToken,
-        );
+        if (body['isLocationAllowed'] != null) {
+          user.isLocationAllowed = body['isLocationAllowed'] == 'true';
+        } else if (body['isNotificationAllowed'] != null) {
+          user.isNotificationAllowed = body['isNotificationAllowed'] == 'true';
+        } else {
+          user = User.jsonToUser(
+            response['result'],
+            accessToken: user.accessToken,
+          );
+        }
       }
       notifyListeners();
       return response;

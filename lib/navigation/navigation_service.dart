@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
-import 'arguments.dart';
+import 'package:jeeth_app/authModule/screens/mobile_number_screen.dart';
+import 'package:jeeth_app/authModule/screens/onBoarding_screen.dart';
+import 'package:jeeth_app/authModule/screens/splash_screen.dart';
+import 'package:jeeth_app/authModule/screens/verify_otp_screen.dart';
+import 'package:jeeth_app/navigation/arguments.dart';
 import 'routes.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     // Auth Screens
     case NamedRoute.onBoardingScreen:
-      return _getPageRoute(const SplashScreen());
+      return _getPageRoute(const OnBoardingScreen());
+
+    case NamedRoute.mobileNumberScreen:
+      return _getPageRoute(const MobileNumberScreen());
+
+    case NamedRoute.verifyOtpScreen:
+      return _getPageRoute(VerifyOtpScreen(
+        args: settings.arguments as VerifyOtpArguments,
+      ));
 
     default:
       return _getPageRoute(const SplashScreen());

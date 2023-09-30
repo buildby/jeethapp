@@ -37,8 +37,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       margin: EdgeInsets.only(top: dW * topMargin),
       child: AppBar(
-        centerTitle: true,
-        backgroundColor: bgColor ?? Colors.white,
+        // centerTitle: true,
+        backgroundColor: bgColor ?? themeColor,
         elevation: elevation,
         leadingWidth: dW * 0.21,
         leading: leading ??
@@ -50,35 +50,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Navigator.pop(context);
                 }
               },
-              child: Container(
-                // padding:
-                //     Platform.isIOS ? EdgeInsets.only(right: dW * 0.005) : null,
-                margin: EdgeInsets.only(
-                  left: dW * 0.06,
-                  right: dW * 0.03,
-                  top: dW * 0.012,
-                  bottom: dW * 0.013,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      offset: const Offset(0, 2),
-                      spreadRadius: 0,
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                child: Center(
-                  child: backIcon ??
-                      (Platform.isIOS
-                          ? const Icon(Icons.arrow_back_ios_new_rounded,
-                              size: 22, color: backButtonColor)
-                          : const Icon(Icons.arrow_back,
-                              color: backButtonColor)),
-                ),
+              child: Center(
+                child: backIcon ??
+                    (Platform.isIOS
+                        ? const Icon(Icons.arrow_back_ios_new_rounded,
+                            size: 22, color: backButtonColor)
+                        : const Icon(Icons.arrow_back_ios_new,
+                            color: backButtonColor)),
               ),
             ),
         title: Text(

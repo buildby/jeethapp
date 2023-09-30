@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 
 import 'package:provider/provider.dart';
-
-import '../auth_module/providers/auth_provider.dart';
 
 class NewWidget extends StatefulWidget {
   const NewWidget({super.key});

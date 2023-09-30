@@ -18,7 +18,7 @@ Color getThemeColor(BuildContext context) {
   final themeMode = Theme.of(context).brightness;
 
   if (themeMode == Brightness.light) {
-    return const Color(0xff434343); // Light mode color
+    return const Color(0xff000000); // Light mode color
   } else {
     return const Color(0xFFFFFFFF); // Dark mode color
   }
@@ -26,8 +26,8 @@ Color getThemeColor(BuildContext context) {
 
 const Color offWhite = Color(0xFFF1F1F1);
 const Color lightGray = Color(0xFFACACB4);
-const Color backButtonColor = Color(0xff636363);
-const Color appBarTitleColor = Color(0xFF5E5E5E);
+const Color backButtonColor = Colors.white;
+const Color appBarTitleColor = Colors.white;
 const Color grayColor = Color(0xFF5E5E5E);
 const Color disabledColor = Color(0xFFFAE1CD);
 const Color greyBorderColor = Color(0xFFD9D9D9);
@@ -44,7 +44,7 @@ const Color lightBlue = Color(0xFF8DA4FF);
 const Color darkBlue = Color(0xFF6580EE);
 const Color lightGreenBg = Color(0xFFE4FFE6);
 
-const Color buttonColor = Color(0xff272559);
+Color buttonColor = themeColor;
 
 Color getUnselectedLabelColor(BuildContext context) {
   final themeMode = Theme.of(context).brightness;

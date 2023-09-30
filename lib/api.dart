@@ -4,7 +4,7 @@ var webApi = {'domain': 'http://43.205.30.95:3060'}; //DEV PROD
 // var webApi = {'domain': 'http://192.168.0.5:3060'}; // Atharv Work
 // var webApi = {'domain': 'http://172.20.10.5:3060'}; // Atharv Hotspot
 // var webApi = {'domain': 'http://192.168.227.72:3060'}; // Salman
-// var webApi = {'domain': 'http://192.168.1.6:3060'}; // Darshan wifi
+// var webApi = {'domain': 'http://192.168.1.3:3060'}; // Darshan wifi
 // var webApi = {'domain': 'http://192.168.95.161:3060'}; // Darshan hotspot2
 // var webApi = {'domain': 'http://192.168.41.161:3060'}; // Darshan hotspot
 

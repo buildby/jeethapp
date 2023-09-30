@@ -1,14 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/screens/splash_screen.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
-import 'auth_module/providers/auth_provider.dart';
 import 'navigation/navigation_service.dart';
-import 'navigation/navigators.dart';
 import 'theme_manager.dart';
 
 final LocalStorage storage = LocalStorage('re_household');
@@ -23,7 +22,7 @@ awaitStorageReady() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
   return runApp(const MyApp());

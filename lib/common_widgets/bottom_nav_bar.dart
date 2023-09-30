@@ -1,11 +1,11 @@
 // ignore_for_file: unused_import, depend_on_referenced_packages
 
+import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
-import '../../navigation/arguments.dart';
-import '../../main.dart';
-import '../auth_module/providers/auth_provider.dart';
 import '../colors.dart';
 import '../common_functions.dart';
 import '../localNotificationService.dart';
@@ -13,8 +13,6 @@ import '../navigation/navigators.dart';
 import '../navigation/routes.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
-
-import 'package:flutter/material.dart';
 
 import 'asset_svg_icon.dart';
 import 'gradient_widget.dart';

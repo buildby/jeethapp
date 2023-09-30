@@ -31,6 +31,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final TextAlign textAlign;
   final double labelFS;
   final double hintFS;
+  final double inputFS;
+  final double letterSpacing;
+
   final FontWeight labelFontWeight;
   final FontWeight hintFontWeight;
 
@@ -77,6 +80,8 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.labelFS = 14,
     this.hintFS = 16,
+    this.inputFS = 16,
+    this.letterSpacing = 0.3,
     this.optional = false,
     this.labelColor = blackColor3,
     this.borderColor,
@@ -138,16 +143,16 @@ class CustomTextFieldWithLabel extends StatelessWidget {
           enabled: enabled,
           textAlign: textAlign,
           style: Theme.of(context).textTheme.headline2!.copyWith(
-                fontSize: tS * 16,
-                letterSpacing: .3,
-                color: textColor,
-              ),
+              fontSize: tS * inputFS,
+              letterSpacing: letterSpacing,
+              color: textColor,
+              fontFamily: 'Blinker'),
           cursorColor: themeColor,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(
               fontSize: tS * hintFS,
-              letterSpacing: .3,
+              letterSpacing: 0.3,
               fontWeight: hintFontWeight,
               color: hintColor,
             ),
