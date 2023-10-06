@@ -26,7 +26,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class BottomNavBarState extends State<BottomNavBar> {
-  final LocalStorage storage = LocalStorage('household');
+  final LocalStorage storage = LocalStorage('jeeth_app');
 
   int _currentIndex = 0;
   bool isLoading = false;
