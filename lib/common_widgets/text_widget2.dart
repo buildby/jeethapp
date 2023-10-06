@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../colors.dart';
 
-class TextWidget extends StatelessWidget {
+class TextWidgetRoboto extends StatelessWidget {
   final String title;
   final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
-  final double height;
 
   final double letterSpacing;
   final int? maxLines;
@@ -15,12 +14,11 @@ class TextWidget extends StatelessWidget {
   final TextAlign? textAlign;
   final TextDecoration textDecoration;
 
-  const TextWidget({
+  const TextWidgetRoboto({
     super.key,
     required this.title,
     this.color,
-    this.fontSize = 15,
-    this.height = 1,
+    this.fontSize = 13,
     this.fontWeight = FontWeight.normal,
     this.letterSpacing = 0.25,
     this.maxLines,
@@ -38,11 +36,11 @@ class TextWidget extends StatelessWidget {
       style: Theme.of(context).textTheme.headline3!.copyWith(
           fontSize: tS * fontSize,
           color: color ?? getThemeColor(context),
-          fontFamily: 'Blinker',
+          fontFamily: 'Roboto',
           fontWeight: fontWeight,
           letterSpacing: letterSpacing,
           decoration: textDecoration,
-          height: height),
+          height: 1),
       maxLines: maxLines,
       overflow: textOverflow,
       textAlign: textAlign,

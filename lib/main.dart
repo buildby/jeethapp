@@ -3,6 +3,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
+import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/screens/splash_screen.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +54,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => MarketplaceProvider()),
+        ChangeNotifierProvider(create: (_) => DriverDetailsProvider()),
       ],
       child: Consumer<ThemeNotifier>(
         builder: (context, theme, _) => MaterialApp(

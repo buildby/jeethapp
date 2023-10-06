@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/screens/marketplace_screen.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
@@ -7,6 +9,8 @@ import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
+import 'package:jeeth_app/navigation/routes.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +31,7 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
   Map language = {};
   bool isLoading = false;
   bool validateotp = false;
-  String otp = '1234';
+  // String otp = '1234';
   TextTheme get textTheme => Theme.of(context).textTheme;
   final _otpEditingController = TextEditingController();
 
@@ -46,15 +50,23 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
       // return showSnackbar('Please enter valid OTP');
       // return 'Please enter valid OTP';
       return null;
-    } else if (value != otp) {
-      validateotp = false;
-      // return showSnackbar('Please enter valid OTP');
-      // return 'Please enter valid OTP';
-      return null;
     }
+    // else if (value != 4) {
+    //   validateotp = false;
+    //   // return showSnackbar('Please enter valid OTP');
+    //   // return 'Please enter valid OTP';
+    //   return null;
+    // }
     validateotp = true;
     return null;
   }
+
+  // Future<void> verifyOTP() async {
+  //   final value = _otpEditingController.text;
+  //   if (value != otp) {
+  //     return showSnackbar('Please enter valid OTP');
+  //   }
+  // }
 
   // Future<void> verifyOTP() async {
   //   final data = await Provider.of<AuthProvider>(context, listen: false)
@@ -145,41 +157,36 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                     fontSize: 119,
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: dW * 0.03,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      TextWidget(
-                                        title: language['phoneVerification'],
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 39,
-                                        color: white,
-                                      ),
-                                      SizedBox(
-                                        height: dW * 0.03,
-                                      ),
-                                      TextWidget(
-                                        title: language['enterOtpHere'],
-                                        fontSize: 17,
-                                        color: white,
-                                      ),
-                                    ],
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextWidget(
+                                      title: language['phoneVerification'],
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 39,
+                                      color: white,
+                                    ),
+                                    SizedBox(
+                                      height: dW * 0.03,
+                                    ),
+                                    TextWidget(
+                                      title: language['enterOtpHere'],
+                                      fontSize: 17,
+                                      color: white,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
                           SizedBox(
-                            height: dW * 0.04,
+                            height: dW * 0.2,
                           ),
                           PinCodeTextField(
-                            errorTextMargin: EdgeInsets.only(
-                                left: dW * 0.025, top: dW * 0.025),
                             appContext: context,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                            ],
                             length: 4,
                             onChanged: (value) {
                               setState(() {
@@ -187,11 +194,16 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               });
                             },
                             controller: _otpEditingController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.phone,
                             cursorColor: Colors.black,
                             validator: (v) => validateOtp(v!),
+                            textStyle: const TextStyle(
+                                fontSize: 36,
+                                fontFamily: 'Blinker',
+                                fontWeight: FontWeight.w400),
                             pinTheme: PinTheme(
-                                borderWidth: 3,
+                                fieldHeight: 80,
+                                borderWidth: 5,
                                 shape: PinCodeFieldShape.underline,
                                 activeColor: const Color(0xffD8D8D8),
                                 inactiveColor: const Color(0xffD8D8D8),
@@ -212,11 +224,11 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         height: dW * 0.125,
                         radius: 21,
                         elevation: 7,
-                        onPressed: validateotp ? () {} : () {},
+                        onPressed: validateotp
+                            ? () => push(NamedRoute.marketPlaceScreen)
+                            : () {},
                         // onPressed: validateotp ? verifyOTP : () {},
-                        buttonColor: validateotp
-                            ? buttonColor
-                            : buttonColor.withOpacity(0.5),
+                        buttonColor: validateotp ? buttonColor : Colors.grey,
                         buttonText: language['proceed']),
                   )
                 ],

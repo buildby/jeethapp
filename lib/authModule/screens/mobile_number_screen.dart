@@ -59,6 +59,13 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
     return true;
   }
 
+  getOtp() {
+    push(NamedRoute.verifyOtpScreen,
+        arguments: VerifyOtpArguments(
+          mobileNo: _phoneEditingController.text.trim(),
+        ));
+  }
+
   getOTP() async {
     try {
       setState(() {
@@ -149,7 +156,7 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
-                                    left: dW * 0.03,
+                                    left: dW * 0.01,
                                   ),
                                   child: TextWidget(
                                     title: language['enterYourMobileNumber'],
@@ -180,7 +187,7 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                               CustomTextFieldWithLabel(
                                 borderColor: white,
                                 prefixIcon: Container(
-                                  margin: EdgeInsets.only(right: dW * 0.03),
+                                  margin: EdgeInsets.only(right: dW * 0.15),
                                   child: const Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -200,7 +207,7 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 ],
                                 hintText: '',
                                 inputFS: 24,
-                                letterSpacing: 3,
+                                letterSpacing: 5,
                                 inputType: TextInputType.phone,
                                 onChanged: (newValue) {
                                   setState(() {
@@ -211,8 +218,8 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 maxLength: 10,
                               ),
                               Container(
-                                padding: EdgeInsets.only(right: dW * 0.35),
-                                child: Divider(
+                                padding: EdgeInsets.only(right: dW * 0.1),
+                                child: const Divider(
                                   thickness: 4,
                                   color: Color(0xffD8D8D8),
                                 ),
@@ -231,10 +238,8 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                         height: dW * 0.125,
                         radius: 21,
                         elevation: 7,
-                        onPressed: validateNumber ? getOTP : () {},
-                        buttonColor: validateNumber
-                            ? buttonColor
-                            : buttonColor.withOpacity(0.5),
+                        onPressed: validateNumber ? getOtp : () {},
+                        buttonColor: validateNumber ? buttonColor : Colors.grey,
                         buttonText: language['getOtp']),
                   )
                 ],

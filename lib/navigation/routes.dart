@@ -7,13 +7,13 @@ class NamedRoute {
   static const String mobileNumberScreen = '/mobileNumberScreen';
   static const String locationScreen = '/locationScreen';
   static const String privacyPolicyAndTcScreen = '/privacyPolicyAndTcScreen';
+  static const String marketPlaceScreen = '/marketPlaceScreen';
+
   // static const String termsOfServicesScreen = '/termsOfServicesScreen';
 
-  static const String addAddressManually = '/addAddressManually';
-  static const String searchCafeScreen = '/searchCafeScreen';
   static const String loginScreen = '/loginScreen';
   static const String verifyOtpScreen = "/verifyOtpScreen";
-  static const String registerUserScreen = "/registerUserScreen";
+  static const String profileDocumentsScreen = "/profileDocumentsScreen";
 
   // Home Module
   static const String bottomNavBarScreen = "/bottomNavBarScreen";

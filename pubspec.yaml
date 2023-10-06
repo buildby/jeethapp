@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
-  pin_code_fields: ^7.3.0
+  pin_code_fields: ^8.0.1
   flutter_svg: ^1.1.1+1
   localstorage: ^4.0.0+1
   shared_preferences: ^2.0.7
@@ -70,6 +70,8 @@ flutter:
   fonts:
     - family: Blinker
       fonts:
+        - asset: assets/fonts/Blinker-Light.ttf
+          weight: 300
         - asset: assets/fonts/Blinker-Regular.ttf
           weight: 400
         - asset: assets/fonts/Blinker-SemiBold.ttf

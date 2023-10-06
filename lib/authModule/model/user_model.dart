@@ -10,15 +10,11 @@ class User {
   String email;
   DateTime? dob;
   String gender;
-  num totalSavings;
-  num walletBalance;
-  String walletId;
+
   String accessToken;
   String fcmToken;
   bool isActive;
   bool isGuest;
-  bool isLocationAllowed;
-  bool isNotificationAllowed;
   LatLng? coordinates;
 
   User({
@@ -30,16 +26,10 @@ class User {
     this.countryCode = '',
     this.avatar = '',
     this.gender = '',
-    this.totalSavings = 00,
-    this.walletBalance = 00,
-    this.walletId = '',
     this.accessToken = '',
     this.fcmToken = '',
     this.isActive = false,
-    // required this.fcmToken,
     this.isGuest = false,
-    this.isLocationAllowed = false,
-    this.isNotificationAllowed = false,
     this.coordinates,
   });
 
@@ -55,15 +45,10 @@ class User {
         gender: user['gender'],
         email: user['email'],
         dob: getParseDate(user['dob'])!,
-        // dob: DateTime.parse(user['dob']).toLocal(),
         avatar: user['avatar'] ?? '',
-        totalSavings: user['totalSavings'] ?? 0,
-        walletBalance: user['walletBalance'] ?? 0,
-        walletId: user['walletId'] ?? '',
+
         accessToken: accessToken,
         isActive: user['isActive'] ?? true,
-        isLocationAllowed: user['isLocationAllowed'] ?? false,
-        isNotificationAllowed: user['isNotificationAllowed'] ?? false,
 
         // fcmToken: user['fcmToken'] ?? '',
       );

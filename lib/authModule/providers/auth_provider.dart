@@ -32,6 +32,27 @@ class AuthProvider with ChangeNotifier {
         "phoneVerification": "Phone verification",
         "enterOtpHere": "Enter your OTP code here",
         "proceed": "Proceed",
+        "marketplace": "Marketplace",
+        "vendor": "Vendor : ",
+        "incompleteProfile": "Incomplete Profile",
+        "profile/Documents": "Profile/Documents",
+        "driverDetails": "Driver Details",
+        "swipeForVehicleDetails": "Swipe for Vehicle Details",
+        "driverDocuments": "Driver Documents",
+        "vehicleDetails": "Vehicle Details",
+        "vehicleDocuments": "Vehicle Documents",
+        "ownerDetails": "Owner Details",
+        "ownerDocuments": "Owner Documents",
+        "save": "Save",
+        "profileIncomplete": "Your Profile is incomplete.",
+        "next": "Next",
+        "enterVehicleNumber": "Enter Vehicle Number",
+        "selectVehicleModel": "Select Vehicle Model",
+        "selectModel": "Select Model",
+        "selectType": "Select Type",
+        "selectMake": "Select Make",
+        "selectVehicleType": "Select Vehicle Type",
+        "selectVehicleMake": "Select Vehicle Make",
       };
 
   late User user;
@@ -44,17 +65,17 @@ class AuthProvider with ChangeNotifier {
     user = User(isGuest: true, id: '');
   }
 
-  void updatePermission({
-    required String permissionType,
-    required bool newValue,
-  }) {
-    if (permissionType == 'location') {
-      user.isLocationAllowed = newValue;
-    } else {
-      user.isNotificationAllowed = newValue;
-    }
-    notifyListeners();
-  }
+  // void updatePermission({
+  //   required String permissionType,
+  //   required bool newValue,
+  // }) {
+  //   if (permissionType == 'location') {
+  //     user.isLocationAllowed = newValue;
+  //   } else {
+  //     user.isNotificationAllowed = newValue;
+  //   }
+  //   notifyListeners();
+  // }
 
   refreshUser() async {
     final String url = '${webApi['domain']}${endPoint['refreshUser']}';
@@ -269,18 +290,18 @@ class AuthProvider with ChangeNotifier {
         accessToken: user.accessToken,
       );
 
-      if (response['success']) {
-        if (body['isLocationAllowed'] != null) {
-          user.isLocationAllowed = body['isLocationAllowed'] == 'true';
-        } else if (body['isNotificationAllowed'] != null) {
-          user.isNotificationAllowed = body['isNotificationAllowed'] == 'true';
-        } else {
-          user = User.jsonToUser(
-            response['result'],
-            accessToken: user.accessToken,
-          );
-        }
-      }
+      // if (response['success']) {
+      //   if (body['isLocationAllowed'] != null) {
+      //     user.isLocationAllowed = body['isLocationAllowed'] == 'true';
+      //   } else if (body['isNotificationAllowed'] != null) {
+      //     user.isNotificationAllowed = body['isNotificationAllowed'] == 'true';
+      //   } else {
+      //     user = User.jsonToUser(
+      //       response['result'],
+      //       accessToken: user.accessToken,
+      //     );
+      //   }
+      // }
       notifyListeners();
       return response;
     } catch (error) {
