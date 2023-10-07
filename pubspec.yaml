@@ -44,6 +44,7 @@ dependencies:
   share_plus: 
   animated_size_and_fade: ^3.0.1
   app_settings:
+  file_picker: ^5.5.0
 
 
   cupertino_icons: ^1.0.2

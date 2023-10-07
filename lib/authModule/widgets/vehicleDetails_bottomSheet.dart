@@ -16,9 +16,9 @@ import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 class VehicleDetailsBottomSheetWidget extends StatefulWidget {
-  const VehicleDetailsBottomSheetWidget({
-    super.key,
-  });
+  final void Function(num) onUpdatePercentage;
+  VehicleDetailsBottomSheetWidget(
+      {super.key, required this.onUpdatePercentage});
 
   @override
   VehicleDetailsBottomSheetWidgetState createState() =>
@@ -114,7 +114,31 @@ class VehicleDetailsBottomSheetWidgetState
     );
   }
 
+  double calculatePercentageFilled() {
+    int totalFields = 4;
+    int filledFields = 0;
+
+    if (selectModel != 'Select model') {
+      filledFields++;
+    }
+
+    if (selectType != 'Select type') {
+      filledFields++;
+    }
+
+    if (selectMake != 'Select make') {
+      filledFields++;
+    }
+
+    if (_vehicleNumberController.text.isNotEmpty) {
+      filledFields++;
+    }
+
+    return (filledFields / totalFields) * 100;
+  }
+
   void saveForm() {
+    double percentageFilled = calculatePercentageFilled();
     String vehicleModel = selectModel;
     String vehicleType = selectType;
     String vehicleMake = selectMake;
@@ -131,6 +155,7 @@ class VehicleDetailsBottomSheetWidgetState
         Provider.of<DriverDetailsProvider>(context, listen: false);
     driverDetailsProvider.addData(newDriverDetails);
 
+    widget.onUpdatePercentage(percentageFilled);
     pop();
   }
 
@@ -158,7 +183,6 @@ class VehicleDetailsBottomSheetWidgetState
 
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
-    // final userId = Provider.of<AuthProvider>(context).user.id;
 
     return Container(
       height: numberFocus.hasFocus ? dH * 0.95 : dW * 1.4,
@@ -251,7 +275,6 @@ class VehicleDetailsBottomSheetWidgetState
                     child: TextWidget(
                       title: selectType,
                       fontWeight: FontWeight.w400,
-                      // color: placeholderColor,
                     ),
                   ),
                   AssetSvgIcon(

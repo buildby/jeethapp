@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/document_details_widget.dart';
+import 'package:jeeth_app/authModule/widgets/owner_documents.dart';
 import 'package:jeeth_app/authModule/widgets/vehicleDetails_bottomSheet.dart';
+import 'package:jeeth_app/authModule/widgets/vehicleDocuments_bottomSheet.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
@@ -30,9 +32,17 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   double tS = 0.0;
   //  late User user;
   String imgPath = '';
+  String ownerImg = '';
+  bool isDriverSlide = true;
+  String header = 'Driver Documents';
+  String subHeader = 'Swipe for Vehicle Details';
+  num vehicleDetailsPercentage = 0;
+  num driverDocPercentage = 0;
 
   Map language = {};
+  bool showOwnerDetails = true;
   bool isLoading = false;
+
   TextTheme get textTheme => Theme.of(context).textTheme;
   final TextEditingController _nameEditingController = TextEditingController();
   late TabController _tabController;
@@ -43,7 +53,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       final image = await picker.pickImage(source: source);
 
       setState(() {
-        imgPath = image?.path ?? '';
+        isDriverSlide
+            ? imgPath = image?.path ?? ''
+            : ownerImg = image?.path ?? '';
       });
       pop();
       return image;
@@ -65,8 +77,6 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     _nameEditingController.addListener(() {
       setState(() {});
     });
-
-    final userName = _nameEditingController.text;
 
     return Stack(
       alignment: Alignment.bottomRight,
@@ -91,7 +101,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.file(
-                      File(imgPath),
+                      File(isDriverSlide ? imgPath : ownerImg),
                       repeat: ImageRepeat.repeat,
                       fit: BoxFit.cover,
                       width: 32,
@@ -138,12 +148,14 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (imgPath != '')
+                      if (isDriverSlide ? imgPath != '' : ownerImg != '')
                         Container(
                           margin: EdgeInsets.only(right: dW * 0.05),
                           child: GestureDetector(
                             onTap: () {
-                              setState(() => imgPath = '');
+                              setState(() =>
+                                  isDriverSlide ? imgPath = '' : ownerImg = '');
+
                               pop();
                             },
                             child: Column(
@@ -220,7 +232,51 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         ),
       ),
       context: context,
-      builder: (context) => VehicleDetailsBottomSheetWidget(),
+      builder: (context) => VehicleDetailsBottomSheetWidget(
+        onUpdatePercentage: (percentage) {
+          setState(() {
+            vehicleDetailsPercentage = percentage;
+          });
+        },
+      ),
+    );
+  }
+
+  void vehicleDocumentsBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      // enableDrag: true,
+      constraints: BoxConstraints(maxHeight: dH * 0.7),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => VehicleDocumentsBottomSheetWidget(
+        onUpdatePercentage: (percentage) {
+          setState(() {
+            driverDocPercentage = percentage;
+          });
+        },
+      ),
+    );
+  }
+
+  void ownerDocumentsBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      // enableDrag: true,
+      // constraints: BoxConstraints(maxHeight: dH * 0.7),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => const OwnerDocumentsBottomSheetWidget(),
     );
   }
 
@@ -248,7 +304,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               children: [
                 DocumentDetailWidget(
                   name: language['driverDetails'],
-                  percentage: 100,
+                  percentage: (double.parse(
+                          vehicleDetailsPercentage.toStringAsFixed(1)))
+                      .truncate(),
                   onTap: () => vehicleDetailsBottomSheet(),
                 ),
                 SizedBox(
@@ -256,7 +314,10 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                 ),
                 DocumentDetailWidget(
                   name: language['driverDocuments'],
-                  percentage: 0,
+                  percentage:
+                      double.parse(driverDocPercentage.toStringAsFixed(1))
+                          .truncate(),
+                  onTap: () => vehicleDocumentsBottomSheet(),
                 ),
               ],
             ),
@@ -322,6 +383,41 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         child: Column(
           children: [
             Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: dW * 0.04, vertical: dW * 0.05),
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(.1),
+                      blurRadius: 10,
+                      spreadRadius: 0,
+                      offset: const Offset(0, -5))
+                ],
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffF8F8F8),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: const Color(0xffEFEFF4),
+                  ),
+                ),
+                child: CheckboxListTile(
+                  title: const TextWidget(title: 'I am owner'),
+                  value: showOwnerDetails,
+                  activeColor: themeColor,
+                  onChanged: (newValue) {
+                    setState(() {
+                      showOwnerDetails = newValue!;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Container(
               margin: EdgeInsets.only(top: dW * 0.03),
               padding: EdgeInsets.symmetric(
                   horizontal: dW * 0.04, vertical: dW * 0.05),
@@ -340,30 +436,42 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                 children: [
                   DocumentDetailWidget(
                     name: language['vehicleDetails'],
-                    percentage: 100,
-                    onTap: () {},
+                    percentage: double.parse(
+                            vehicleDetailsPercentage.toStringAsFixed(1))
+                        .truncate(),
+                    onTap: () => vehicleDetailsBottomSheet(),
                   ),
                   SizedBox(
                     height: dW * 0.025,
                   ),
                   DocumentDetailWidget(
                     name: language['vehicleDocuments'],
-                    percentage: 0,
+                    percentage:
+                        double.parse(driverDocPercentage.toStringAsFixed(1))
+                            .truncate(),
+                    onTap: () => vehicleDocumentsBottomSheet(),
                   ),
-                  SizedBox(
-                    height: dW * 0.025,
-                  ),
-                  DocumentDetailWidget(
-                    name: language['ownerDetails'],
-                    percentage: 100,
-                  ),
-                  SizedBox(
-                    height: dW * 0.025,
-                  ),
-                  DocumentDetailWidget(
-                    name: language['ownerDocuments'],
-                    percentage: 0,
-                  ),
+                  showOwnerDetails
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: dW * 0.025,
+                            ),
+                            DocumentDetailWidget(
+                              name: language['ownerDetails'],
+                              percentage: 100,
+                            ),
+                            SizedBox(
+                              height: dW * 0.025,
+                            ),
+                            DocumentDetailWidget(
+                              name: language['ownerDocuments'],
+                              percentage: 0,
+                              onTap: () => ownerDocumentsBottomSheet(),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
                 ],
               ),
             )
@@ -382,6 +490,20 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+
+    _tabController.addListener(() {
+      setState(() {
+        if (_tabController.index == 0) {
+          header = language['driverDetails'];
+          subHeader = language['swipeForVehicleDetails'];
+          isDriverSlide = true;
+        } else {
+          header = language['vehicle/OwnerDetails'];
+          subHeader = language['swipeForDriverDetails'];
+          isDriverSlide = false;
+        }
+      });
+    });
 
     // user = Provider.of<AuthProvider>(context, listen: false).user;
     // fetchData();
@@ -481,7 +603,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                           context: context,
                                           // backgroundColor: blackColor3,
                                           name: _nameEditingController.text,
-                                          avatar: imgPath,
+                                          avatar: isDriverSlide
+                                              ? imgPath
+                                              : ownerImg,
                                           radius: 50,
                                           fontSize: 26,
                                           tS: tS),
@@ -498,9 +622,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                       height: dW * 0.01,
                                     ),
                                     TextWidget(
-                                      title: _tabController.index == 1
-                                          ? language['driverDetails']
-                                          : 'Vehicle/Owner Details',
+                                      title: header,
                                       color: const Color(0xff242E42),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 17,
@@ -509,7 +631,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                       height: dW * 0.02,
                                     ),
                                     TextWidget(
-                                      title: language['swipeForVehicleDetails'],
+                                      title: subHeader,
                                       color: const Color(0xffB7B7B7),
                                       fontWeight: FontWeight.w400,
                                       fontSize: 17,

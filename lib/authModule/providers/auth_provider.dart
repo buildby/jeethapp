@@ -38,9 +38,11 @@ class AuthProvider with ChangeNotifier {
         "profile/Documents": "Profile/Documents",
         "driverDetails": "Driver Details",
         "swipeForVehicleDetails": "Swipe for Vehicle Details",
+        "swipeForDriverDetails": "Swipe For Driver Details",
         "driverDocuments": "Driver Documents",
         "vehicleDetails": "Vehicle Details",
         "vehicleDocuments": "Vehicle Documents",
+        "vehicle/OwnerDetails": "Vehicle/Owner Details",
         "ownerDetails": "Owner Details",
         "ownerDocuments": "Owner Documents",
         "save": "Save",
@@ -53,6 +55,7 @@ class AuthProvider with ChangeNotifier {
         "selectMake": "Select Make",
         "selectVehicleType": "Select Vehicle Type",
         "selectVehicleMake": "Select Vehicle Make",
+        "bankAccountDetails": "Bank Account Details",
       };
 
   late User user;
