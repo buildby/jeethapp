@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/model/marketplace_model.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 
 class MarketplaceProvider with ChangeNotifier {
   final List<Marketplace> _marketplaces = [

@@ -2,6 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
+import 'package:jeeth_app/homeModule/screens/help_screen.dart';
+import 'package:jeeth_app/homeModule/screens/home_screen.dart';
+import 'package:jeeth_app/homeModule/screens/reports_screen.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +22,7 @@ import 'asset_svg_icon.dart';
 import 'gradient_widget.dart';
 
 class BottomNavBar extends StatefulWidget {
-  final BottomNavArgumnets args;
+  final BottomNavArguments args;
   const BottomNavBar({super.key, required this.args});
 
   @override
@@ -143,7 +147,12 @@ class BottomNavBarState extends State<BottomNavBar> {
     }
   }
 
-  List<Widget> get _children => [];
+  List<Widget> get _children => [
+        const HomeScreen(),
+        const EarningsScreen(),
+        const ReportsScreen(),
+        const HelpScreen(),
+      ];
 
   @override
   void dispose() {
@@ -171,26 +180,31 @@ class BottomNavBarState extends State<BottomNavBar> {
                 isSelected
                     ? AssetSvgIcon(
                         colouredsvg,
-                        height: 26,
+                        height: 22,
+                        color: themeColor,
                       )
-                    : AssetSvgIcon(svg, height: 26),
-                SizedBox(width: dW * 0.025),
+                    : AssetSvgIcon(
+                        svg,
+                        height: 22,
+                        color: Colors.grey,
+                      ),
+                SizedBox(height: dW * 0.015),
                 isSelected
                     ? Text(
                         label,
                         style: TextStyle(
                             color: const Color(0xff272559),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w600,
-                            fontSize: tS * 10),
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: tS * 12),
                       )
                     : Text(
                         label,
                         style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500,
-                            fontSize: tS * 10,
-                            color: lightGray),
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                            fontSize: tS * 12,
+                            color: Color(0xff9C9C9C)),
                       ),
               ],
             ),
@@ -257,40 +271,58 @@ class BottomNavBarState extends State<BottomNavBar> {
                 items: [
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
-                      label: language['home'],
+                      label: language['explore'],
                       colouredsvg: 'coloured_home',
-                      svg: 'home',
+                      svg: 'coloured_home',
                       isSelected: _currentIndex == 0,
                     ),
                     label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
-                      label: language['wallet'],
-                      colouredsvg: 'coloured_wallet',
-                      svg: 'wallet',
+                      label: language['earnings'],
+                      colouredsvg: 'earnings',
+                      svg: 'earnings',
                       isSelected: _currentIndex == 1,
                     ),
                     label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
-                      label: language['rewards'],
-                      colouredsvg: 'coloured_rewards',
-                      svg: 'reward',
+                      label: language['reports'],
+                      colouredsvg: 'reports',
+                      svg: 'reports',
                       isSelected: _currentIndex == 2,
                     ),
                     label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
-                      label: language['more'],
-                      colouredsvg: 'coloured_more',
-                      svg: 'more',
+                      label: language['help'],
+                      colouredsvg: 'help',
+                      svg: 'help',
                       isSelected: _currentIndex == 3,
                     ),
                     label: '',
                   ),
+                  // BottomNavigationBarItem(
+                  //   icon: navbarItemContent(
+                  //     label: language['rewards'],
+                  //     colouredsvg: 'coloured_rewards',
+                  //     svg: 'reward',
+                  //     isSelected: _currentIndex == 2,
+                  //   ),
+                  //   label: '',
+                  // ),
+                  // BottomNavigationBarItem(
+                  //   icon: navbarItemContent(
+                  //     label: language['more'],
+                  //     colouredsvg: 'coloured_more',
+                  //     svg: 'more',
+                  //     isSelected: _currentIndex == 3,
+                  //   ),
+                  //   label: '',
+                  // ),
                 ],
               ),
               // Positioned(

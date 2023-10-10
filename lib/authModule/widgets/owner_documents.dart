@@ -12,9 +12,10 @@ import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
 class OwnerDocumentsBottomSheetWidget extends StatefulWidget {
-  const OwnerDocumentsBottomSheetWidget({
-    super.key,
-  });
+  final void Function(num) onUpdatePercentage;
+
+  const OwnerDocumentsBottomSheetWidget(
+      {super.key, required this.onUpdatePercentage});
 
   @override
   OwnerDocumentsBottomSheetWidgetState createState() =>
@@ -46,10 +47,23 @@ class OwnerDocumentsBottomSheetWidgetState
     });
   }
 
-  void saveFiles() {
-    for (var file in selectedFiles) {
-      print('Saved file: ${file.name}');
+  double calculatePercentageFilled() {
+    int totalFields = 4;
+    // int filledFields = 0;
+
+    int selectedDocumentCount = selectedFiles.length;
+
+    if (_bankDetailsController.text.isNotEmpty) {
+      selectedDocumentCount++;
     }
+
+    return (selectedDocumentCount / totalFields) * 100;
+  }
+
+  void saveForm() {
+    double percentageFilled = calculatePercentageFilled();
+
+    widget.onUpdatePercentage(percentageFilled);
     pop();
   }
 
@@ -186,7 +200,7 @@ class OwnerDocumentsBottomSheetWidgetState
                 height: dW * 0.15,
                 radius: 21,
                 buttonText: language['save'],
-                onPressed: saveFiles,
+                onPressed: saveForm,
               ),
             ),
           ],

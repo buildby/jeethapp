@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/model/driver_details.dart';
+import 'package:jeeth_app/authModule/models/driver_details.dart';
 
 class DriverDetailsProvider extends ChangeNotifier {
   List<DriverDetails> _driverDetails = [];

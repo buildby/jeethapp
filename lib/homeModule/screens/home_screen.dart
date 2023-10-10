@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
-import 'package:jeeth_app/authModule/widgets/incomplete_prof_bottomsheet_widget.dart';
 import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
+import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
-class MarketPlaceScreen extends StatefulWidget {
-  const MarketPlaceScreen({
-    Key? key,
-  }) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  MarketPlaceScreenState createState() => MarketPlaceScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class MarketPlaceScreenState extends State<MarketPlaceScreen> {
+class HomeScreenState extends State<HomeScreen> {
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
@@ -27,21 +25,6 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
-
-  void incompleteProfBottomSheet() {
-    showModalBottomSheet(
-      // isScrollControlled: true,
-      constraints: BoxConstraints(maxHeight: dH * 0.5),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      context: context,
-      builder: (context) => const IncompleteProfBottomSheetWidget(),
-    );
-  }
 
   fetchData() async {
     setState(() => isLoading = true);
@@ -53,7 +36,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
     super.initState();
 
     // user = Provider.of<AuthProvider>(context, listen: false).user;
-    // fetchData();
+    fetchData();
   }
 
   @override
@@ -65,7 +48,22 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
 
     return Scaffold(
       backgroundColor: themeColor,
-      appBar: CustomAppBar(title: '', dW: dW),
+      appBar: CustomAppBar(
+        title: language['chooseYourClient'],
+        dW: dW,
+        leading: Container(
+          padding: EdgeInsets.all(dW * 0.035),
+          child: const AssetSvgIcon(
+            'drawer',
+            height: 5,
+          ),
+        ),
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: dW * 0.03),
+              child: const Icon(Icons.notifications))
+        ],
+      ),
       body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
     );
   }
@@ -78,29 +76,18 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
         : Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                color: white,
-                // height: dH,
-                // width: dW,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.only(right: dW * 0.01, bottom: dW * 0.03),
-                      height: dW * 0.3,
-                      width: dW,
-                      color: themeColor,
-                      child: TextWidget(
-                        textAlign: TextAlign.end,
-                        title: language['go'],
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black.withOpacity(0.06),
-                        fontSize: 119,
-                      ),
+              Column(
+                children: [
+                  Container(
+                    color: themeColor,
+                    height: dW * 0.4,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: white,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Positioned(
                 left: 0,
@@ -109,16 +96,6 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding:
-                          EdgeInsets.only(left: dW * 0.05, bottom: dW * 0.04),
-                      child: TextWidget(
-                        title: language['marketplace'],
-                        fontWeight: FontWeight.w600,
-                        fontSize: 39,
-                        color: white,
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                       child: Container(
@@ -142,7 +119,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => incompleteProfBottomSheet(),
+                            onTap: () {},
                             child: MarketplaceWidget(
                               key: ValueKey(marketplace[index].id),
                               marketplace: marketplace[index],

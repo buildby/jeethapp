@@ -220,16 +220,22 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     margin: EdgeInsets.symmetric(
                         horizontal: dW * 0.15, vertical: dW * 0.1),
                     child: CustomButton(
-                        width: dW,
-                        height: dW * 0.125,
-                        radius: 21,
-                        elevation: 7,
-                        onPressed: validateotp
-                            ? () => push(NamedRoute.marketPlaceScreen)
-                            : () {},
-                        // onPressed: validateotp ? verifyOTP : () {},
-                        buttonColor: validateotp ? buttonColor : Colors.grey,
-                        buttonText: language['proceed']),
+                      width: dW,
+                      height: dW * 0.145,
+                      radius: 19,
+                      elevation: 12,
+                      onPressed: validateotp
+                          ? () => push(NamedRoute.marketPlaceScreen)
+                          : () {},
+                      // onPressed: validateotp ? verifyOTP : () {},
+                      buttonColor: validateotp ? buttonColor : Colors.grey,
+                      buttonText: language['proceed'],
+                      buttonTextSyle: const TextStyle(
+                          fontFamily: 'Blinker',
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
                   )
                 ],
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/model/marketplace_model.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';

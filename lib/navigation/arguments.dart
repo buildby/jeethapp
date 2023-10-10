@@ -1,6 +1,6 @@
-class BottomNavArgumnets {
+class BottomNavArguments {
   final int index;
-  BottomNavArgumnets({this.index = 0});
+  BottomNavArguments({this.index = 0});
 }
 
 class SelectLanguageScreenArguments {

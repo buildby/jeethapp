@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/model/user_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
@@ -60,20 +60,17 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       child: isLoading
           ? const Center(child: CircularLoader())
           : SingleChildScrollView(
-              padding: screenHorizontalPadding(dW),
+              // padding: screenHorizontalPadding(dW),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: dW * 0.1,
+                    height: dW * 0.05,
                   ),
                   Image.asset(
-                    'assets/images/onBoarding.png',
+                    'assets/images/car2.png',
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: dW * 0.14,
-                    ),
+                  Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -102,14 +99,14 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                     height: dW * 0.2,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: dW * 0.14, right: dW * 0.1),
+                    padding: EdgeInsets.only(left: dW * 0.14, right: dW * 0.14),
                     child: CustomButton(
                         width: dW,
-                        height: dW * 0.125,
-                        radius: 21,
+                        height: dW * 0.145,
+                        radius: 19,
                         buttonColor: white,
+                        elevation: 16,
                         onPressed: () => push(NamedRoute.mobileNumberScreen),
-                        elevation: 10,
                         buttonTextSyle: const TextStyle(
                             color: Colors.black,
                             fontSize: 18,

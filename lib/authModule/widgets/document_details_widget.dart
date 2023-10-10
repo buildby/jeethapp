@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class DocumentDetailWidget extends StatefulWidget {
   String name;
-  num percentage;
+  String percentage;
   Function()? onTap;
   DocumentDetailWidget(
       {Key? key, required this.name, required this.percentage, this.onTap})
@@ -81,7 +81,7 @@ class DocumentDetailWidgetState extends State<DocumentDetailWidget> {
                 SizedBox(
                   width: dW * 0.02,
                 ),
-                widget.percentage == 100
+                widget.percentage == '100%'
                     ? const AssetSvgIcon(
                         'tick',
                         height: 20,

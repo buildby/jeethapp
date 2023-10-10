@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jeeth_app/authModule/model/user_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
@@ -234,13 +234,19 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                     margin: EdgeInsets.symmetric(
                         horizontal: dW * 0.15, vertical: dW * 0.1),
                     child: CustomButton(
-                        width: dW,
-                        height: dW * 0.125,
-                        radius: 21,
-                        elevation: 7,
-                        onPressed: validateNumber ? getOtp : () {},
-                        buttonColor: validateNumber ? buttonColor : Colors.grey,
-                        buttonText: language['getOtp']),
+                      width: dW,
+                      height: dW * 0.145,
+                      radius: 19,
+                      elevation: 12,
+                      onPressed: validateNumber ? getOtp : () {},
+                      buttonColor: validateNumber ? buttonColor : Colors.grey,
+                      buttonText: language['getOtp'],
+                      buttonTextSyle: const TextStyle(
+                          fontFamily: 'Blinker',
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
                   )
                 ],
               ),

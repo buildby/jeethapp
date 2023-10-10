@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:localstorage/localstorage.dart';
 
 import '../../http_helper.dart';
-import '../model/user_model.dart';
+import '../models/user_model.dart';
 import '../../api.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -56,6 +56,16 @@ class AuthProvider with ChangeNotifier {
         "selectVehicleType": "Select Vehicle Type",
         "selectVehicleMake": "Select Vehicle Make",
         "bankAccountDetails": "Bank Account Details",
+        "selectGender": "Select Gender",
+        "enterName": "Enter Name",
+
+// Home Screen
+        "chooseYourClient": "Choose your client",
+        "explore": "Explore",
+        "work": "Work",
+        "earnings": "Earnings",
+        "reports": "Reports",
+        "help": "Help",
       };
 
   late User user;
