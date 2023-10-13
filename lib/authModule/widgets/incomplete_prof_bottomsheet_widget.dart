@@ -75,10 +75,9 @@ class IncompleteProfBottomSheetWidgetState
                 SizedBox(
                   height: dW * 0.04,
                 ),
-                const TextWidget(
+                TextWidget(
                   textAlign: TextAlign.center,
-                  title:
-                      'Fill in all your details and upload\nrequired documents to get your\nprofile approved.',
+                  title: language['inCompleteProfBtmStSubtitle'],
                   fontWeight: FontWeight.w400,
                   height: 1.2,
                   fontSize: 17,

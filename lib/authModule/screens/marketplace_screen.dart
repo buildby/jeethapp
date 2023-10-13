@@ -8,11 +8,15 @@ import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
+import 'package:jeeth_app/navigation/arguments.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
+  // final MarketPlaceScreenArguments args;
   const MarketPlaceScreen({
     Key? key,
+    //  required this.args
   }) : super(key: key);
 
   @override
@@ -65,8 +69,56 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
 
     return Scaffold(
       backgroundColor: themeColor,
-      appBar: CustomAppBar(title: '', dW: dW),
-      body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
+      // appBar: CustomAppBar(title: '', dW: dW),
+
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              leadingWidth: 0,
+              // leading: SizedBox.shrink(),
+              // leading: GestureDetector(
+              //     onTap: () => pop(),
+              //     child: innerBoxIsScrolled
+              //         ? Icon(Icons.arrow_back_ios_new)
+              //         : null),
+              // expandedHeight: 200.0,
+              floating: true,
+              backgroundColor: themeColor,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                // background: Column(
+                //   crossAxisAlignment: CrossAxisAlignment.end,
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     TextWidget(
+                //       // textAlign: TextAlign.end,
+                //       title: language['go'],
+                //       fontWeight: FontWeight.w700,
+                //       color: Colors.black.withOpacity(0.06),
+                //       fontSize: 119,
+                //     ),
+                //   ],
+                // ),
+                title: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: innerBoxIsScrolled
+                      ? TextWidget(
+                          title: language['marketplace'],
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22,
+                          color: white,
+                        )
+                      : const SizedBox(),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
+      ),
+
+      // body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
     );
   }
 
@@ -122,7 +174,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                       child: Container(
-                        height: dH * 0.8,
+                        height: dH * 0.85,
                         padding: EdgeInsets.only(
                             top: dW * 0.06, left: dW * 0.02, right: dW * 0.02),
                         decoration: BoxDecoration(
@@ -144,6 +196,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () => incompleteProfBottomSheet(),
                             child: MarketplaceWidget(
+                              loggedIn: false,
                               key: ValueKey(marketplace[index].id),
                               marketplace: marketplace[index],
                             ),

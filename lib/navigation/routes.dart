@@ -8,6 +8,7 @@ class NamedRoute {
   static const String locationScreen = '/locationScreen';
   static const String privacyPolicyAndTcScreen = '/privacyPolicyAndTcScreen';
   static const String marketPlaceScreen = '/marketPlaceScreen';
+  static const String selectLanguageScreen = "/selectLanguageScreen";
 
   // static const String termsOfServicesScreen = '/termsOfServicesScreen';
 
@@ -18,26 +19,5 @@ class NamedRoute {
   // Home Module
   static const String bottomNavBarScreen = "/bottomNavBarScreen";
   static const String homeScreen = "/homeScreen";
-  static const String walletScreen = "/walletScreen";
-  static const String allTransactionScreen = "/allTransactionScreen";
-  static const String rewardScreen = "/rewardScreen";
-  static const String cafePhotosListScreen = "/cafePhotosListScreen";
-  static const String cafeDetailScreen = "/cafeDetailScreen";
-  static const String allMenuScreen = "/allMenuScreen";
-  static const String cafeImageScreen = "/cafeImageScreen";
-  static const String menuImageScreen = "/menuImageScreen";
-
-  static const String allCafesScreen = "/allCafesScreen";
-
-  static const String notificationScreen = "/notificationScreen";
-
-  // More Screen
-  static const String moreScreen = "/moreScreen";
-  static const String editProfileScreen = "/editProfileScreen";
-  static const String myQrCodeScreen = "/myQrCodeScreen";
-  static const String selectLanguageScreen = "/selectLanguageScreen";
-  static const String faqTopicsScreen = "/faqTopicsScreen";
-  static const String paymentScreen = "/paymentScreen";
-  static const String faqsScreen = "/faqsScreen";
-  static const String permissionScreen = "/permissionScreen";
+  static const String exploreDealScreen = "/exploreDealScreen";
 }

@@ -39,33 +39,6 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
     setState(() => isLoading = false);
   }
 
-  bool get validateNumber {
-    setState(() {
-      validatePhone = false;
-    });
-    String pattern = r'([6,7,8,9][0-9]{9})';
-    RegExp regExp = RegExp(pattern);
-    String amount = _phoneEditingController.text.toString();
-
-    if (amount.length < 10 || amount.isEmpty || !regExp.hasMatch(amount)) {
-      setState(() {
-        validatePhone = false;
-      });
-      return false;
-    }
-    setState(() {
-      validatePhone = true;
-    });
-    return true;
-  }
-
-  getOtp() {
-    push(NamedRoute.verifyOtpScreen,
-        arguments: VerifyOtpArguments(
-          mobileNo: _phoneEditingController.text.trim(),
-        ));
-  }
-
   getOTP() async {
     try {
       setState(() {
@@ -97,6 +70,33 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
         isLoading = false;
       });
     }
+  }
+
+  bool get validateNumber {
+    setState(() {
+      validatePhone = false;
+    });
+    String pattern = r'([6,7,8,9][0-9]{9})';
+    RegExp regExp = RegExp(pattern);
+    String amount = _phoneEditingController.text.toString();
+
+    if (amount.length < 10 || amount.isEmpty || !regExp.hasMatch(amount)) {
+      setState(() {
+        validatePhone = false;
+      });
+      return false;
+    }
+    setState(() {
+      validatePhone = true;
+    });
+    return true;
+  }
+
+  getOtp() {
+    push(NamedRoute.verifyOtpScreen,
+        arguments: VerifyOtpArguments(
+          mobileNo: _phoneEditingController.text.trim(),
+        ));
   }
 
   @override
@@ -236,9 +236,10 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                     child: CustomButton(
                       width: dW,
                       height: dW * 0.145,
+                      isLoading: isLoading,
                       radius: 19,
                       elevation: 12,
-                      onPressed: validateNumber ? getOtp : () {},
+                      onPressed: validateNumber ? getOTP : () {},
                       buttonColor: validateNumber ? buttonColor : Colors.grey,
                       buttonText: language['getOtp'],
                       buttonTextSyle: const TextStyle(

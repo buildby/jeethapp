@@ -22,6 +22,7 @@ class AuthProvider with ChangeNotifier {
         "onRide": "We're\ngoing\non a ride.",
         "areYouIn": "Are you in?",
         "getStarted": "Get started",
+        "somethingWentWrong": "Something Went Wrong",
         "enterYourMobileNumber": "Enter your mobile number",
         "phoneNumberToVerify":
             "We need your phone number to verify your identity",
@@ -29,6 +30,8 @@ class AuthProvider with ChangeNotifier {
         "set": "SET",
         "go": "GO",
         "getOtp": "Get OTP",
+        "inCompleteProfBtmStSubtitle":
+            "Fill in all your details and upload\nrequired documents to get your\nprofile approved.",
         "phoneVerification": "Phone verification",
         "enterOtpHere": "Enter your OTP code here",
         "proceed": "Proceed",
@@ -58,6 +61,8 @@ class AuthProvider with ChangeNotifier {
         "bankAccountDetails": "Bank Account Details",
         "selectGender": "Select Gender",
         "enterName": "Enter Name",
+        "yes": "Yes",
+        "no": "No",
 
 // Home Screen
         "chooseYourClient": "Choose your client",
@@ -66,6 +71,19 @@ class AuthProvider with ChangeNotifier {
         "earnings": "Earnings",
         "reports": "Reports",
         "help": "Help",
+
+// Explore Deal Screen
+        "exploreDeal": "Explore Deal",
+        "company": "Company",
+        "loginSlots": "Login Slots",
+        "logoutSlots": "Logout Slots",
+        "applyNow": "Apply Now",
+        "profileWillSubmitted": "Your Profile will be submitted",
+        "profileHasSubmitted": "Your Profile has been submitted",
+        "agreementSubtitle":
+            "Your Profile data will be shared with the vendor along with all the attached documents and video-kyc Report for Induction Approval.",
+        "iAgree": "I Agree",
+        "done": "Done",
       };
 
   late User user;

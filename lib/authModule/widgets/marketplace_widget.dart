@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
@@ -8,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class MarketplaceWidget extends StatefulWidget {
   final Marketplace marketplace;
-  const MarketplaceWidget({Key? key, required this.marketplace})
+  bool loggedIn;
+  MarketplaceWidget({Key? key, required this.marketplace, this.loggedIn = true})
       : super(key: key);
 
   @override
@@ -183,13 +186,29 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                     SizedBox(
                       height: dW * 0.02,
                     ),
-                    TextWidgetRoboto(
-                      title:
-                          'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
-                      color: const Color(0xff14A0B2),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    widget.loggedIn
+                        ? TextWidgetRoboto(
+                            title:
+                                'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
+                            color: const Color(0xff14A0B2),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          )
+                        : ImageFiltered(
+                            imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(
+                                sigmaX: 5,
+                                sigmaY: 5,
+                              ),
+                              child: TextWidgetRoboto(
+                                title:
+                                    'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
+                                color: const Color(0xff14A0B2),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )),
                   ],
                 ),
               ),

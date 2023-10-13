@@ -31,6 +31,8 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
   Map language = {};
   bool isLoading = false;
   bool validateotp = false;
+  bool inCorrect = false;
+
   // String otp = '1234';
   TextTheme get textTheme => Theme.of(context).textTheme;
   final _otpEditingController = TextEditingController();
@@ -61,46 +63,44 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
     return null;
   }
 
-  // Future<void> verifyOTP() async {
-  //   final value = _otpEditingController.text;
-  //   if (value != otp) {
-  //     return showSnackbar('Please enter valid OTP');
-  //   }
-  // }
+  Future<void> verifyOTP() async {
+    final data = await Provider.of<AuthProvider>(context, listen: false)
+        .verifyOTPofUser(
+            widget.args.mobileNo.toString(), _otpEditingController.text);
+    if (data == 'success') {
+      // final response = await Provider.of<AuthProvider>(context, listen: false)
+      //     .login(query: '?phone=${widget.args.mobileNo}');
 
-  // Future<void> verifyOTP() async {
-  //   final data = await Provider.of<AuthProvider>(context, listen: false)
-  //       .verifyOTPofUser(
-  //           widget.args.mobileNo.toString(), _otpEditingController.text);
-  //   if (data == 'success') {
-  //     final response = await Provider.of<AuthProvider>(context, listen: false)
-  //         .login(query: '?phone=${widget.args.mobileNo}');
-  //     if (response['success'] && response['login']) {
-  //       pushAndRemoveUntil(NamedRoute.bottomNavBarScreen,
-  //           arguments: BottomNavArgumnets());
-  //     } else if (!response['success']) {
-  //       showSnackbar(language['somethingWentWrong']);
-  //     } else if (!response['login']) {
-  //       pushAndRemoveUntil(
-  //         NamedRoute.registerUserScreen,
-  //         arguments: RegistrationArguments(
-  //           mobileNo: widget.args.mobileNo,
-  //         ),
-  //       );
-  //     }
-  //     //
-  //   } else {
-  //     showSnackbar('Incorrect OTP', Colors.red);
-  //     setState(() {
-  //       inCorrect = true;
-  //     });
-  //   }
-  //   if (mounted) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
+      // if (response['success'] && response['login']) {
+      //   pushAndRemoveUntil(
+      //     NamedRoute.profileDocumentsScreen,
+      //   );
+      // } else if (!response['success']) {
+      //   showSnackbar(language['somethingWentWrong']);
+      // } else if (!response['login']) {
+      pushAndRemoveUntil(
+        NamedRoute.marketPlaceScreen,
+        arguments: MarketPlaceScreenArguments(
+          mobileNo: widget.args.mobileNo,
+        ),
+      );
+      // }
+
+      //
+    } else {
+      showSnackbar('Incorrect OTP', Colors.red);
+
+      setState(() {
+        inCorrect = true;
+      });
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -224,8 +224,10 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       height: dW * 0.145,
                       radius: 19,
                       elevation: 12,
+                      isLoading: isLoading,
                       onPressed: validateotp
-                          ? () => push(NamedRoute.marketPlaceScreen)
+                          ? verifyOTP
+                          // () => push(NamedRoute.marketPlaceScreen)
                           : () {},
                       // onPressed: validateotp ? verifyOTP : () {},
                       buttonColor: validateotp ? buttonColor : Colors.grey,

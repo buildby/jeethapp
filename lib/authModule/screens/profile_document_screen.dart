@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/document_details_widget.dart';
-import 'package:jeeth_app/authModule/widgets/driver_details_bottomsheet.dart';
+import 'package:jeeth_app/authModule/widgets/driver_doc_bottomsheet.dart';
+import 'package:jeeth_app/authModule/widgets/owner_details_widget.dart';
 import 'package:jeeth_app/authModule/widgets/owner_documents.dart';
 import 'package:jeeth_app/authModule/widgets/vehicleDetails_bottomSheet.dart';
 import 'package:jeeth_app/authModule/widgets/vehicleDocuments_bottomSheet.dart';
@@ -42,6 +43,8 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   num vehicleDetailsPercentage = 0;
   num vehicleDocPercentage = 0;
   num ownerDocPercentage = 0;
+  num ownerDetailsPercentage = 0;
+
   num driverDetailsPercentage = 0;
 
   Map language = {};
@@ -226,7 +229,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         });
   }
 
-  void driverDetailsBottomSheet() {
+  void driverDocBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
       // enableDrag: true,
@@ -238,7 +241,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         ),
       ),
       context: context,
-      builder: (context) => DriverDetailsBottomSheetWidget(
+      builder: (context) => DriverDocBottomSheetWidget(
         onUpdatePercentage: (percentage) {
           setState(() {
             driverDetailsPercentage = percentage;
@@ -292,6 +295,28 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     );
   }
 
+  void ownerDetailsBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      // enableDrag: true,
+      // constraints: BoxConstraints(maxHeight: dH * 0.7),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => OwnerDetailsBottomSheetWidget(
+        onUpdatePercentage: (percentage) {
+          setState(() {
+            ownerDetailsPercentage = percentage;
+          });
+        },
+      ),
+    );
+  }
+
   void ownerDocumentsBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -318,10 +343,12 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     setState(() {
       validateForm = false;
     });
-    if (vehicleDetailsPercentage == 100 &&
+    if (vehicleDetailsPercentage == 100
+        //  &&
         // vehicleDocPercentage == 100 &&
         // ownerDocPercentage == 100 &&
-        driverDetailsPercentage == 100) {
+        // driverDetailsPercentage == 100
+        ) {
       setState(() {
         validateForm = true;
       });
@@ -355,7 +382,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                   name: language['driverDetails'],
                   percentage:
                       '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                  onTap: () => driverDetailsBottomSheet(),
+                  onTap: () => driverDocBottomSheet(),
                 ),
                 SizedBox(
                   height: dW * 0.025,
@@ -363,8 +390,8 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                 DocumentDetailWidget(
                   name: language['driverDocuments'],
                   percentage:
-                      '${double.parse(vehicleDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                  onTap: () => vehicleDocumentsBottomSheet(),
+                      '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                  onTap: () => driverDocBottomSheet(),
                 ),
               ],
             ),
@@ -430,62 +457,22 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: dW * 0.03, bottom: dW * 0.03),
+              margin: EdgeInsets.only(bottom: dW * 0.03),
               padding: EdgeInsets.symmetric(
                   horizontal: dW * 0.04, vertical: dW * 0.05),
               decoration: BoxDecoration(
                 color: white,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(.1),
-                      blurRadius: 10,
-                      spreadRadius: 0,
-                      offset: const Offset(0, -5))
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //       color: Colors.black.withOpacity(.1),
+                //       blurRadius: 10,
+                //       spreadRadius: 0,
+                //       offset: const Offset(0, -5))
+                // ],
               ),
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showOwnerDetails = !showOwnerDetails;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: dW * 0.03),
-                      padding: EdgeInsets.only(
-                          left: dW * 0.03, bottom: dW * 0.02, top: dW * 0.02),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF8F8F8),
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xffEFEFF4),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const TextWidget(title: 'I am owner'),
-                          Checkbox(
-                            // title: const TextWidget(title: 'I am owner'),
-                            value: showOwnerDetails,
-                            activeColor: themeColor,
-                            visualDensity: VisualDensity.compact,
-                            // controlAffinity: ListTileControlAffinity.trailing,
-                            // contentPadding: EdgeInsets.all(0),
-                            shape: const CircleBorder(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                showOwnerDetails = newValue!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   DocumentDetailWidget(
                     name: language['vehicleDetails'],
                     percentage:
@@ -501,7 +488,89 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                         '${double.parse(vehicleDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
                     onTap: () => vehicleDocumentsBottomSheet(),
                   ),
-                  showOwnerDetails
+                  GestureDetector(
+                    onTap: () {
+                      // setState(() {
+                      //   showOwnerDetails = !showOwnerDetails;
+                      //   updateHeaderName();
+                      // });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: dW * 0.05),
+                      padding: EdgeInsets.only(
+                          left: dW * 0.03, bottom: dW * 0.02, top: dW * 0.02),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF8F8F8),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 1,
+                          color: const Color(0xffEFEFF4),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const TextWidget(title: 'I am the cab owner'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    showOwnerDetails = true;
+                                    updateHeaderName();
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    TextWidget(title: language['yes']),
+                                    Checkbox(
+                                      value: showOwnerDetails == true,
+                                      activeColor: themeColor,
+                                      visualDensity: VisualDensity.compact,
+                                      shape: const CircleBorder(),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          showOwnerDetails = true;
+                                          updateHeaderName();
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    showOwnerDetails = false;
+                                    updateHeaderName();
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    TextWidget(title: language['no']),
+                                    Checkbox(
+                                      value: showOwnerDetails == false,
+                                      activeColor: themeColor,
+                                      visualDensity: VisualDensity.compact,
+                                      shape: const CircleBorder(),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          showOwnerDetails = false;
+                                          updateHeaderName();
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  !showOwnerDetails
                       ? Column(
                           children: [
                             SizedBox(
@@ -509,7 +578,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                             ),
                             DocumentDetailWidget(
                               name: language['ownerDetails'],
-                              percentage: '100%',
+                              percentage:
+                                  '${double.parse(ownerDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                              onTap: () => ownerDetailsBottomSheet(),
                             ),
                             SizedBox(
                               height: dW * 0.025,
@@ -589,26 +660,33 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     setState(() => isLoading = false);
   }
 
+  void updateHeaderName() {
+    if (_tabController.index == 0) {
+      header = language['driverDetails'];
+      subHeader = language['swipeForVehicleDetails'];
+      isDriverSlide = true;
+    } else {
+      header = !showOwnerDetails
+          ? language['vehicle/OwnerDetails']
+          : language['vehicleDetails'];
+      subHeader = language['swipeForDriverDetails'];
+      isDriverSlide = false;
+    }
+  }
+
+  String get headerName {
+    _tabController.addListener(() {
+      setState(() {
+        updateHeaderName();
+      });
+    });
+    return header;
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
-
-    _tabController.addListener(() {
-      setState(() {
-        if (_tabController.index == 0) {
-          header = language['driverDetails'];
-          subHeader = language['swipeForVehicleDetails'];
-          isDriverSlide = true;
-          validate;
-        } else {
-          header = language['vehicle/OwnerDetails'];
-          subHeader = language['swipeForDriverDetails'];
-          isDriverSlide = false;
-          validate;
-        }
-      });
-    });
 
     // user = Provider.of<AuthProvider>(context, listen: false).user;
     // fetchData();
@@ -727,7 +805,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                       height: dW * 0.01,
                                     ),
                                     TextWidget(
-                                      title: header,
+                                      title: headerName,
                                       color: const Color(0xff242E42),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 17,

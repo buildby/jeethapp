@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/screens/explore_deal_screen.dart';
 import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
 import 'package:jeeth_app/homeModule/screens/help_screen.dart';
 import 'package:jeeth_app/homeModule/screens/home_screen.dart';
@@ -148,7 +149,9 @@ class BottomNavBarState extends State<BottomNavBar> {
   }
 
   List<Widget> get _children => [
-        const HomeScreen(),
+        HomeScreen(
+          onIndexChanged: onTapped,
+        ),
         const EarningsScreen(),
         const ReportsScreen(),
         const HelpScreen(),

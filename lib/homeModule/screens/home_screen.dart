@@ -8,10 +8,18 @@ import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
+import 'package:jeeth_app/navigation/arguments.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
+import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final Function(int) onIndexChanged;
+
+  HomeScreen({
+    Key? key,
+    required this.onIndexChanged,
+  }) : super(key: key);
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -60,8 +68,9 @@ class HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: dW * 0.03),
-              child: const Icon(Icons.notifications))
+            margin: EdgeInsets.only(right: dW * 0.03),
+            child: const Icon(Icons.notifications),
+          ),
         ],
       ),
       body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
@@ -119,7 +128,12 @@ class HomeScreenState extends State<HomeScreen> {
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              widget.onIndexChanged(0);
+                              push(NamedRoute.exploreDealScreen,
+                                  arguments: ExploreDealScreenArguments(
+                                      marketplace: marketplace[index]));
+                            },
                             child: MarketplaceWidget(
                               key: ValueKey(marketplace[index].id),
                               marketplace: marketplace[index],

@@ -2,6 +2,7 @@ class Marketplace {
   final String id;
 
   String vendername;
+  String companyName;
   String image;
   num rating;
   num totalSedan;
@@ -13,6 +14,7 @@ class Marketplace {
   Marketplace({
     required this.id,
     this.vendername = '',
+    this.companyName = '',
     this.image = '',
     this.rating = 0,
     this.totalSedan = 0,
@@ -29,6 +31,7 @@ class Marketplace {
       Marketplace(
         id: marketplace['_id'],
         vendername: marketplace['vendername'] ?? '',
+        companyName: marketplace['companyName'] ?? '',
         image: marketplace['image'] ?? '',
         rating: marketplace['rating'] ?? 0,
         totalSedan: marketplace['totalSedan'] ?? 0,

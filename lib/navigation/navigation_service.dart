@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/screens/explore_deal_screen.dart';
 import 'package:jeeth_app/authModule/screens/marketplace_screen.dart';
 import 'package:jeeth_app/authModule/screens/mobile_number_screen.dart';
 import 'package:jeeth_app/authModule/screens/onBoarding_screen.dart';
@@ -24,10 +25,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       ));
 
     case NamedRoute.marketPlaceScreen:
-      return _getPageRoute(const MarketPlaceScreen());
+      return _getPageRoute(MarketPlaceScreen(
+          // args: settings.arguments as MarketPlaceScreenArguments,
+          ));
 
     case NamedRoute.profileDocumentsScreen:
       return _getPageRoute(const ProfileDocumentsScreen());
+
+    case NamedRoute.exploreDealScreen:
+      return _getPageRoute(ExploreDealScreen(
+        args: settings.arguments as ExploreDealScreenArguments,
+      ));
 
     case NamedRoute.bottomNavBarScreen:
       return _getPageRoute(BottomNavBar(

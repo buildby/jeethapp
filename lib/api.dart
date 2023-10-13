@@ -1,12 +1,12 @@
 // var webApi = {'domain': 'https://api.iteeha.co'}; //PROD
-var webApi = {'domain': 'http://43.205.30.95:3060'}; //DEV PROD
-// var webApi = {'domain': 'http://192.168.1.33:3060'}; // Atharv Home
-// var webApi = {'domain': 'http://192.168.0.5:3060'}; // Atharv Work
-// var webApi = {'domain': 'http://172.20.10.5:3060'}; // Atharv Hotspot
-// var webApi = {'domain': 'http://192.168.227.72:3060'}; // Salman
-// var webApi = {'domain': 'http://192.168.1.3:3060'}; // Darshan wifi
-// var webApi = {'domain': 'http://192.168.95.161:3060'}; // Darshan hotspot2
-// var webApi = {'domain': 'http://192.168.41.161:3060'}; // Darshan hotspot
+// var webApi = {'domain': 'http://43.205.30.95:4000'}; //DEV PROD
+// var webApi = {'domain': 'http://192.168.1.33:4000'}; // Atharv Home
+// var webApi = {'domain': 'http://192.168.0.5:4000'}; // Atharv Work
+// var webApi = {'domain': 'http://172.20.10.5:4000'}; // Atharv Hotspot
+// var webApi = {'domain': 'http://192.168.227.72:4000'}; // Salman
+var webApi = {'domain': 'http://192.168.1.5:3000'}; // Darshan wifi
+// var webApi = {'domain': 'http://192.168.95.161:4000'}; // Darshan hotspot2
+// var webApi = {'domain': 'http://192.168.66.161:4000'}; // Darshan hotspot
 
 var endPoint = {
   // App Config
