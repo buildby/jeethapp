@@ -53,6 +53,9 @@ class AuthProvider with ChangeNotifier {
         "next": "Next",
         "enterVehicleNumber": "Enter Vehicle Number",
         "selectVehicleModel": "Select Vehicle Model",
+        "enterOwnerName": "Enter Owner Name",
+        "enterownerAddress": "Enter Owner Address",
+        "enterOwnerMobileNumber": "Enter Owner Mobile Number",
         "selectModel": "Select Model",
         "selectType": "Select Type",
         "selectMake": "Select Make",
@@ -63,6 +66,15 @@ class AuthProvider with ChangeNotifier {
         "enterName": "Enter Name",
         "yes": "Yes",
         "no": "No",
+        "name": "Name",
+        "dob": "Date of birth",
+        "fullAddress": "Full address",
+        "gender": "Gender",
+        "bankName": "Bank name",
+        "selectBank": "Select Bank",
+        "accNumber": "Account number",
+        "confimrAccNumber": "Confirm account number",
+        "ifscCode": "IFSC code",
 
 // Home Screen
         "chooseYourClient": "Choose your client",
@@ -84,6 +96,48 @@ class AuthProvider with ChangeNotifier {
             "Your Profile data will be shared with the vendor along with all the attached documents and video-kyc Report for Induction Approval.",
         "iAgree": "I Agree",
         "done": "Done",
+
+// Earnings Screen
+        "accruedEarnings": "Accrued Earnings",
+        "currentMonthEarnings": "Current month earnings",
+        "eligibleToWithdraw": "Eligible to withdraw ",
+        "withdrawAmount": "Withdraw amount",
+        "earningsLastWeek": "Your earnings in the last 7 days",
+
+// Navigation Drawer
+        "wallet": "Wallet",
+        "myProfile": "My Profile",
+        "myApplications": "My Applications",
+        "notifications": "Notifications",
+        "referAFriend": "Refer a friend",
+        "appSettings": "App Settings",
+        "logout": "Log Out",
+        "logoutMessage": "Are you sure you want to Log Out?",
+        "wantToLogout": "Are you sure you want to logout?",
+        "settings": "Settings",
+
+// Reports Screen
+        "yourWeeklyPerformance": "Your Weekly Performance",
+        "MISReport": "MIS Report",
+        "performanceReport": "Performance Report",
+        "earningsReport": "Earnings Report",
+        "maintainOta/Otd":
+            "Maintain your OTA/OTD\ngreater than 95% to unlock\nbest deals for you",
+
+// Help Screen
+        "contactVendorHelpline": "Contact Vendor Helpline",
+        "tapToCall": "Tap to Call",
+        "reportAnIssue": "Report an issue",
+        "AccountProfile": "Account and Profile",
+        "paymentsAndWithdrawals": "Payments and Withdrawals",
+        "callAndReport":
+            "Please call and report the\ninstance to your coordinator\nin case of emergency",
+
+// Settings Screen
+        "active": "Active",
+        "security": "Security",
+        "language": "Language",
+        "permissions": "Permissions",
       };
 
   late User user;

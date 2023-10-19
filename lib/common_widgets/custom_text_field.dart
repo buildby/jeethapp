@@ -33,7 +33,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final double hintFS;
   final double inputFS;
   final double letterSpacing;
-
+  final bool obscureText;
   final FontWeight labelFontWeight;
   final FontWeight hintFontWeight;
 
@@ -72,6 +72,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.validator,
     this.inputAction = TextInputAction.done,
     this.enabled = true,
+    this.obscureText = false,
     this.widget,
     this.suffixIcon,
     this.suffixIconConstraints,
@@ -137,6 +138,8 @@ class CustomTextFieldWithLabel extends StatelessWidget {
         TextFormField(
           controller: controller,
           initialValue: initValue,
+          obscureText: obscureText,
+          obscuringCharacter: '●',
           focusNode: focusNode,
           onTap: onTap != null ? () => onTap!() : null,
           inputFormatters: inputFormatter,

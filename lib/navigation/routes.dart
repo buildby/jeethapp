@@ -20,4 +20,6 @@ class NamedRoute {
   static const String bottomNavBarScreen = "/bottomNavBarScreen";
   static const String homeScreen = "/homeScreen";
   static const String exploreDealScreen = "/exploreDealScreen";
+  static const String earningsScreen = "/earningsScreen";
+  static const String settingsScreen = "/settingsScreen";
 }

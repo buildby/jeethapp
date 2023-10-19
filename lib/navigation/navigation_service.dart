@@ -7,6 +7,8 @@ import 'package:jeeth_app/authModule/screens/profile_document_screen.dart';
 import 'package:jeeth_app/authModule/screens/splash_screen.dart';
 import 'package:jeeth_app/authModule/screens/verify_otp_screen.dart';
 import 'package:jeeth_app/common_widgets/bottom_nav_bar.dart';
+import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
+import 'package:jeeth_app/homeModule/screens/settings_screen.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'routes.dart';
 
@@ -41,6 +43,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(BottomNavBar(
         args: settings.arguments as BottomNavArguments,
       ));
+
+    case NamedRoute.earningsScreen:
+      return _getPageRoute(const EarningsScreen());
+
+    case NamedRoute.settingsScreen:
+      return _getPageRoute(const SettingsScreen());
 
     default:
       return _getPageRoute(const SplashScreen());

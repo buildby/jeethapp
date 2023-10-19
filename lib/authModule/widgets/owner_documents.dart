@@ -32,7 +32,6 @@ class OwnerDocumentsBottomSheetWidgetState
   Map language = {};
   bool isLoading = false;
   fetchData() async {}
-  TextEditingController _bankDetailsController = TextEditingController();
   FocusNode bankDetailsFocus = FocusNode();
 
   void addDocument(String name, PlatformFile file) {
@@ -41,21 +40,22 @@ class OwnerDocumentsBottomSheetWidgetState
     });
   }
 
-  void removeDocument(int index) {
+//  void _removeFile() {
+//     setState(() {
+//       selectedFiles = null;
+//     });
+//   }
+  void removeDocument(value) {
     setState(() {
-      selectedFiles.removeAt(index);
+      selectedFiles.remove(value);
     });
   }
 
   double calculatePercentageFilled() {
-    int totalFields = 4;
+    int totalFields = 2;
     // int filledFields = 0;
 
     int selectedDocumentCount = selectedFiles.length;
-
-    if (_bankDetailsController.text.isNotEmpty) {
-      selectedDocumentCount++;
-    }
 
     return (selectedDocumentCount / totalFields) * 100;
   }
@@ -111,90 +111,77 @@ class OwnerDocumentsBottomSheetWidgetState
               color: Colors.black,
               thickness: 5,
             ),
-            SizedBox(
-              height: dW * 0.06,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Aadhaar',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: dW * 0.06,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'Upload Aadhaar',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'Upload Lease Agreement',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                  ],
                 ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
+              ),
             ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Pan',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Bank Passbook/Cancelled Cheque/Statement',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            CustomTextFieldWithLabel(
-                controller: _bankDetailsController,
-                focusNode: bankDetailsFocus,
-                // initValue: vehicleNumber,
-                label: language['bankAccountDetails'],
-                hintText: language['bankAccountDetails']),
             Container(
               margin: EdgeInsets.only(
-                top: dW * 0.05,
-                left: dW * 0.1,
-                right: dW * 0.1,
-              ),
+                  top: dW * 0.05,
+                  left: dW * 0.1,
+                  right: dW * 0.1,
+                  bottom: dW * 0.02),
               child: CustomButton(
                 width: dW,
                 height: dW * 0.15,

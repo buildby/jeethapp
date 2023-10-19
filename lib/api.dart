@@ -4,9 +4,9 @@
 // var webApi = {'domain': 'http://192.168.0.5:4000'}; // Atharv Work
 // var webApi = {'domain': 'http://172.20.10.5:4000'}; // Atharv Hotspot
 // var webApi = {'domain': 'http://192.168.227.72:4000'}; // Salman
-var webApi = {'domain': 'http://192.168.1.5:3000'}; // Darshan wifi
+var webApi = {'domain': 'http://192.168.1.4:3000'}; // Darshan wifi
 // var webApi = {'domain': 'http://192.168.95.161:4000'}; // Darshan hotspot2
-// var webApi = {'domain': 'http://192.168.66.161:4000'}; // Darshan hotspot
+// var webApi = {'domain': 'http://192.168.234.161:3000'}; // Darshan hotspot
 
 var endPoint = {
   // App Config

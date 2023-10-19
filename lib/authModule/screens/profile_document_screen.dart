@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/document_details_widget.dart';
+import 'package:jeeth_app/authModule/widgets/driver_details_btmsheet.dart';
 import 'package:jeeth_app/authModule/widgets/driver_doc_bottomsheet.dart';
 import 'package:jeeth_app/authModule/widgets/owner_details_widget.dart';
 import 'package:jeeth_app/authModule/widgets/owner_documents.dart';
@@ -16,6 +17,7 @@ import 'package:jeeth_app/common_widgets/bottom_aligned_widget.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
+import 'package:jeeth_app/common_widgets/custom_checkbox.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
@@ -44,13 +46,15 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   num vehicleDocPercentage = 0;
   num ownerDocPercentage = 0;
   num ownerDetailsPercentage = 0;
+  num driverDocPercentage = 0;
 
   num driverDetailsPercentage = 0;
 
   Map language = {};
   bool showOwnerDetails = true;
   bool isLoading = false;
-  bool validateForm = false;
+  bool validateForm1 = false;
+  bool validateForm2 = false;
 
   TextTheme get textTheme => Theme.of(context).textTheme;
   final TextEditingController _nameEditingController = TextEditingController();
@@ -148,9 +152,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: dW * .02),
-                  const Text(
-                    'Profile Photo',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    isDriverSlide ? 'Profile Photo' : 'Vehicle Photo',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: dW * .03),
                   Row(
@@ -185,24 +189,25 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                           ),
                         ),
                       // SizedBox(width: dW * .05),
-                      GestureDetector(
-                        onTap: () => pickImage(ImageSource.gallery),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: dW * .08,
-                              backgroundColor: Colors.grey.withOpacity(0.4),
-                              child: const Icon(
-                                Icons.image,
-                                color: Colors.purple,
+                      if (isDriverSlide)
+                        GestureDetector(
+                          onTap: () => pickImage(ImageSource.gallery),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: dW * .08,
+                                backgroundColor: Colors.grey.withOpacity(0.4),
+                                child: const Icon(
+                                  Icons.image,
+                                  color: Colors.purple,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: dW * .02),
-                            const Text('Gallery')
-                          ],
+                              SizedBox(height: dW * .02),
+                              const Text('Gallery')
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: dW * .05),
+                      if (isDriverSlide) SizedBox(width: dW * .05),
                       GestureDetector(
                         onTap: () => pickImage(ImageSource.camera),
                         child: Column(
@@ -229,6 +234,28 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         });
   }
 
+  void driverDetailsBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      // enableDrag: true,
+      // constraints: BoxConstraints(maxHeight: dH),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => DriverDetailsBottomSheetWidget(
+        onUpdatePercentage: (percentage) {
+          setState(() {
+            driverDetailsPercentage = percentage;
+          });
+        },
+      ),
+    );
+  }
+
   void driverDocBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -244,7 +271,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       builder: (context) => DriverDocBottomSheetWidget(
         onUpdatePercentage: (percentage) {
           setState(() {
-            driverDetailsPercentage = percentage;
+            driverDocPercentage = percentage;
           });
         },
       ),
@@ -339,9 +366,22 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     );
   }
 
+  bool get validateTab1 {
+    return true;
+    // setState(() {
+    //   validateForm2 = false;
+    // });
+    // if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
+    //   setState(() {
+    //     validateForm2 = true;
+    //   });
+    // }
+    // return validateForm2;
+  }
+
   bool get validate {
     setState(() {
-      validateForm = false;
+      validateForm1 = false;
     });
     if (vehicleDetailsPercentage == 100
         //  &&
@@ -350,79 +390,322 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         // driverDetailsPercentage == 100
         ) {
       setState(() {
-        validateForm = true;
+        validateForm1 = true;
       });
     }
-    return validateForm;
+    return validateForm1;
   }
 
   Widget get tab1 {
-    return SingleChildScrollView(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: dW * 0.06),
       child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: dW * 0.03, bottom: dW * 0.5),
-            padding: EdgeInsets.symmetric(
-                horizontal: dW * 0.04, vertical: dW * 0.05),
-            decoration: BoxDecoration(
-              color: white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(.1),
-                    blurRadius: 10,
-                    spreadRadius: 0,
-                    offset: const Offset(0, -5))
-              ],
-            ),
+          Expanded(
             child: Column(
               children: [
-                DocumentDetailWidget(
-                  name: language['driverDetails'],
-                  percentage:
-                      '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                  onTap: () => driverDocBottomSheet(),
-                ),
-                SizedBox(
-                  height: dW * 0.025,
-                ),
-                DocumentDetailWidget(
-                  name: language['driverDocuments'],
-                  percentage:
-                      '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                  onTap: () => driverDocBottomSheet(),
+                SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.only(top: dW * 0.03, bottom: dW * 0.5),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: dW * 0.04, vertical: dW * 0.05),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(.1),
+                            blurRadius: 10,
+                            spreadRadius: 0,
+                            offset: const Offset(0, -5))
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        DocumentDetailWidget(
+                          name: language['driverDetails'],
+                          percentage:
+                              '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                          onTap: () => driverDetailsBottomSheet(),
+                        ),
+                        SizedBox(
+                          height: dW * 0.025,
+                        ),
+                        DocumentDetailWidget(
+                          name: language['driverDocuments'],
+                          percentage:
+                              '${double.parse(driverDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                          onTap: () => driverDocBottomSheet(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(right: dW * 0.01),
-                padding: EdgeInsets.symmetric(
-                    horizontal: dW * 0.02, vertical: dW * 0.01),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: const Color(0xffBFBFBF)),
-                child: const AssetSvgIcon(
-                  'exclaimation',
-                  height: 10,
+          validateTab1
+              ? const SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: dW * 0.01),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: dW * 0.02, vertical: dW * 0.01),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: const Color(0xffBFBFBF)),
+                      child: const AssetSvgIcon(
+                        'exclaimation',
+                        height: 10,
+                      ),
+                    ),
+                    TextWidget(
+                      title: language['profileIncomplete'],
+                      color: const Color(0xff242E42),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    ),
+                  ],
                 ),
-              ),
-              TextWidget(
-                title: language['profileIncomplete'],
-                color: const Color(0xff242E42),
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
-              ),
-            ],
-          ),
           Container(
             margin: EdgeInsets.only(
-                left: dW * 0.15,
-                right: dW * 0.15,
+                left: dW * 0.12,
+                right: dW * 0.12,
+                bottom: dW * 0.1,
+                top: dW * 0.05),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(.15),
+                    blurRadius: 30,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 26))
+              ],
+            ),
+            child: CustomButton(
+              width: dW,
+              height: dW * 0.15,
+              radius: 21,
+              buttonColor: validateTab1 ? themeColor : Colors.grey,
+              buttonText: language['next'],
+              onPressed: () {
+                validateTab1
+                    ? _tabController.animateTo(_tabController.index + 1)
+                    : () {};
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get tab2 {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: dW * 0.06),
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: dW * 0.03),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: dW * 0.04, vertical: dW * 0.05),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(10),
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //       color: Colors.black.withOpacity(.1),
+                      //       blurRadius: 10,
+                      //       spreadRadius: 0,
+                      //       offset: const Offset(0, -5))
+                      // ],
+                    ),
+                    child: Column(
+                      children: [
+                        DocumentDetailWidget(
+                          name: language['vehicleDetails'],
+                          percentage:
+                              '${double.parse(vehicleDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                          onTap: () => vehicleDetailsBottomSheet(),
+                        ),
+                        SizedBox(
+                          height: dW * 0.025,
+                        ),
+                        DocumentDetailWidget(
+                          name: language['vehicleDocuments'],
+                          percentage:
+                              '${double.parse(vehicleDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                          onTap: () => vehicleDocumentsBottomSheet(),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // setState(() {
+                            //   showOwnerDetails = !showOwnerDetails;
+                            //   updateHeaderName();
+                            // });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: dW * 0.05),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: dW * 0.03, vertical: dW * 0.04),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffF8F8F8),
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                width: 1,
+                                color: const Color(0xffEFEFF4),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TextWidget(title: 'I am the cab owner'),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          showOwnerDetails = true;
+                                          updateHeaderName();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          TextWidget(title: language['yes']),
+                                          SizedBox(
+                                            width: dW * 0.01,
+                                          ),
+                                          CustomCheckbox(
+                                            value: showOwnerDetails == true,
+                                            activeColor: themeColor,
+                                            size: 18,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                showOwnerDetails = true;
+                                                updateHeaderName();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: dW * 0.02,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          showOwnerDetails = false;
+                                          updateHeaderName();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          TextWidget(title: language['no']),
+                                          SizedBox(
+                                            width: dW * 0.01,
+                                          ),
+                                          CustomCheckbox(
+                                            value: showOwnerDetails == false,
+                                            activeColor: themeColor,
+                                            size: 18,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                showOwnerDetails = false;
+                                                updateHeaderName();
+                                              });
+                                            },
+                                          )
+                                          // Checkbox(
+                                          //   value: showOwnerDetails == false,
+                                          //   activeColor: themeColor,
+                                          //   visualDensity:
+                                          //       VisualDensity.compact,
+                                          //   shape: const CircleBorder(),
+                                          //   onChanged: (newValue) {
+                                          //     setState(() {
+                                          //       showOwnerDetails = false;
+                                          //       updateHeaderName();
+                                          //     });
+                                          //   },
+                                          // ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        !showOwnerDetails
+                            ? Column(
+                                children: [
+                                  SizedBox(
+                                    height: dW * 0.025,
+                                  ),
+                                  DocumentDetailWidget(
+                                    name: language['ownerDetails'],
+                                    percentage:
+                                        '${double.parse(ownerDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                                    onTap: () => ownerDetailsBottomSheet(),
+                                  ),
+                                  SizedBox(
+                                    height: dW * 0.025,
+                                  ),
+                                  DocumentDetailWidget(
+                                    name: language['ownerDocuments'],
+                                    percentage:
+                                        '${double.parse(ownerDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                                    onTap: () => ownerDocumentsBottomSheet(),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          validate
+              ? const SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: dW * 0.01),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: dW * 0.02, vertical: dW * 0.01),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: const Color(0xffBFBFBF)),
+                      child: const AssetSvgIcon(
+                        'exclaimation',
+                        height: 10,
+                      ),
+                    ),
+                    TextWidget(
+                      title: language['profileIncomplete'],
+                      color: const Color(0xff242E42),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    ),
+                  ],
+                ),
+          Container(
+            margin: EdgeInsets.only(
+                left: dW * 0.12,
+                right: dW * 0.12,
                 bottom: dW * 0.1,
                 top: dW * 0.05),
             decoration: BoxDecoration(
@@ -439,218 +722,14 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               height: dW * 0.15,
               radius: 21,
               buttonText: language['next'],
-              onPressed: () {
-                _tabController.animateTo(_tabController.index + 1);
-              },
+              onPressed: validate
+                  ? () => push(NamedRoute.bottomNavBarScreen,
+                      arguments: BottomNavArguments())
+                  : () {},
+              buttonColor: validate ? buttonColor : Colors.grey,
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget get tab2 {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: dW * 0.06),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: dW * 0.03),
-              padding: EdgeInsets.symmetric(
-                  horizontal: dW * 0.04, vertical: dW * 0.05),
-              decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.circular(10),
-                // boxShadow: [
-                //   BoxShadow(
-                //       color: Colors.black.withOpacity(.1),
-                //       blurRadius: 10,
-                //       spreadRadius: 0,
-                //       offset: const Offset(0, -5))
-                // ],
-              ),
-              child: Column(
-                children: [
-                  DocumentDetailWidget(
-                    name: language['vehicleDetails'],
-                    percentage:
-                        '${double.parse(vehicleDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                    onTap: () => vehicleDetailsBottomSheet(),
-                  ),
-                  SizedBox(
-                    height: dW * 0.025,
-                  ),
-                  DocumentDetailWidget(
-                    name: language['vehicleDocuments'],
-                    percentage:
-                        '${double.parse(vehicleDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                    onTap: () => vehicleDocumentsBottomSheet(),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // setState(() {
-                      //   showOwnerDetails = !showOwnerDetails;
-                      //   updateHeaderName();
-                      // });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: dW * 0.05),
-                      padding: EdgeInsets.only(
-                          left: dW * 0.03, bottom: dW * 0.02, top: dW * 0.02),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF8F8F8),
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xffEFEFF4),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const TextWidget(title: 'I am the cab owner'),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showOwnerDetails = true;
-                                    updateHeaderName();
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    TextWidget(title: language['yes']),
-                                    Checkbox(
-                                      value: showOwnerDetails == true,
-                                      activeColor: themeColor,
-                                      visualDensity: VisualDensity.compact,
-                                      shape: const CircleBorder(),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          showOwnerDetails = true;
-                                          updateHeaderName();
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showOwnerDetails = false;
-                                    updateHeaderName();
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    TextWidget(title: language['no']),
-                                    Checkbox(
-                                      value: showOwnerDetails == false,
-                                      activeColor: themeColor,
-                                      visualDensity: VisualDensity.compact,
-                                      shape: const CircleBorder(),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          showOwnerDetails = false;
-                                          updateHeaderName();
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  !showOwnerDetails
-                      ? Column(
-                          children: [
-                            SizedBox(
-                              height: dW * 0.025,
-                            ),
-                            DocumentDetailWidget(
-                              name: language['ownerDetails'],
-                              percentage:
-                                  '${double.parse(ownerDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                              onTap: () => ownerDetailsBottomSheet(),
-                            ),
-                            SizedBox(
-                              height: dW * 0.025,
-                            ),
-                            DocumentDetailWidget(
-                              name: language['ownerDocuments'],
-                              percentage:
-                                  '${double.parse(ownerDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                              onTap: () => ownerDocumentsBottomSheet(),
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
-                ],
-              ),
-            ),
-            validate
-                ? const SizedBox()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: dW * 0.01),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: dW * 0.02, vertical: dW * 0.01),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: const Color(0xffBFBFBF)),
-                        child: const AssetSvgIcon(
-                          'exclaimation',
-                          height: 10,
-                        ),
-                      ),
-                      TextWidget(
-                        title: language['profileIncomplete'],
-                        color: const Color(0xff242E42),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                      ),
-                    ],
-                  ),
-            Container(
-              margin: EdgeInsets.only(
-                  left: dW * 0.15,
-                  right: dW * 0.15,
-                  bottom: dW * 0.1,
-                  top: dW * 0.05),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(.15),
-                      blurRadius: 30,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 26))
-                ],
-              ),
-              child: CustomButton(
-                width: dW,
-                height: dW * 0.15,
-                radius: 21,
-                buttonText: language['next'],
-                onPressed: validate
-                    ? () => push(NamedRoute.bottomNavBarScreen,
-                        arguments: BottomNavArguments())
-                    : () {},
-                buttonColor: validate ? buttonColor : Colors.grey,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -840,36 +919,42 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                               offset: const Offset(0, 4),
                             ),
                           ]),
-                      child: TabBar(
-                        physics: const BouncingScrollPhysics(),
-                        indicator: BoxDecoration(
-                          color: themeColor,
-                          borderRadius: BorderRadius.circular(8),
+                      child: IgnorePointer(
+                        child: TabBar(
+                          physics: validateTab1
+                              ? const BouncingScrollPhysics()
+                              : const NeverScrollableScrollPhysics(),
+                          indicator: BoxDecoration(
+                            color: themeColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          splashBorderRadius: BorderRadius.circular(8),
+                          splashFactory: NoSplash.splashFactory,
+                          overlayColor: const MaterialStatePropertyAll(
+                              Colors.transparent),
+                          tabs: [
+                            Tab(
+                              height: dW * .015,
+                              child: const Text(
+                                '',
+                              ),
+                            ),
+                            Tab(
+                              height: dW * .015,
+                              child: const Text(
+                                '',
+                              ),
+                            ),
+                          ],
+                          controller: _tabController,
                         ),
-                        splashBorderRadius: BorderRadius.circular(8),
-                        splashFactory: NoSplash.splashFactory,
-                        overlayColor:
-                            const MaterialStatePropertyAll(Colors.transparent),
-                        tabs: [
-                          Tab(
-                            height: dW * .015,
-                            child: const Text(
-                              '',
-                            ),
-                          ),
-                          Tab(
-                            height: dW * .015,
-                            child: const Text(
-                              '',
-                            ),
-                          ),
-                        ],
-                        controller: _tabController,
                       ),
                     ),
                     Flexible(
                       child: TabBarView(
-                        physics: const BouncingScrollPhysics(),
+                        physics: validateTab1
+                            ? const BouncingScrollPhysics()
+                            : const NeverScrollableScrollPhysics(),
                         controller: _tabController,
                         children: [
                           tab1,

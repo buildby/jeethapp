@@ -5,8 +5,10 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 
 class FilePickerWidget extends StatefulWidget {
   final Function(PlatformFile?) onFileSelected;
+  final Function(PlatformFile?) deleteFile;
 
-  const FilePickerWidget({super.key, required this.onFileSelected});
+  const FilePickerWidget(
+      {super.key, required this.onFileSelected, required this.deleteFile});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,7 +24,12 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'svg'],
+        allowedExtensions: [
+          'pdf',
+          'jpeg',
+          'png',
+          'jpg',
+        ],
       );
 
       if (result != null && result.files.isNotEmpty) {
@@ -37,6 +44,9 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
   }
 
   void _removeFile() {
+    if (widget.deleteFile != null) {
+      widget.deleteFile!(selectedFile);
+    }
     setState(() {
       selectedFile = null;
     });
@@ -47,7 +57,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: _pickFile,
+      onTap: selectedFile == null ? _pickFile : null,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -71,7 +81,12 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
             selectedFile == null
                 ? const Icon(Icons.add)
                 : GestureDetector(
-                    onTap: _removeFile,
+                    onTap: () {
+                      setState(() {
+                        _removeFile();
+                        // widget.deleteFile;
+                      });
+                    },
                     child: const Icon(
                       Icons.remove,
                       color: redColor,

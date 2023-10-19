@@ -4,10 +4,7 @@ import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
-import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -33,6 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   fetchData() async {
     setState(() => isLoading = true);
@@ -55,24 +53,29 @@ class HomeScreenState extends State<HomeScreen> {
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
     return Scaffold(
+      // key: _scaffoldKey,
+      // drawer: const MyNavigationDrawer(),
       backgroundColor: themeColor,
-      appBar: CustomAppBar(
-        title: language['chooseYourClient'],
-        dW: dW,
-        leading: Container(
-          padding: EdgeInsets.all(dW * 0.035),
-          child: const AssetSvgIcon(
-            'drawer',
-            height: 5,
-          ),
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: dW * 0.03),
-            child: const Icon(Icons.notifications),
-          ),
-        ],
-      ),
+      // appBar: CustomAppBar(
+      //   title: language['chooseYourClient'],
+      //   dW: dW,
+      //   leading: GestureDetector(
+      //     onTap: () => _scaffoldKey.currentState?.openDrawer(),
+      //     child: Container(
+      //       padding: EdgeInsets.all(dW * 0.035),
+      //       child: const AssetSvgIcon(
+      //         'drawer',
+      //         height: 5,
+      //       ),
+      //     ),
+      //   ),
+      //   actions: [
+      //     Container(
+      //       margin: EdgeInsets.only(right: dW * 0.03),
+      //       child: const Icon(Icons.notifications),
+      //     ),
+      //   ],
+      // ),
       body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
     );
   }

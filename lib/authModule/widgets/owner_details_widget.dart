@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
@@ -31,32 +32,28 @@ class OwnerDetailsBottomSheetWidgetState
   Map language = {};
   bool isLoading = false;
   fetchData() async {}
-  TextEditingController _bankDetailsController = TextEditingController();
-  FocusNode bankDetailsFocus = FocusNode();
+  TextEditingController _ownerNameController = TextEditingController();
+  TextEditingController _ownerMobileNumberController = TextEditingController();
+  TextEditingController _ownerAddressController = TextEditingController();
 
-  void addDocument(String name, PlatformFile file) {
-    setState(() {
-      selectedFiles.add(file);
-    });
-  }
-
-  void removeDocument(int index) {
-    setState(() {
-      selectedFiles.removeAt(index);
-    });
-  }
+  FocusNode ownerMobileNumberFocus = FocusNode();
+  FocusNode addressFocus = FocusNode();
+  FocusNode nameFocus = FocusNode();
 
   double calculatePercentageFilled() {
-    int totalFields = 4;
-    // int filledFields = 0;
+    int totalFields = 3;
+    int filledFields = 0;
 
-    int selectedDocumentCount = selectedFiles.length;
-
-    if (_bankDetailsController.text.isNotEmpty) {
-      selectedDocumentCount++;
+    if (_ownerNameController.text.isNotEmpty) {
+      filledFields++;
     }
-
-    return (selectedDocumentCount / totalFields) * 100;
+    if (_ownerMobileNumberController.text.isNotEmpty) {
+      filledFields++;
+    }
+    if (_ownerAddressController.text.isNotEmpty) {
+      filledFields++;
+    }
+    return (filledFields / totalFields) * 100;
   }
 
   void saveForm() {
@@ -84,7 +81,11 @@ class OwnerDetailsBottomSheetWidgetState
     return GestureDetector(
       onTap: () => hideKeyBoard(),
       child: Container(
-        height: bankDetailsFocus.hasFocus ? dH * 0.95 : dW * 1.4,
+        height: ownerMobileNumberFocus.hasFocus ||
+                addressFocus.hasFocus ||
+                nameFocus.hasFocus
+            ? dH * 0.82
+            : dW * 1.4,
         padding: EdgeInsets.symmetric(
             vertical: dW * horizontalPaddingFactor,
             horizontal: dW * horizontalPaddingFactor),
@@ -113,81 +114,38 @@ class OwnerDetailsBottomSheetWidgetState
             SizedBox(
               height: dW * 0.06,
             ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Aadhaar',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Pan',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Bank Passbook/Cancelled Cheque/Statement',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
+            CustomTextFieldWithLabel(
+                controller: _ownerNameController,
+                focusNode: nameFocus,
+                // initValue: vehicleNumber,
+                label: language['enterOwnerName'],
+                hintText: language['enterOwnerName']),
             SizedBox(
               height: dW * 0.04,
             ),
             CustomTextFieldWithLabel(
-                controller: _bankDetailsController,
-                focusNode: bankDetailsFocus,
+                controller: _ownerMobileNumberController,
+                focusNode: ownerMobileNumberFocus,
+                inputType: TextInputType.phone,
+                inputFormatter: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                ],
                 // initValue: vehicleNumber,
-                label: language['bankAccountDetails'],
-                hintText: language['bankAccountDetails']),
+                label: language['enterOwnerMobileNumber'],
+                hintText: language['enterOwnerMobileNumber']),
+            SizedBox(
+              height: dW * 0.04,
+            ),
+            CustomTextFieldWithLabel(
+                controller: _ownerAddressController,
+                focusNode: addressFocus,
+
+                // initValue: vehicleNumber,
+                label: language['enterownerAddress'],
+                hintText: language['enterownerAddress']),
+            SizedBox(
+              height: dW * 0.04,
+            ),
             Container(
               margin: EdgeInsets.only(
                 top: dW * 0.05,

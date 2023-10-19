@@ -6,7 +6,6 @@ import 'package:jeeth_app/authModule/widgets/custon_radio_button_bottomsheet.dar
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/custom_text_field.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
@@ -43,6 +42,12 @@ class DriverDocBottomSheetWidgetState
   FocusNode nameFocus = FocusNode();
   // FocusNode priceFocus = FocusNode();
 
+  void removeDocument(value) {
+    setState(() {
+      selectedFiles.remove(value);
+    });
+  }
+
   String selectGender = 'Select gender';
   void updateSelectedModel(String count) {
     setState(() {
@@ -72,13 +77,9 @@ class DriverDocBottomSheetWidgetState
   }
 
   double calculatePercentageFilled() {
-    int totalFields = 4;
+    int totalFields = 5;
 
     int selectedDocumentCount = selectedFiles.length;
-
-    if (_bankDetailsController.text.isNotEmpty) {
-      selectedDocumentCount++;
-    }
 
     return (selectedDocumentCount / totalFields) * 100;
   }
@@ -144,90 +145,165 @@ class DriverDocBottomSheetWidgetState
               color: Colors.black,
               thickness: 5,
             ),
-            SizedBox(
-              height: dW * 0.06,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Aadhaar',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: dW * 0.06,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'Upload Aadhaar',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'Upload Pan',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'License',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title: 'Upload Police Verification Certificate',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    const Row(
+                      children: [
+                        TextWidget(
+                          title:
+                              'Upload Bank Passbook/Cancelled Cheque/Statement',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        TextWidget(
+                          title: '*',
+                          color: redColor,
+                        ),
+                      ],
+                    ),
+                    FilePickerWidget(
+                      onFileSelected: (file) {
+                        if (file != null) {
+                          setState(() {
+                            selectedFiles.add(file);
+                          });
+                        }
+                      },
+                      deleteFile: (file) {
+                        removeDocument(file);
+                      },
+                    ),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                  ],
                 ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
+              ),
             ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Pan',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            const Row(
-              children: [
-                TextWidget(
-                  title: 'Upload Bank Passbook/Cancelled Cheque/Statement',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                TextWidget(
-                  title: '*',
-                  color: redColor,
-                ),
-              ],
-            ),
-            FilePickerWidget(onFileSelected: (file) {
-              if (file != null) {
-                setState(() {
-                  selectedFiles.add(file);
-                });
-              }
-            }),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            CustomTextFieldWithLabel(
-                controller: _bankDetailsController,
-                focusNode: bankDetailsFocus,
-                // initValue: vehicleNumber,
-                label: language['bankAccountDetails'],
-                hintText: language['bankAccountDetails']),
             Container(
               margin: EdgeInsets.only(
-                top: dW * 0.05,
-                left: dW * 0.1,
-                right: dW * 0.1,
-              ),
+                  top: dW * 0.05,
+                  left: dW * 0.1,
+                  right: dW * 0.1,
+                  bottom: dW * 0.02),
               child: CustomButton(
                 width: dW,
                 height: dW * 0.15,

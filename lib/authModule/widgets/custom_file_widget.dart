@@ -67,10 +67,10 @@ class _CustomFileWidgetState extends State<CustomFileWidget> {
                     title: widget.fileName,
                     fontWeight: FontWeight.w400,
                   ),
-                  TextWidget(
-                    title: widget.documentName,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  // TextWidget(
+                  //   title: widget.documentName,
+                  //   fontWeight: FontWeight.w400,
+                  // ),
                 ],
               ),
             ),

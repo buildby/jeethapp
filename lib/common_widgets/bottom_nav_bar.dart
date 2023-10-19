@@ -1,8 +1,12 @@
 // ignore_for_file: unused_import, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/screens/explore_deal_screen.dart';
+import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
+import 'package:jeeth_app/common_widgets/navigation_drawer.dart';
 import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
 import 'package:jeeth_app/homeModule/screens/help_screen.dart';
 import 'package:jeeth_app/homeModule/screens/home_screen.dart';
@@ -43,6 +47,8 @@ class BottomNavBarState extends State<BottomNavBar> {
 
   String? notificationId;
   final unselectedColor = const Color(0xFF969698);
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   // User user;
 
   void onTapped(int index) {
@@ -152,6 +158,13 @@ class BottomNavBarState extends State<BottomNavBar> {
         HomeScreen(
           onIndexChanged: onTapped,
         ),
+        // ExploreDealScreen(
+        //   args: ExploreDealScreenArguments(
+        //     marketplace:
+        //         Provider.of<MarketplaceProvider>(context, listen: false)
+        //             .marketplaces[0],
+        //   ),
+        // ),
         const EarningsScreen(),
         const ReportsScreen(),
         const HelpScreen(),
@@ -245,6 +258,37 @@ class BottomNavBarState extends State<BottomNavBar> {
     return WillPopScope(
       onWillPop: _willPopCallback,
       child: Scaffold(
+        backgroundColor: themeColor,
+        key: _scaffoldKey,
+        drawer: MyNavigationDrawer(
+          onIndexChanged: onTapped,
+        ),
+        appBar: CustomAppBar(
+          title: _currentIndex == 0
+              ? language['chooseYourClient']
+              : _currentIndex == 1
+                  ? language['earnings']
+                  : _currentIndex == 2
+                      ? language['reports']
+                      : language['help'],
+          dW: dW,
+          leading: GestureDetector(
+            onTap: () => _scaffoldKey.currentState?.openDrawer(),
+            child: Container(
+              padding: EdgeInsets.all(dW * 0.035),
+              child: const AssetSvgIcon(
+                'drawer',
+                height: 5,
+              ),
+            ),
+          ),
+          actions: [
+            Container(
+              margin: EdgeInsets.only(right: dW * 0.03),
+              child: const Icon(Icons.notifications),
+            ),
+          ],
+        ),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : _children[_currentIndex],
@@ -281,6 +325,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                     ),
                     label: '',
                   ),
+
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
                       label: language['earnings'],

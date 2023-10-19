@@ -84,7 +84,7 @@ class DocumentDetailWidgetState extends State<DocumentDetailWidget> {
                 widget.percentage == '100%'
                     ? const AssetSvgIcon(
                         'tick',
-                        height: 20,
+                        height: 18,
                       )
                     : Container(
                         padding: EdgeInsets.symmetric(

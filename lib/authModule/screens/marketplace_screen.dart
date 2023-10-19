@@ -6,10 +6,7 @@ import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
-import 'package:jeeth_app/navigation/arguments.dart';
-import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
@@ -30,6 +27,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   //  late User user;
   Map language = {};
   bool isLoading = false;
+  bool isScrolled = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
   void incompleteProfBottomSheet() {
@@ -73,9 +71,12 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
 
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
+          isScrolled = !innerBoxIsScrolled;
           return [
             SliverAppBar(
               leadingWidth: 0,
+              leading: null,
+
               // leading: SizedBox.shrink(),
               // leading: GestureDetector(
               //     onTap: () => pop(),
@@ -125,6 +126,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   screenBody() {
     final marketplace =
         Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -164,12 +166,20 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     Container(
                       padding:
                           EdgeInsets.only(left: dW * 0.05, bottom: dW * 0.04),
-                      child: TextWidget(
-                        title: language['marketplace'],
-                        fontWeight: FontWeight.w600,
-                        fontSize: 39,
-                        color: white,
-                      ),
+                      child: AnimatedOpacity(
+                          opacity: !isScrolled ? 1.0 : 1.0,
+                          duration: const Duration(milliseconds: 300),
+                          child:
+                              //  !isScrolled
+                              //     ?
+                              TextWidget(
+                            title: language['marketplace'],
+                            fontWeight: FontWeight.w600,
+                            fontSize: 39,
+                            color: white,
+                          )
+                          // : SizedBox(),
+                          ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),

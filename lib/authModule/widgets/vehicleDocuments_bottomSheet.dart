@@ -33,7 +33,14 @@ class VehicleDocumentsBottomSheetWidgetState
   fetchData() async {}
   TextEditingController documentNameController = TextEditingController();
 
-  Future<void> showAddDocumentDialog(BuildContext context) async {
+  void removeDocument(value) {
+    setState(() {
+      selectedFiles.remove(value);
+    });
+  }
+
+  Future<void> showAddDocumentDialog(
+      BuildContext context, List<PlatformFile> selectedFiles) async {
     FilePickerResult? pickedFile;
 
     await showDialog(
@@ -51,7 +58,10 @@ class VehicleDocumentsBottomSheetWidgetState
               ),
               const SizedBox(height: 10),
               CustomFileWidget(
-                fileName: pickedFile?.files.single.name ?? 'Choose a file',
+                fileName: pickedFile?.files.single.name ??
+                    (selectedFiles.isNotEmpty
+                        ? selectedFiles[0].name
+                        : 'Choose a file'),
                 documentName: documentNameController.text,
                 selectedFiles: selectedFiles,
                 onTap: () async {
@@ -63,6 +73,7 @@ class VehicleDocumentsBottomSheetWidgetState
                 onRemove: () {
                   setState(() {
                     pickedFile = null;
+                    selectedFiles[0].name == '';
                   });
                 },
               ),
@@ -79,11 +90,8 @@ class VehicleDocumentsBottomSheetWidgetState
               onPressed: () {
                 if (documentNameController.text.isNotEmpty &&
                     pickedFile != null) {
-                  // Process the selected file and document name
-                  // Add the document to your list or perform any desired action
-                  setState(() {
-                    selectedFiles.add(pickedFile!.files.single);
-                  });
+                  selectedFiles.add(pickedFile!
+                      .files.single); // Update the selectedFiles list
                   Navigator.of(context).pop();
                 }
               },
@@ -95,15 +103,71 @@ class VehicleDocumentsBottomSheetWidgetState
     );
   }
 
+  // Future<void> showAddDocumentDialog(BuildContext context) async {
+  //   FilePickerResult? pickedFile;
+
+  //   await showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Add Document'),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             TextField(
+  //               controller: documentNameController,
+  //               decoration: const InputDecoration(labelText: 'Document Name'),
+  //             ),
+  //             const SizedBox(height: 10),
+  //             CustomFileWidget(
+  //               fileName: pickedFile?.files.single.name ?? 'Choose a file',
+  //               documentName: documentNameController.text,
+  //               selectedFiles: selectedFiles,
+  //               onTap: () async {
+  //                 pickedFile = await FilePicker.platform.pickFiles();
+  //                 if (pickedFile != null) {
+  //                   setState(() {});
+  //                 }
+  //               },
+  //               onRemove: () {
+  //                 setState(() {
+  //                   pickedFile = null;
+  //                 });
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               if (documentNameController.text.isNotEmpty &&
+  //                   pickedFile != null) {
+  //                 // Process the selected file and document name
+  //                 // Add the document to your list or perform any desired action
+  //                 setState(() {
+  //                   selectedFiles.add(pickedFile!.files.single);
+  //                 });
+  //                 Navigator.of(context).pop();
+  //               }
+  //             },
+  //             child: const Text('Add'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   void addDocument(String name, PlatformFile file) {
     setState(() {
       selectedFiles.add(file);
-    });
-  }
-
-  void removeDocument(int index) {
-    setState(() {
-      selectedFiles.removeAt(index);
     });
   }
 
@@ -189,13 +253,18 @@ class VehicleDocumentsBottomSheetWidgetState
                       ),
                     ],
                   ),
-                  FilePickerWidget(onFileSelected: (file) {
-                    if (file != null) {
-                      setState(() {
-                        selectedFiles.add(file);
-                      });
-                    }
-                  }),
+                  FilePickerWidget(
+                    onFileSelected: (file) {
+                      if (file != null) {
+                        setState(() {
+                          selectedFiles.add(file);
+                        });
+                      }
+                    },
+                    deleteFile: (file) {
+                      removeDocument(file);
+                    },
+                  ),
                   SizedBox(
                     height: dW * 0.04,
                   ),
@@ -212,13 +281,18 @@ class VehicleDocumentsBottomSheetWidgetState
                       ),
                     ],
                   ),
-                  FilePickerWidget(onFileSelected: (file) {
-                    if (file != null) {
-                      setState(() {
-                        selectedFiles.add(file);
-                      });
-                    }
-                  }),
+                  FilePickerWidget(
+                    onFileSelected: (file) {
+                      if (file != null) {
+                        setState(() {
+                          selectedFiles.add(file);
+                        });
+                      }
+                    },
+                    deleteFile: (file) {
+                      removeDocument(file);
+                    },
+                  ),
                   SizedBox(
                     height: dW * 0.04,
                   ),
@@ -235,13 +309,18 @@ class VehicleDocumentsBottomSheetWidgetState
                       ),
                     ],
                   ),
-                  FilePickerWidget(onFileSelected: (file) {
-                    if (file != null) {
-                      setState(() {
-                        selectedFiles.add(file);
-                      });
-                    }
-                  }),
+                  FilePickerWidget(
+                    onFileSelected: (file) {
+                      if (file != null) {
+                        setState(() {
+                          selectedFiles.add(file);
+                        });
+                      }
+                    },
+                    deleteFile: (file) {
+                      removeDocument(file);
+                    },
+                  ),
                   SizedBox(
                     height: dW * 0.04,
                   ),
@@ -258,13 +337,18 @@ class VehicleDocumentsBottomSheetWidgetState
                       ),
                     ],
                   ),
-                  FilePickerWidget(onFileSelected: (file) {
-                    if (file != null) {
-                      setState(() {
-                        selectedFiles.add(file);
-                      });
-                    }
-                  }),
+                  FilePickerWidget(
+                    onFileSelected: (file) {
+                      if (file != null) {
+                        setState(() {
+                          selectedFiles.add(file);
+                        });
+                      }
+                    },
+                    deleteFile: (file) {
+                      removeDocument(file);
+                    },
+                  ),
                   SizedBox(
                     height: dW * 0.04,
                   ),
@@ -281,13 +365,18 @@ class VehicleDocumentsBottomSheetWidgetState
                       ),
                     ],
                   ),
-                  FilePickerWidget(onFileSelected: (file) {
-                    if (file != null) {
-                      setState(() {
-                        selectedFiles.add(file);
-                      });
-                    }
-                  }),
+                  FilePickerWidget(
+                    onFileSelected: (file) {
+                      if (file != null) {
+                        setState(() {
+                          selectedFiles.add(file);
+                        });
+                      }
+                    },
+                    deleteFile: (file) {
+                      removeDocument(file);
+                    },
+                  ),
                   // ListView.builder(
                   //   shrinkWrap: true,
                   //   itemCount: selectedFiles.length,
@@ -311,7 +400,7 @@ class VehicleDocumentsBottomSheetWidgetState
 
                   ElevatedButton(
                     onPressed: () {
-                      showAddDocumentDialog(context);
+                      showAddDocumentDialog(context, selectedFiles);
                     },
                     child: const Text('Add More Documents'),
                   ),
