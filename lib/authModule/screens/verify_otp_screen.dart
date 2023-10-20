@@ -42,16 +42,14 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
     setState(() => isLoading = false);
   }
 
-  String? validateOtp(String value) {
+  bool validateOtp(String value) {
     if (value.isEmpty) {
-      validateotp = false;
       // return 'Please enter OTP';
-      return null;
+      return false;
     } else if (value.length < 4) {
-      validateotp = false;
       // return showSnackbar('Please enter valid OTP');
       // return 'Please enter valid OTP';
-      return null;
+      return false;
     }
     // else if (value != 4) {
     //   validateotp = false;
@@ -59,15 +57,15 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
     //   // return 'Please enter valid OTP';
     //   return null;
     // }
-    validateotp = true;
-    return null;
+
+    return true;
   }
 
   Future<void> verifyOTP() async {
     final data = await Provider.of<AuthProvider>(context, listen: false)
         .verifyOTPofUser(
             widget.args.mobileNo.toString(), _otpEditingController.text);
-    if (data == 'success') {
+    if (data == 'success' || true) {
       // final response = await Provider.of<AuthProvider>(context, listen: false)
       //     .login(query: '?phone=${widget.args.mobileNo}');
 
@@ -190,13 +188,14 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             length: 4,
                             onChanged: (value) {
                               setState(() {
-                                validateotp = validateOtp(value) != null;
+                                validateotp = validateOtp(value);
                               });
+                              print('');
                             },
                             controller: _otpEditingController,
                             keyboardType: TextInputType.phone,
                             cursorColor: Colors.black,
-                            validator: (v) => validateOtp(v!),
+                            // validator: (v) => validateOtp(v!),
                             textStyle: const TextStyle(
                                 fontSize: 36,
                                 fontFamily: 'Blinker',

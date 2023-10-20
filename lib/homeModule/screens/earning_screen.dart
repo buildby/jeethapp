@@ -371,8 +371,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                               children: [
                                 CustomContainer(
                                   name: language['currentMonthEarnings'],
-                                  widgets: const Row(
-                                    children: [
+                                  widgets: Row(
+                                    children: const [
                                       TextWidgetRoboto(
                                         title: 'Rs.1,00,00',
                                         color: Color(0xff78B84C),
@@ -387,8 +387,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                                 ),
                                 CustomContainer(
                                   name: language['eligibleToWithdraw'],
-                                  widgets: const Row(
-                                    children: [
+                                  widgets: Row(
+                                    children: const [
                                       TextWidgetRoboto(
                                         title: 'Rs. 21,000',
                                         fontWeight: FontWeight.w700,
@@ -445,14 +445,14 @@ class EarningsScreenState extends State<EarningsScreen> {
                                               color: Color(0xffC8C8C8),
                                             )),
                                       ),
-                                      gridData: const FlGridData(
+                                      gridData: FlGridData(
                                         show: false,
                                       ),
                                       titlesData: FlTitlesData(
-                                        topTitles: const AxisTitles(
+                                        topTitles: AxisTitles(
                                             sideTitles:
                                                 SideTitles(showTitles: false)),
-                                        rightTitles: const AxisTitles(
+                                        rightTitles: AxisTitles(
                                             sideTitles:
                                                 SideTitles(showTitles: false)),
                                         bottomTitles: AxisTitles(

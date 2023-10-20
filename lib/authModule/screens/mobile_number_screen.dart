@@ -47,11 +47,11 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
 
       final data = await Provider.of<AuthProvider>(context, listen: false)
           .sendOTPtoUser(_phoneEditingController.text.toString());
-      if (!data["success"]) {
+      if (data['result'] != 'success') {
         showSnackbar(
             'Something went wrong, Check internet connection', Colors.red);
       } else {
-        if (data['result']['type'] == 'success') {
+        if (data['data']['type'] == 'success') {
           push(NamedRoute.verifyOtpScreen,
               arguments: VerifyOtpArguments(
                 mobileNo: _phoneEditingController.text.trim(),
@@ -188,9 +188,9 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 borderColor: white,
                                 prefixIcon: Container(
                                   margin: EdgeInsets.only(right: dW * 0.15),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       TextWidget(
                                         title: '+91',
                                         fontSize: 24,
