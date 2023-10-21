@@ -44,8 +44,8 @@ dependencies:
   share_plus: 
   animated_size_and_fade: ^3.0.1
   app_settings:
-  file_picker: ^5.5.0
-  fl_chart: ^0.64.0
+  file_picker: 
+  fl_chart: 
   
 
 

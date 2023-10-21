@@ -258,8 +258,8 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                               )
                                             ]),
                                           ),
-                                          const Row(
-                                            children: [
+                                          Row(
+                                            children: const [
                                               TextWidgetRoboto(
                                                 title: 'Vintage :~ ',
                                                 fontWeight: FontWeight.w300,
@@ -501,11 +501,11 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                               children: [
                                 Row(
                                   children: [
-                                    const Expanded(
+                                    Expanded(
                                       child: Column(
                                         children: [
                                           Row(
-                                            children: [
+                                            children: const [
                                               TextWidget(
                                                 title: 'Business model : ',
                                                 fontWeight: FontWeight.w300,
