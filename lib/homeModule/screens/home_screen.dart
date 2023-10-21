@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   final Function(int) onIndexChanged;
 
-  HomeScreen({
+  const HomeScreen({
     Key? key,
     required this.onIndexChanged,
   }) : super(key: key);
@@ -30,7 +30,6 @@ class HomeScreenState extends State<HomeScreen> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   fetchData() async {
     setState(() => isLoading = true);

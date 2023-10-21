@@ -8,6 +8,8 @@ import 'package:jeeth_app/authModule/screens/splash_screen.dart';
 import 'package:jeeth_app/authModule/screens/verify_otp_screen.dart';
 import 'package:jeeth_app/common_widgets/bottom_nav_bar.dart';
 import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
+import 'package:jeeth_app/homeModule/screens/notifications_screen.dart';
+import 'package:jeeth_app/homeModule/screens/refer_friend_screen.dart';
 import 'package:jeeth_app/homeModule/screens/settings_screen.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'routes.dart';
@@ -49,6 +51,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case NamedRoute.settingsScreen:
       return _getPageRoute(const SettingsScreen());
+
+    case NamedRoute.notificationsScreen:
+      return _getPageRoute(const NotificationsScreen());
+
+    case NamedRoute.referAFriendScreen:
+      return _getPageRoute(const ReferAFriendScreen());
 
     default:
       return _getPageRoute(const SplashScreen());

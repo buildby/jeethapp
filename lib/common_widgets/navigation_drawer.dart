@@ -238,13 +238,13 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                       context: context,
                       iconName: 'notifications',
                       text: language['notifications'],
-                      onTap: () {},
+                      onTap: () => push(NamedRoute.notificationsScreen),
                     ),
                     buildOptionWidget(
                       context: context,
                       iconName: 'refer_friend',
                       text: language['referAFriend'],
-                      onTap: () {},
+                      onTap: () => push(NamedRoute.referAFriendScreen),
                     ),
                     buildOptionWidget(
                       context: context,

@@ -371,7 +371,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     // setState(() {
     //   validateForm2 = false;
     // });
-    // if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
+    // if
+    //     // (driverDocPercentage == 100
+    //     (driverDetailsPercentage == 100) {
     //   setState(() {
     //     validateForm2 = true;
     //   });

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
-import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
+import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
-import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
-import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
+import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -31,6 +31,11 @@ class SettingsScreenState extends State<SettingsScreen> {
   fetchData() async {
     setState(() => isLoading = true);
     setState(() => isLoading = false);
+  }
+
+  logout() async {
+    Provider.of<AuthProvider>(context, listen: false).logout();
+    pushAndRemoveUntil(NamedRoute.mobileNumberScreen);
   }
 
   @override
@@ -301,7 +306,21 @@ class SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                        title: language['logout'],
+                        subTitle: language['wantToLogout'],
+                        noText: language['no'],
+                        yesText: language['yes'],
+                        noFunction: () {
+                          pop();
+                        },
+                        yesFunction: () {
+                          logout();
+                        },
+                      ),
+                    ),
                     child: Container(
                       margin: EdgeInsets.only(bottom: dW * 0.05),
                       alignment: Alignment.center,

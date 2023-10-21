@@ -138,6 +138,12 @@ class AuthProvider with ChangeNotifier {
         "security": "Security",
         "language": "Language",
         "permissions": "Permissions",
+
+// Refer a  friend Screen
+        "referAndEarn": "Refer and Earn",
+        "shareAppContent":
+            "Invite your friends to download the JEETH mobile app and earn rewards for every referral.",
+        "shareTheDownloadLink": "Share the download link",
       };
 
   late User user;

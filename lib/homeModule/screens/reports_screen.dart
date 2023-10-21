@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
-import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
-import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
-import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
 
 class ReportsScreen extends StatefulWidget {

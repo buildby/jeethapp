@@ -75,6 +75,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
           return [
             SliverAppBar(
               leadingWidth: 0,
+              elevation: 0,
               leading: null,
 
               // leading: SizedBox.shrink(),
@@ -175,7 +176,7 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                               TextWidget(
                             title: language['marketplace'],
                             fontWeight: FontWeight.w600,
-                            fontSize: 39,
+                            fontSize: 38,
                             color: white,
                           )
                           // : SizedBox(),
