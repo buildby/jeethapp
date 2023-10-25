@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/screens/explore_deal_screen.dart';
 import 'package:jeeth_app/authModule/screens/marketplace_screen.dart';
 import 'package:jeeth_app/authModule/screens/mobile_number_screen.dart';
+import 'package:jeeth_app/authModule/screens/myApplication_status_screen.dart';
+import 'package:jeeth_app/authModule/screens/my_applications_screen.dart';
 import 'package:jeeth_app/authModule/screens/onBoarding_screen.dart';
 import 'package:jeeth_app/authModule/screens/profile_document_screen.dart';
 import 'package:jeeth_app/authModule/screens/splash_screen.dart';
@@ -57,6 +59,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case NamedRoute.referAFriendScreen:
       return _getPageRoute(const ReferAFriendScreen());
+
+    case NamedRoute.myApplicationsScreen:
+      return _getPageRoute(const MyApplicationsScreen());
+
+    case NamedRoute.myApplicationsStatusScreen:
+      return _getPageRoute(MyApplicationsStatusScreen(
+          args: settings.arguments as MyApplicationsStatusArguments));
 
     default:
       return _getPageRoute(const SplashScreen());

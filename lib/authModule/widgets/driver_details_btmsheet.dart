@@ -60,27 +60,28 @@ class DriverDetailsBottomSheetWidgetState
 
   _selectDate(BuildContext context) async {
     DateTime? newSelectedDate = await showDatePicker(
-        context: context,
-        initialDate: _selectedDate != null ? _selectedDate! : DateTime.now(),
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2040),
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: ThemeData.dark().copyWith(
-                colorScheme: const ColorScheme.dark(
-                  primary: Colors.deepPurple,
-                  onPrimary: Colors.white,
-                  surface: white,
-                  // Colors.blueGrey,
-                  onSurface: Colors.black,
-                  //  Colors.yellow,
-                ),
-                dialogBackgroundColor: themeColor
-                // Colors.blue[500],
-                ),
-            child: child!,
-          );
-        });
+      context: context,
+      initialDate: _selectedDate != null ? _selectedDate! : DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2040),
+      // builder: (BuildContext context, Widget? child) {
+      //   return Theme(
+      //     data: ThemeData.dark().copyWith(
+      //         colorScheme: const ColorScheme.dark(
+      //           primary: Colors.deepPurple,
+      //           onPrimary: Colors.white,
+      //           surface: white,
+      //           // Colors.blueGrey,
+      //           onSurface: Colors.black,
+      //           //  Colors.yellow,
+      //         ),
+      //         dialogBackgroundColor: themeColor
+      //         // Colors.blue[500],
+      //         ),
+      //     child: child!,
+      //   );
+      // }
+    );
 
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
@@ -405,6 +406,8 @@ class DriverDetailsBottomSheetWidgetState
                     CustomTextFieldWithLabel(
                         controller: accNumberController,
                         focusNode: accFocus,
+                        obscureText: true,
+                        maxLines: 1,
                         label: language['accNumber'],
                         hintText: language['accNumber']),
                     SizedBox(
@@ -413,7 +416,7 @@ class DriverDetailsBottomSheetWidgetState
                     CustomTextFieldWithLabel(
                         controller: confirmAccNumberController,
                         focusNode: confirmAccFocus,
-                        obscureText: true,
+                        // obscureText: true,
                         maxLines: 1,
                         label: language['confimrAccNumber'],
                         hintText: language['confimrAccNumber']),

@@ -14,12 +14,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? bgColor;
   final bool? centerTitle;
   final int fontSize;
+  final FontWeight? fontWeight;
+  final String? fontFamily;
 
   CustomAppBar({
     super.key,
     this.title = '',
     this.leading,
     this.fontSize = 18,
+    this.fontWeight,
+    this.fontFamily,
     this.backIcon,
     required this.dW,
     this.elevation = 0.0,
@@ -37,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       margin: EdgeInsets.only(top: dW * topMargin),
       child: AppBar(
-        // centerTitle: true,
+        centerTitle: centerTitle,
         backgroundColor: bgColor ?? themeColor,
         elevation: elevation,
         leadingWidth: dW * 0.15,
@@ -64,6 +68,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: Theme.of(context).textTheme.headline1!.copyWith(
                 color: appBarTitleColor,
                 fontSize: textScale * fontSize,
+                fontWeight: fontWeight,
+                fontFamily: fontFamily,
               ),
         ),
         titleSpacing: 0,

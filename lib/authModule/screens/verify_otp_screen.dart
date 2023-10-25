@@ -62,35 +62,25 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
   }
 
   Future<void> verifyOTP() async {
-    final data = await Provider.of<AuthProvider>(context, listen: false)
+    setState(() {
+      isLoading = true;
+      inCorrect = false;
+    });
+    final response = await Provider.of<AuthProvider>(context, listen: false)
         .verifyOTPofUser(
             widget.args.mobileNo.toString(), _otpEditingController.text);
-    if (data == 'success' || true) {
-      // final response = await Provider.of<AuthProvider>(context, listen: false)
-      //     .login(query: '?phone=${widget.args.mobileNo}');
 
-      // if (response['success'] && response['login']) {
-      //   pushAndRemoveUntil(
-      //     NamedRoute.profileDocumentsScreen,
-      //   );
-      // } else if (!response['success']) {
-      //   showSnackbar(language['somethingWentWrong']);
-      // } else if (!response['login']) {
-      pushAndRemoveUntil(
-        NamedRoute.marketPlaceScreen,
-        arguments: MarketPlaceScreenArguments(
-          mobileNo: widget.args.mobileNo,
-        ),
-      );
-      // }
-
-      //
-    } else {
-      showSnackbar('Incorrect OTP', Colors.red);
-
-      setState(() {
-        inCorrect = true;
-      });
+    if (response['result'] == 'success' && response['data'] != null) {
+      pushAndRemoveUntil(NamedRoute.marketPlaceScreen);
+    } else if (response['result'] == 'failure') {
+      if (response['message'] != null) {
+        showSnackbar(response['message']);
+      } else {
+        showSnackbar('Incorrect Otp', redColor);
+        setState(() {
+          inCorrect = true;
+        });
+      }
     }
 
     if (mounted) {
@@ -98,6 +88,24 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
         isLoading = false;
       });
     }
+
+    // if (data == 'success') {
+    //   final response = await Provider.of<AuthProvider>(context, listen: false)
+    //       .login(query: '?phone=${widget.args.mobileNo}');
+    //   if (response['success'] && response['login']) {
+    //     pushAndRemoveUntil(
+    //       NamedRoute.profileDocumentsScreen,
+    //     );
+    //   } else if (!response['success']) {
+    //     showSnackbar(language['somethingWentWrong']);
+    //   } else if (!response['login']) {
+    //     pushAndRemoveUntil(
+    //       NamedRoute.marketPlaceScreen,
+    //       arguments: MarketPlaceScreenArguments(
+    //         mobileNo: widget.args.mobileNo,
+    //       ),
+    //     );
+    //   }
   }
 
   @override
@@ -126,121 +134,118 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
     return SizedBox(
       height: dH,
       width: dW,
-      child: isLoading
-          ? const Center(child: CircularLoader())
-          : Container(
-              color: white,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
+      child: Container(
+        color: white,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: dW * horizontalPaddingFactor, right: dW * 0.01),
+                      height: dW * 0.28,
+                      width: dW,
+                      color: themeColor,
+                      child: Stack(
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: dW * horizontalPaddingFactor,
-                                right: dW * 0.01),
-                            height: dW * 0.28,
-                            width: dW,
-                            color: themeColor,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  right: 0,
-                                  top: -10,
-                                  child: TextWidget(
-                                    title: language['set'],
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black.withOpacity(0.06),
-                                    fontSize: 119,
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextWidget(
-                                      title: language['phoneVerification'],
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 39,
-                                      color: white,
-                                    ),
-                                    SizedBox(
-                                      height: dW * 0.03,
-                                    ),
-                                    TextWidget(
-                                      title: language['enterOtpHere'],
-                                      fontSize: 17,
-                                      color: white,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                          Positioned(
+                            right: 0,
+                            top: -10,
+                            child: TextWidget(
+                              title: language['set'],
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black.withOpacity(0.06),
+                              fontSize: 119,
                             ),
                           ),
-                          SizedBox(
-                            height: dW * 0.2,
-                          ),
-                          PinCodeTextField(
-                            appContext: context,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextWidget(
+                                title: language['phoneVerification'],
+                                fontWeight: FontWeight.w600,
+                                fontSize: 39,
+                                color: white,
+                              ),
+                              SizedBox(
+                                height: dW * 0.03,
+                              ),
+                              TextWidget(
+                                title: language['enterOtpHere'],
+                                fontSize: 17,
+                                color: white,
+                              ),
                             ],
-                            length: 4,
-                            onChanged: (value) {
-                              setState(() {
-                                validateotp = validateOtp(value);
-                              });
-                              print('');
-                            },
-                            controller: _otpEditingController,
-                            keyboardType: TextInputType.phone,
-                            cursorColor: Colors.black,
-                            // validator: (v) => validateOtp(v!),
-                            textStyle: const TextStyle(
-                                fontSize: 36,
-                                fontFamily: 'Blinker',
-                                fontWeight: FontWeight.w400),
-                            pinTheme: PinTheme(
-                                fieldHeight: 80,
-                                borderWidth: 5,
-                                shape: PinCodeFieldShape.underline,
-                                activeColor: const Color(0xffD8D8D8),
-                                inactiveColor: const Color(0xffD8D8D8),
-                                selectedFillColor: const Color(0xffBFC0C8),
-                                disabledColor: const Color(0xffBFC0C8),
-                                selectedColor: themeColor),
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: dW * 0.15, vertical: dW * 0.1),
-                    child: CustomButton(
-                      width: dW,
-                      height: dW * 0.145,
-                      radius: 19,
-                      elevation: 12,
-                      isLoading: isLoading,
-                      onPressed: validateotp
-                          ? verifyOTP
-                          // () => push(NamedRoute.marketPlaceScreen)
-                          : () {},
-                      // onPressed: validateotp ? verifyOTP : () {},
-                      buttonColor: validateotp ? buttonColor : Colors.grey,
-                      buttonText: language['proceed'],
-                      buttonTextSyle: const TextStyle(
-                          fontFamily: 'Blinker',
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                    SizedBox(
+                      height: dW * 0.2,
                     ),
-                  )
-                ],
+                    PinCodeTextField(
+                      appContext: context,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                      ],
+                      length: 4,
+                      onChanged: (value) {
+                        setState(() {
+                          validateotp = validateOtp(value);
+                        });
+                        print('');
+                      },
+                      controller: _otpEditingController,
+                      keyboardType: TextInputType.phone,
+                      cursorColor: Colors.black,
+                      // validator: (v) => validateOtp(v!),
+                      textStyle: const TextStyle(
+                          fontSize: 36,
+                          fontFamily: 'Blinker',
+                          fontWeight: FontWeight.w400),
+                      pinTheme: PinTheme(
+                          fieldHeight: 80,
+                          borderWidth: 5,
+                          shape: PinCodeFieldShape.underline,
+                          activeColor: const Color(0xffD8D8D8),
+                          inactiveColor: const Color(0xffD8D8D8),
+                          selectedFillColor: const Color(0xffBFC0C8),
+                          disabledColor: const Color(0xffBFC0C8),
+                          selectedColor: themeColor),
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    ),
+                  ],
+                ),
               ),
             ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: dW * 0.15, vertical: dW * 0.1),
+              child: CustomButton(
+                width: dW,
+                height: dW * 0.145,
+                radius: 19,
+                elevation: 12,
+                isLoading: isLoading,
+                onPressed: validateotp
+                    ? verifyOTP
+                    // () => pushAndRemoveUntil(NamedRoute.marketPlaceScreen)
+                    : () {},
+                // onPressed: validateotp ? verifyOTP : () {},
+                buttonColor: validateotp ? buttonColor : Colors.grey,
+                buttonText: language['proceed'],
+                buttonTextSyle: const TextStyle(
+                    fontFamily: 'Blinker',
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -232,7 +232,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                       context: context,
                       iconName: 'my_applications',
                       text: language['myApplications'],
-                      onTap: () {},
+                      onTap: () => push(NamedRoute.myApplicationsScreen),
                     ),
                     buildOptionWidget(
                       context: context,

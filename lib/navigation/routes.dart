@@ -24,4 +24,7 @@ class NamedRoute {
   static const String settingsScreen = "/settingsScreen";
   static const String notificationsScreen = "/notificationsScreen";
   static const String referAFriendScreen = "/referAFriendScreen";
+  static const String myApplicationsScreen = "/myApplicationsScreen";
+  static const String myApplicationsStatusScreen =
+      "/myApplicationsStatusScreen";
 }

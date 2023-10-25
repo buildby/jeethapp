@@ -367,18 +367,16 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   }
 
   bool get validateTab1 {
-    return true;
-    // setState(() {
-    //   validateForm2 = false;
-    // });
-    // if
-    //     // (driverDocPercentage == 100
-    //     (driverDetailsPercentage == 100) {
-    //   setState(() {
-    //     validateForm2 = true;
-    //   });
-    // }
-    // return validateForm2;
+    // return true;
+    setState(() {
+      validateForm2 = false;
+    });
+    if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
+      setState(() {
+        validateForm2 = true;
+      });
+    }
+    return validateForm2;
   }
 
   bool get validate {

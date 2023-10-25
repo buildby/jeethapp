@@ -44,7 +44,6 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
       setState(() {
         isLoading = true;
       });
-
       final data = await Provider.of<AuthProvider>(context, listen: false)
           .sendOTPtoUser(_phoneEditingController.text.toString());
       if (data['result'] != 'success') {
@@ -188,9 +187,9 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 borderColor: white,
                                 prefixIcon: Container(
                                   margin: EdgeInsets.only(right: dW * 0.15),
-                                  child: Column(
+                                  child: const Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       TextWidget(
                                         title: '+91',
                                         fontSize: 24,

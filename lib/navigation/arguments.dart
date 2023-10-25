@@ -1,4 +1,5 @@
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
+import 'package:jeeth_app/homeModule/models/my_application_model.dart';
 
 class BottomNavArguments {
   final int index;
@@ -25,4 +26,12 @@ class MarketPlaceScreenArguments {
 class ExploreDealScreenArguments {
   final Marketplace marketplace;
   ExploreDealScreenArguments({required this.marketplace});
+}
+
+class MyApplicationsStatusArguments {
+  final String vendorName;
+  final MyApplication myApplication;
+  // final String status;
+  MyApplicationsStatusArguments(
+      {required this.myApplication, required this.vendorName});
 }

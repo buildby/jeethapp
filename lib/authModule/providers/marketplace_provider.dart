@@ -5,7 +5,7 @@ class MarketplaceProvider with ChangeNotifier {
   final List<Marketplace> _marketplaces = [
     Marketplace(
       id: '1',
-      vendername: 'Shyam Salasar Lo',
+      vendername: 'Shyam Salasar Logistic',
       image: 'assets/images/hcl.png',
       companyName: 'HCL',
       rating: 4.2,
@@ -65,7 +65,7 @@ class MarketplaceProvider with ChangeNotifier {
     ),
     Marketplace(
       id: '6',
-      vendername: 'Sreenija Tours and Travels',
+      vendername: '4 Wheel Travels',
       image: 'assets/images/ibm.png',
       companyName: 'IBM',
       rating: 3.8,
@@ -77,7 +77,7 @@ class MarketplaceProvider with ChangeNotifier {
     ),
     Marketplace(
       id: '7',
-      vendername: 'Shyam Salasar Lo',
+      vendername: 'Shyam Salasar Logistic',
       image: 'assets/images/hcl.png',
       companyName: 'HCL',
       rating: 4.2,

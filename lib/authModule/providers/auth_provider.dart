@@ -144,6 +144,11 @@ class AuthProvider with ChangeNotifier {
         "shareAppContent":
             "Invite your friends to download the JEETH mobile app and earn rewards for every referral.",
         "shareTheDownloadLink": "Share the download link",
+
+// My Applications Screen
+        "awaitingApproval": "Awaiting approval",
+        "denied": "Denied",
+        "approved": "Approved, Visit site location.",
       };
 
   late User user;
@@ -152,9 +157,9 @@ class AuthProvider with ChangeNotifier {
   String iOSVersion = '0';
   Map? deleteFeature;
 
-  setGuestUser() {
-    user = User(isGuest: true, id: '');
-  }
+  // setGuestUser() {
+  //   user = User(isGuest: true, id: '');
+  // }
 
   // void updatePermission({
   //   required String permissionType,
@@ -207,7 +212,7 @@ class AuthProvider with ChangeNotifier {
   sendOTPtoUser(String mobileNo, {bool business = false}) async {
     final url = '${webApi['domain']}${endPoint['sendOTPtoUser']}';
     Map body = {
-      'mobileNo': mobileNo,
+      'phoneNumber': mobileNo,
     };
     try {
       final response = await RemoteServices.httpRequest(
@@ -238,16 +243,21 @@ class AuthProvider with ChangeNotifier {
   verifyOTPofUser(String mobileNo, String otp) async {
     final url = '${webApi['domain']}${endPoint['verifyOTPofUser']}';
     Map body = {
-      'mobileNo': mobileNo,
+      'phoneNumber': mobileNo,
       "otp": otp,
     };
     try {
       final response = await RemoteServices.httpRequest(
           method: 'POST', url: url, body: body);
 
-      return response['result']['type'];
+      if (response['result'] == 'success' && response['data'] != null) {
+        user =
+            User.jsonToUser(response['data'], accessToken: response['token']);
+      }
+      notifyListeners();
+      return response;
     } catch (error) {
-      return {'success': false, 'login': false};
+      return {'result': 'Failure', 'data': null};
     }
   }
 
