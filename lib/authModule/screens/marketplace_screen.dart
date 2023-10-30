@@ -70,38 +70,20 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
       // appBar: CustomAppBar(title: '', dW: dW),
 
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          isScrolled = !innerBoxIsScrolled;
+        headerSliverBuilder: (
+          context,
+          innerBoxIsScrolled,
+        ) {
+          isScrolled = innerBoxIsScrolled;
           return [
             SliverAppBar(
               leadingWidth: 0,
               elevation: 0,
               leading: null,
-
-              // leading: SizedBox.shrink(),
-              // leading: GestureDetector(
-              //     onTap: () => pop(),
-              //     child: innerBoxIsScrolled
-              //         ? Icon(Icons.arrow_back_ios_new)
-              //         : null),
-              // expandedHeight: 200.0,
               floating: true,
               backgroundColor: themeColor,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                // background: Column(
-                //   crossAxisAlignment: CrossAxisAlignment.end,
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     TextWidget(
-                //       // textAlign: TextAlign.end,
-                //       title: language['go'],
-                //       fontWeight: FontWeight.w700,
-                //       color: Colors.black.withOpacity(0.06),
-                //       fontSize: 119,
-                //     ),
-                //   ],
-                // ),
                 title: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   child: innerBoxIsScrolled
@@ -140,20 +122,25 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      padding:
-                          EdgeInsets.only(right: dW * 0.01, bottom: dW * 0.03),
-                      height: dW * 0.3,
-                      width: dW,
-                      color: themeColor,
-                      child: TextWidget(
-                        textAlign: TextAlign.end,
-                        title: language['go'],
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black.withOpacity(0.06),
-                        fontSize: 119,
+                    if (!isScrolled)
+                      Container(
+                        padding: EdgeInsets.only(
+                            right: dW * 0.01, bottom: dW * 0.03),
+                        height: dW * 0.3,
+                        width: dW,
+                        color: themeColor,
+                        child: AnimatedOpacity(
+                          opacity: !isScrolled ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 300),
+                          child: TextWidget(
+                            textAlign: TextAlign.end,
+                            title: language['go'],
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black.withOpacity(0.06),
+                            fontSize: 119,
+                          ),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

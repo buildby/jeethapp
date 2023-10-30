@@ -1,6 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/document_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/widgets/custon_radio_button_bottomsheet.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
@@ -14,7 +17,11 @@ import 'package:provider/provider.dart';
 
 class DriverDocBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
-  DriverDocBottomSheetWidget({super.key, required this.onUpdatePercentage});
+
+  DriverDocBottomSheetWidget({
+    super.key,
+    required this.onUpdatePercentage,
+  });
 
   @override
   DriverDocBottomSheetWidgetState createState() =>
@@ -35,7 +42,11 @@ class DriverDocBottomSheetWidgetState
   String? selectedVehicleMake;
   String vehicleNumber = '';
   List<PlatformFile> selectedFiles = [];
+  String aadhar = '';
   FocusNode bankDetailsFocus = FocusNode();
+  Doc? document;
+  late User user;
+  List<Doc> documents = [];
 
   TextEditingController _bankDetailsController = TextEditingController();
 
@@ -43,9 +54,9 @@ class DriverDocBottomSheetWidgetState
   // FocusNode priceFocus = FocusNode();
 
   void removeDocument(value) {
-    setState(() {
-      selectedFiles.remove(value);
-    });
+    // setState(() {
+    //   selectedFiles.remove(value);
+    // });
   }
 
   String selectGender = 'Select gender';
@@ -53,6 +64,12 @@ class DriverDocBottomSheetWidgetState
     setState(() {
       selectGender = count;
     });
+  }
+
+  returnDocOrNull(String docName) {
+    return documents.indexWhere((element) => element.filename == docName) != -1
+        ? documents.firstWhere((element) => element.filename == docName)
+        : null;
   }
 
   void driverGenderBottomSheet(BuildContext context) {
@@ -76,10 +93,59 @@ class DriverDocBottomSheetWidgetState
     );
   }
 
+  getAwsSignedUrl({required String filePath}) async {
+    final response =
+        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
+      fileName: filePath.split('/').last,
+      filePath: filePath,
+    );
+    if (response['result'] == 'success') {
+      return response['data']['signedUrl'].split('?')[0];
+    } else {
+      return null;
+    }
+  }
+
+  uploadDocument(
+      {required String documentName, required PlatformFile file}) async {
+    int docId = 0;
+    int i = Provider.of<DocumentProvider>(context, listen: false)
+        .documents
+        .indexWhere((element) => element.filename == documentName);
+    if (i != -1) {
+      final a =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      docId =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
+    }
+
+    final s3Url = await getAwsSignedUrl(
+      filePath: file.path!,
+    );
+
+    if (s3Url == null) {
+      showSnackbar('Failed to upload document');
+      return;
+    }
+
+    final response = await Provider.of<DocumentProvider>(context, listen: false)
+        .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
+      "filename": documentName,
+      "url": s3Url,
+      "filePath": file.path!,
+      "type": file.path!.split('.').last == 'pdf' ? 'Document' : 'Image',
+    });
+    if (response['result'] == 'success') {
+      showSnackbar('Document added successfully', greenColor);
+    } else {
+      showSnackbar(response['message']);
+    }
+  }
+
   double calculatePercentageFilled() {
     int totalFields = 5;
 
-    int selectedDocumentCount = selectedFiles.length;
+    int selectedDocumentCount = documents.length;
 
     return (selectedDocumentCount / totalFields) * 100;
   }
@@ -96,16 +162,7 @@ class DriverDocBottomSheetWidgetState
     super.initState();
 
     fetchData();
-
-    final driverDetailsProvider =
-        Provider.of<DriverDetailsProvider>(context, listen: false);
-    if (driverDetailsProvider.driverDetails.isNotEmpty) {
-      final existingData = driverDetailsProvider.driverDetails[0];
-      selectedVehicleModel = existingData.vehicleModel;
-      selectedVehicleType = existingData.vehicleType;
-      selectedVehicleMake = existingData.vehicleMake;
-      vehicleNumber = existingData.vehicleNumber;
-    }
+    user = Provider.of<AuthProvider>(context, listen: false).user;
   }
 
   @override
@@ -115,6 +172,7 @@ class DriverDocBottomSheetWidgetState
 
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
+    documents = Provider.of<DocumentProvider>(context).documents;
 
     return GestureDetector(
       onTap: () => hideKeyBoard(),
@@ -153,8 +211,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.06,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Aadhaar',
                           fontSize: 14,
@@ -167,11 +225,12 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      // document: documents.indexWhere((element) => element.filename == 'Aadhar Card') != -1 ?  documents.firstWhere((element) => element.filename == 'Aadhar Card') : null,
+                      document: returnDocOrNull('Aadhar Card'),
                       onFileSelected: (file) {
                         if (file != null) {
-                          setState(() {
-                            selectedFiles.add(file);
-                          });
+                          uploadDocument(
+                              documentName: 'Aadhar Card', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -181,8 +240,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Pan',
                           fontSize: 14,
@@ -195,11 +254,10 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      document: returnDocOrNull('Pan Card'),
                       onFileSelected: (file) {
                         if (file != null) {
-                          setState(() {
-                            selectedFiles.add(file);
-                          });
+                          uploadDocument(documentName: 'Pan Card', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -209,8 +267,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'License',
                           fontSize: 14,
@@ -223,11 +281,10 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      document: returnDocOrNull('License'),
                       onFileSelected: (file) {
                         if (file != null) {
-                          setState(() {
-                            selectedFiles.add(file);
-                          });
+                          uploadDocument(documentName: 'License', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -237,8 +294,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Police Verification Certificate',
                           fontSize: 14,
@@ -251,10 +308,14 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      document:
+                          returnDocOrNull('Police Verification Certificate'),
                       onFileSelected: (file) {
                         if (file != null) {
                           setState(() {
-                            selectedFiles.add(file);
+                            uploadDocument(
+                                documentName: 'Police Verification Certificate',
+                                file: file);
                           });
                         }
                       },
@@ -265,8 +326,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title:
                               'Upload Bank Passbook/Cancelled Cheque/Statement',
@@ -280,10 +341,15 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      document: returnDocOrNull(
+                          'Bank Passbook/Cancelled Cheque/Statement'),
                       onFileSelected: (file) {
                         if (file != null) {
                           setState(() {
-                            selectedFiles.add(file);
+                            uploadDocument(
+                                documentName:
+                                    'Bank Passbook/Cancelled Cheque/Statement',
+                                file: file);
                           });
                         }
                       },

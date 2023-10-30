@@ -7,6 +7,7 @@ class TextWidgetPoppins extends StatelessWidget {
   final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
+  final double height;
 
   final double letterSpacing;
   final int? maxLines;
@@ -21,6 +22,7 @@ class TextWidgetPoppins extends StatelessWidget {
     this.fontSize = 14,
     this.fontWeight = FontWeight.normal,
     this.letterSpacing = 0.25,
+    this.height = 1,
     this.maxLines,
     this.textOverflow,
     this.textAlign,
@@ -40,7 +42,7 @@ class TextWidgetPoppins extends StatelessWidget {
           fontWeight: fontWeight,
           letterSpacing: letterSpacing,
           decoration: textDecoration,
-          height: 1),
+          height: height),
       maxLines: maxLines,
       overflow: textOverflow,
       textAlign: textAlign,

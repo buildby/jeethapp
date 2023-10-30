@@ -105,46 +105,52 @@ class OwnerDetailsBottomSheetWidgetState
             // ),
             Column(
           children: [
-            Divider(
-              indent: dW * 0.27,
-              endIndent: dW * 0.27,
-              color: Colors.black,
-              thickness: 5,
-            ),
-            SizedBox(
-              height: dW * 0.06,
-            ),
-            CustomTextFieldWithLabel(
-                controller: _ownerNameController,
-                focusNode: nameFocus,
-                // initValue: vehicleNumber,
-                label: language['enterOwnerName'],
-                hintText: language['enterOwnerName']),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            CustomTextFieldWithLabel(
-                controller: _ownerMobileNumberController,
-                focusNode: ownerMobileNumberFocus,
-                inputType: TextInputType.phone,
-                inputFormatter: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-                ],
-                // initValue: vehicleNumber,
-                label: language['enterOwnerMobileNumber'],
-                hintText: language['enterOwnerMobileNumber']),
-            SizedBox(
-              height: dW * 0.04,
-            ),
-            CustomTextFieldWithLabel(
-                controller: _ownerAddressController,
-                focusNode: addressFocus,
+            Expanded(
+              child: Column(
+                children: [
+                  Divider(
+                    indent: dW * 0.27,
+                    endIndent: dW * 0.27,
+                    color: Colors.black,
+                    thickness: 5,
+                  ),
+                  SizedBox(
+                    height: dW * 0.06,
+                  ),
+                  CustomTextFieldWithLabel(
+                      controller: _ownerNameController,
+                      focusNode: nameFocus,
+                      // initValue: vehicleNumber,
+                      label: language['enterOwnerName'],
+                      hintText: language['enterOwnerName']),
+                  SizedBox(
+                    height: dW * 0.04,
+                  ),
+                  CustomTextFieldWithLabel(
+                      controller: _ownerMobileNumberController,
+                      focusNode: ownerMobileNumberFocus,
+                      inputType: TextInputType.phone,
+                      inputFormatter: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                      ],
+                      // initValue: vehicleNumber,
+                      label: language['enterOwnerMobileNumber'],
+                      hintText: language['enterOwnerMobileNumber']),
+                  SizedBox(
+                    height: dW * 0.04,
+                  ),
+                  CustomTextFieldWithLabel(
+                      controller: _ownerAddressController,
+                      focusNode: addressFocus,
 
-                // initValue: vehicleNumber,
-                label: language['enterownerAddress'],
-                hintText: language['enterownerAddress']),
-            SizedBox(
-              height: dW * 0.04,
+                      // initValue: vehicleNumber,
+                      label: language['enterownerAddress'],
+                      hintText: language['enterownerAddress']),
+                  SizedBox(
+                    height: dW * 0.04,
+                  ),
+                ],
+              ),
             ),
             Container(
               margin: EdgeInsets.only(

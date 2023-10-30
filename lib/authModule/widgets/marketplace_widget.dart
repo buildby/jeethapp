@@ -190,7 +190,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                         ? TextWidgetRoboto(
                             title:
                                 'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
-                            color: const Color(0xff14A0B2),
+                            color: const Color(0xff13A088),
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                           )
@@ -204,7 +204,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                               child: TextWidgetRoboto(
                                 title:
                                     'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
-                                color: const Color(0xff14A0B2),
+                                color: const Color(0xff13A088),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),

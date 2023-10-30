@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/widgets/approved_widget.dart';
+import 'package:jeeth_app/authModule/widgets/pending_widget.dart';
+import 'package:jeeth_app/authModule/widgets/rejected_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
@@ -29,6 +32,7 @@ class MyApplicationsStatusScreenState
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  int screenNumber = 1;
 
   fetchData() async {
     setState(() => isLoading = true);
@@ -67,85 +71,24 @@ class MyApplicationsStatusScreenState
   }
 
   screenBody() {
-    return SizedBox(
-      height: dH,
-      width: dW,
-      child: isLoading
-          ? const Center(child: CircularLoader())
-          : SingleChildScrollView(
-              padding: screenHorizontalPadding(dW),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: dW * 0.05),
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      if (widget.args.myApplication.status == 'Approved!')
-                        const Center(child: AssetSvgIcon('approved_bg')),
-                      Positioned(
-                        top: widget.args.myApplication.status == 'Approved!'
-                            ? 85
-                            : null,
-                        left: widget.args.myApplication.status == 'Approved!'
-                            ? 0
-                            : null,
-                        right: widget.args.myApplication.status == 'Approved!'
-                            ? 0
-                            : null,
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: widget.args.myApplication.status ==
-                                      'Approved!'
-                                  ? 0
-                                  : dW * 0.2),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: dW,
-                                padding: EdgeInsets.only(
-                                    bottom: dW * 0.055,
-                                    left: dW * 0.06,
-                                    right: dW * 0.06),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: white),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: dW * 0.2,
-                                    ),
-                                    TextWidgetPoppins(
-                                      title: widget.args.vendorName,
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 17,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                top: -48,
-                                right: 18,
-                                left: 0,
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  child: Image.asset(
-                                    widget.args.myApplication.logo,
-                                    scale: 1.3,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-    );
+    Widget currentWidget = widget.args.myApplication.status == 'Pending!'
+        ? PendingWidget(
+            args: MyApplicationsStatusArguments(
+                myApplication: widget.args.myApplication,
+                vendorName: widget.args.vendorName),
+          )
+        : widget.args.myApplication.status == 'Rejected!'
+            ? RejectedWidget(
+                args: MyApplicationsStatusArguments(
+                    myApplication: widget.args.myApplication,
+                    vendorName: widget.args.vendorName),
+              )
+            : ApprovedWidget(
+                args: MyApplicationsStatusArguments(
+                    myApplication: widget.args.myApplication,
+                    vendorName: widget.args.vendorName),
+              );
+
+    return isLoading ? const Center(child: CircularLoader()) : currentWidget;
   }
 }

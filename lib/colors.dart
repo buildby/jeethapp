@@ -8,7 +8,7 @@ Color getScaffoldBgColor(BuildContext context) {
   final themeMode = Theme.of(context).brightness;
 
   if (themeMode == Brightness.light) {
-    return const Color(0xFF5ECBEE); // Light mode color
+    return const Color(0xFF13A088); // Light mode color
   } else {
     return const Color(0xFF212B1E); // Dark mode color
   }

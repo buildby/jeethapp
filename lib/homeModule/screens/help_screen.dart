@@ -134,10 +134,19 @@ class HelpScreenState extends State<HelpScreen> {
                                   children: [
                                     Column(
                                       children: [
-                                        Image.asset(
-                                          'assets/images/sos.png',
-                                          scale: 2.1,
-                                        )
+                                        Container(
+                                            width: 50,
+                                            height: 50,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: dW * 0.032),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                color: themeColor),
+                                            child: const AssetSvgIcon(
+                                              'help',
+                                              color: white,
+                                            )),
                                       ],
                                     ),
                                     SizedBox(
@@ -164,7 +173,7 @@ class HelpScreenState extends State<HelpScreen> {
                                           title: language['tapToCall'],
                                           fontWeight: FontWeight.w600,
                                           fontSize: 17,
-                                          color: redColor,
+                                          color: themeColor,
                                         ),
                                       ],
                                     ),

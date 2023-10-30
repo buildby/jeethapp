@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/widgets/custon_radio_button_bottomsheet.dart';
@@ -31,7 +32,6 @@ class DriverDetailsBottomSheetWidgetState
   TextTheme customTextTheme = const TextTheme();
   Map language = {};
   bool isLoading = false;
-  fetchData() async {}
   String? selectedGender;
   String? selectedBank;
 
@@ -40,23 +40,28 @@ class DriverDetailsBottomSheetWidgetState
   String vehicleNumber = '';
   List<PlatformFile> selectedFiles = [];
   FocusNode nameFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
+
   FocusNode addressFocus = FocusNode();
   FocusNode ifscFocus = FocusNode();
   FocusNode confirmAccFocus = FocusNode();
   FocusNode accFocus = FocusNode();
+  bool isEmailValidate = false;
 
   DateTime? _selectedDate;
   String? selectedGenderUser;
 
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   TextEditingController addressController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   TextEditingController accNumberController = TextEditingController();
   TextEditingController confirmAccNumberController = TextEditingController();
   TextEditingController ifscController = TextEditingController();
 
-  // FocusNode nameFocus = FocusNode();
-  // FocusNode priceFocus = FocusNode();
+  final _formKey = GlobalKey<FormState>();
+  late User user;
 
   _selectDate(BuildContext context) async {
     DateTime? newSelectedDate = await showDatePicker(
@@ -114,6 +119,19 @@ class DriverDetailsBottomSheetWidgetState
     return null;
   }
 
+  String? validateEmail(String value) {
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    RegExp regExp = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'Please enter email address';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid email address';
+    }
+
+    return null;
+  }
+
   void genderBottomSheet(BuildContext context) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -161,15 +179,18 @@ class DriverDetailsBottomSheetWidgetState
 
     int selectedDocumentCount = selectedFiles.length;
 
-    if (nameController.text.isNotEmpty) {
+    if (user.driver.name.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.email.isNotEmpty) {
       selectedDocumentCount++;
     }
 
-    if (dateController.text.isNotEmpty) {
+    if (user.driver.dob != null) {
       selectedDocumentCount++;
     }
 
-    if (addressController.text.isNotEmpty) {
+    if (user.driver.address.isNotEmpty) {
       selectedDocumentCount++;
     }
 
@@ -180,17 +201,80 @@ class DriverDetailsBottomSheetWidgetState
       selectedDocumentCount++;
     }
 
-    if (accNumberController.text.isNotEmpty) {
+    if (user.driver.accNumber.isNotEmpty) {
       selectedDocumentCount++;
     }
-    if (confirmAccNumberController.text.isNotEmpty) {
-      selectedDocumentCount++;
-    }
-    if (ifscController.text.isNotEmpty) {
+
+    if (user.driver.ifscCode.isNotEmpty) {
       selectedDocumentCount++;
     }
 
     return (selectedDocumentCount / totalFields) * 100;
+  }
+
+  bool get validate {
+    String name = nameController.text;
+    String email = emailController.text;
+    String dob = dateController.text;
+    if (accNumberController.text != confirmAccNumberController.text ||
+        accNumberController.text.isEmpty ||
+        confirmAccNumberController.text.isEmpty ||
+        name.isEmpty ||
+        email.isEmpty ||
+        dob.isEmpty ||
+        selectBank == 'Select bank' ||
+        selectBank.isEmpty ||
+        selectGender == 'Select gender' ||
+        selectGender.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
+  editProfile() async {
+    bool isValid =
+        _formKey.currentState!.validate() && (selectGender != 'Select gender');
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+
+    setState(() => isLoading = true);
+    final Map<String, String> body = {
+      'id': user.driver.id.toString(),
+      "name": nameController.text.trim(),
+      "email": emailController.text.trim(),
+      'bankName': selectBank,
+      'accNumber': accNumberController.text.trim(),
+      'ifscCode': ifscController.text.trim(),
+      "address": addressController.text.trim(),
+      'gender': selectGender,
+      'dob': _selectedDate.toString(),
+      // "avatar": imgPath,
+    };
+
+    final Map<String, String> files = {};
+    // if (imgPath != '') {
+    //   files["avatar"] = imgPath;
+    // }
+
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .editDriverProfile(
+      body: body,
+      files: files,
+    );
+    setState(() => isLoading = false);
+
+    if (response['result'] == 'success') {
+      double percentageFilled = calculatePercentageFilled();
+
+      widget.onUpdatePercentage(percentageFilled);
+      pop();
+    } else {
+      showSnackbar(language[response['message']]);
+    }
   }
 
   void saveForm() {
@@ -204,17 +288,21 @@ class DriverDetailsBottomSheetWidgetState
   void initState() {
     super.initState();
 
-    fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
 
-    final driverDetailsProvider =
-        Provider.of<DriverDetailsProvider>(context, listen: false);
-    if (driverDetailsProvider.driverDetails.isNotEmpty) {
-      final existingData = driverDetailsProvider.driverDetails[0];
-      selectedGender = existingData.vehicleModel;
-      selectedVehicleType = existingData.vehicleType;
-      selectedVehicleMake = existingData.vehicleMake;
-      vehicleNumber = existingData.vehicleNumber;
-    }
+    nameController.text = user.driver.name;
+    emailController.text = user.driver.email;
+    addressController.text = user.driver.address;
+    accNumberController.text = user.driver.accNumber;
+    confirmAccNumberController.text = user.driver.accNumber;
+    ifscController.text = user.driver.ifscCode;
+    selectBank = user.driver.bankName == '' ? selectBank : user.driver.bankName;
+    _selectedDate = (user.driver.dob);
+    dateController.text =
+        _selectedDate != null ? DateFormat.yMMMd().format(_selectedDate!) : '';
+    selectGender = user.driver.gender == '' ? selectGender : user.driver.gender;
+
+    calculatePercentageFilled();
   }
 
   @override
@@ -252,209 +340,223 @@ class DriverDetailsBottomSheetWidgetState
             //         ),
             //   ],
             // ),
-            Column(
-          children: [
-            Divider(
-              indent: dW * 0.27,
-              endIndent: dW * 0.27,
-              color: Colors.black,
-              thickness: 5,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    CustomTextFieldWithLabel(
-                        controller: nameController,
-                        focusNode: nameFocus,
-                        label: language['name'],
-                        hintText: language['name']),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                      child: AbsorbPointer(
-                        absorbing: true,
-                        child: CustomTextFieldWithLabel(
-                          label: language['dob'],
-                          hintText: language['dob'],
-                          controller: dateController,
-                          borderColor: themeColor,
-                          labelColor: Colors.black,
-                          textCapitalization: TextCapitalization.words,
-                          validator: validateDob,
-                          suffixIcon: Container(
-                            padding: EdgeInsets.all(dW * 0.02),
-                            margin: EdgeInsets.only(right: dW * 0.02),
-                            child: const AssetSvgIcon(
-                              'calendar',
-                              width: 10,
-                              height: 10,
+            Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Divider(
+                indent: dW * 0.27,
+                endIndent: dW * 0.27,
+                color: Colors.black,
+                thickness: 5,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: dW * 0.06,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: nameController,
+                          focusNode: nameFocus,
+                          label: language['name'],
+                          hintText: language['name']),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: emailController,
+                          focusNode: emailFocus,
+                          label: language['email'],
+                          validator: validateEmail,
+                          hintText: language['email']),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: AbsorbPointer(
+                          absorbing: true,
+                          child: CustomTextFieldWithLabel(
+                            label: language['dob'],
+                            hintText: language['dob'],
+                            controller: dateController,
+                            borderColor: themeColor,
+                            labelColor: Colors.black,
+                            textCapitalization: TextCapitalization.words,
+                            validator: validateDob,
+                            suffixIcon: Container(
+                              padding: EdgeInsets.all(dW * 0.02),
+                              margin: EdgeInsets.only(right: dW * 0.02),
+                              child: const AssetSvgIcon(
+                                'calendar',
+                                width: 10,
+                                height: 10,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    CustomTextFieldWithLabel(
-                        controller: addressController,
-                        focusNode: addressFocus,
-                        label: language['fullAddress'],
-                        hintText: language['fullAddress']),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    Row(
-                      children: [
-                        TextWidget(
-                          title: language['gender'],
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        const TextWidget(
-                          title: '*',
-                          color: redColor,
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () => genderBottomSheet(context),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: themeColor)),
-                        padding: EdgeInsets.symmetric(
-                            vertical: dW * 0.037, horizontal: dW * 0.04),
-                        margin: EdgeInsets.symmetric(vertical: dW * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextWidget(
-                                title:
-                                    //  selectedVehicleModel ??
-                                    selectGender,
-                                fontWeight: FontWeight.w400,
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: addressController,
+                          focusNode: addressFocus,
+                          label: language['fullAddress'],
+                          hintText: language['fullAddress']),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      Row(
+                        children: [
+                          TextWidget(
+                            title: language['gender'],
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          const TextWidget(
+                            title: '*',
+                            color: redColor,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () => genderBottomSheet(context),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: themeColor)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: dW * 0.037, horizontal: dW * 0.04),
+                          margin: EdgeInsets.symmetric(vertical: dW * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextWidget(
+                                  title:
+                                      //  selectedVehicleModel ??
+                                      selectGender,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            AssetSvgIcon(
-                              'down_arrow',
-                              width: dW * 0.05,
-                              color: blackColor3,
-                            )
-                          ],
+                              AssetSvgIcon(
+                                'down_arrow',
+                                width: dW * 0.05,
+                                color: blackColor3,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    Row(
-                      children: [
-                        TextWidget(
-                          title: language['bankName'],
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        const TextWidget(
-                          title: '*',
-                          color: redColor,
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () => bankBottomSheet(context),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: themeColor)),
-                        padding: EdgeInsets.symmetric(
-                            vertical: dW * 0.037, horizontal: dW * 0.04),
-                        margin: EdgeInsets.symmetric(vertical: dW * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextWidget(
-                                title:
-                                    //  selectedVehicleModel ??
-                                    selectBank,
-                                fontWeight: FontWeight.w400,
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      Row(
+                        children: [
+                          TextWidget(
+                            title: language['bankName'],
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          const TextWidget(
+                            title: '*',
+                            color: redColor,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () => bankBottomSheet(context),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: themeColor)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: dW * 0.037, horizontal: dW * 0.04),
+                          margin: EdgeInsets.symmetric(vertical: dW * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextWidget(
+                                  title:
+                                      //  selectedVehicleModel ??
+                                      selectBank,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            AssetSvgIcon(
-                              'down_arrow',
-                              width: dW * 0.05,
-                              color: blackColor3,
-                            )
-                          ],
+                              AssetSvgIcon(
+                                'down_arrow',
+                                width: dW * 0.05,
+                                color: blackColor3,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    CustomTextFieldWithLabel(
-                        controller: accNumberController,
-                        focusNode: accFocus,
-                        obscureText: true,
-                        maxLines: 1,
-                        label: language['accNumber'],
-                        hintText: language['accNumber']),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    CustomTextFieldWithLabel(
-                        controller: confirmAccNumberController,
-                        focusNode: confirmAccFocus,
-                        // obscureText: true,
-                        maxLines: 1,
-                        label: language['confimrAccNumber'],
-                        hintText: language['confimrAccNumber']),
-                    SizedBox(
-                      height: dW * 0.04,
-                    ),
-                    CustomTextFieldWithLabel(
-                        controller: ifscController,
-                        focusNode: ifscFocus,
-                        label: language['ifscCode'],
-                        hintText: language['ifscCode']),
-                    SizedBox(
-                      height: ifscFocus.hasFocus ||
-                              confirmAccFocus.hasFocus ||
-                              accFocus.hasFocus
-                          ? dW * 0.4
-                          : dW * 0.04,
-                    ),
-                  ],
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: accNumberController,
+                          focusNode: accFocus,
+                          obscureText: true,
+                          maxLines: 1,
+                          label: language['accNumber'],
+                          hintText: language['accNumber']),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: confirmAccNumberController,
+                          focusNode: confirmAccFocus,
+                          // obscureText: true,
+                          maxLines: 1,
+                          label: language['confimrAccNumber'],
+                          hintText: language['confimrAccNumber']),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
+                      CustomTextFieldWithLabel(
+                          controller: ifscController,
+                          focusNode: ifscFocus,
+                          label: language['ifscCode'],
+                          hintText: language['ifscCode']),
+                      SizedBox(
+                        height: ifscFocus.hasFocus ||
+                                confirmAccFocus.hasFocus ||
+                                accFocus.hasFocus
+                            ? dW * 0.6
+                            : dW * 0.04,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: dW * 0.05,
-                bottom: dW * 0.02,
-                left: dW * 0.1,
-                right: dW * 0.1,
+              Container(
+                margin: EdgeInsets.only(
+                  top: dW * 0.05,
+                  bottom: dW * 0.02,
+                  left: dW * 0.1,
+                  right: dW * 0.1,
+                ),
+                child: CustomButton(
+                  width: dW,
+                  height: dW * 0.15,
+                  isLoading: isLoading,
+                  radius: 21,
+                  buttonText: language['save'],
+                  buttonColor: validate ? themeColor : Colors.grey,
+                  onPressed: validate ? editProfile : () {},
+                ),
               ),
-              child: CustomButton(
-                width: dW,
-                height: dW * 0.15,
-                radius: 21,
-                buttonText: language['save'],
-                onPressed: saveForm,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

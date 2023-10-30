@@ -207,9 +207,10 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                                 SizedBox(
                                   width: dW * 0.04,
                                 ),
-                                const AssetSvgIcon(
+                                AssetSvgIcon(
                                   'share',
                                   height: 20,
+                                  color: themeColor,
                                 ),
                               ],
                             ),

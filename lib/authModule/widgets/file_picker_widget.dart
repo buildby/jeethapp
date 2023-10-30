@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:jeeth_app/authModule/models/document_model.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 
 class FilePickerWidget extends StatefulWidget {
   final Function(PlatformFile?) onFileSelected;
   final Function(PlatformFile?) deleteFile;
+  final Doc? document;
 
-  const FilePickerWidget(
-      {super.key, required this.onFileSelected, required this.deleteFile});
+  FilePickerWidget({
+    super.key,
+    required this.onFileSelected,
+    required this.deleteFile,
+    this.document,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -44,9 +50,10 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
   }
 
   void _removeFile() {
-    if (widget.deleteFile != null) {
-      widget.deleteFile!(selectedFile);
-    }
+    // if (widget.deleteFile != null) {
+    //   widget.deleteFile!(selectedFile);
+    // }
+    widget.deleteFile(selectedFile);
     setState(() {
       selectedFile = null;
     });
@@ -73,24 +80,41 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
           children: [
             Expanded(
               child: TextWidget(
-                title:
-                    selectedFile == null ? 'Choose a file' : selectedFile!.name,
+                title: widget.document != null
+                    ? widget.document!.url.split('/').last
+                    : selectedFile == null
+                        ? 'Choose a file'
+                        : selectedFile!.name,
                 fontWeight: FontWeight.w400,
               ),
             ),
-            selectedFile == null
-                ? const Icon(Icons.add)
-                : GestureDetector(
+            widget.document != null
+                ? GestureDetector(
                     onTap: () {
                       setState(() {
                         _removeFile();
                         // widget.deleteFile;
                       });
                     },
-                    child: const Icon(
-                      Icons.remove,
-                      color: redColor,
-                    )),
+                    child: Icon(
+                      Icons.edit,
+                      color: themeColor,
+                    ))
+                : selectedFile == null
+                    ? const Icon(Icons.add)
+                    : GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _removeFile();
+                            // widget.deleteFile;
+                          });
+                        },
+                        child: Icon(
+                          // Icons.remove,
+                          Icons.edit,
+
+                          color: themeColor,
+                        )),
           ],
         ),
       ),

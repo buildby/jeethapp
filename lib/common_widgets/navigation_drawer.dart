@@ -109,17 +109,19 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                   const AssetSvgIcon('drawer_bg'),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: dW * .05,
+                        top: dW * .07,
                         right: dW * .05,
-                        bottom: dW * .05,
+                        // bottom: dW * .05,
                         left: dW * 0.02),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
-                          width: 110,
-                          height: 110,
+                          width: 90,
+                          height: 90,
+                          margin: EdgeInsets.only(
+                            right: dW * 0.02,
+                            // top: dW * 0.07
+                          ),
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
@@ -130,8 +132,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                   fit: BoxFit.cover,
                                 )
                               : Container(
-                                  width: 70,
-                                  height: 70,
+                                  width: 90,
+                                  height: 90,
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle),
                                   child: ClipRRect(
@@ -146,64 +148,59 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                   ),
                                 ),
                         ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // SizedBox(height: dW * 0.04),
+                            const TextWidgetPoppins(
+                              title: 'Darshan Tada',
+                              textOverflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 16,
+                              color: white,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                widget.onIndexChanged(1);
+                                pop();
+                              },
+                              child: Container(
                                 margin: EdgeInsets.only(top: dW * 0.03),
-                                child: const TextWidgetPoppins(
-                                  title: 'Darshan Tada',
-                                  textOverflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 20,
-                                  color: white,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: dW * 0.03, vertical: dW * 0.02),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25),
+                                    color: white),
+                                child: Row(
+                                  children: [
+                                    TextWidget(
+                                      title: language['wallet'],
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: dW * 0.01, left: dW * 0.03),
+                                      child: TextWidgetPoppins(
+                                        title: '\u20b9 ${'12,500'}',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 11,
+                                        color: themeColor,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: dW * 0.005,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  widget.onIndexChanged(1);
-                                  pop();
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: dW * 0.045),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: dW * 0.03,
-                                      vertical: dW * 0.02),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25),
-                                      color: white),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextWidget(
-                                          title: language['wallet'],
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: dW * 0.01),
-                                        child: const TextWidgetPoppins(
-                                          title: '\u20b9 ${'12,500'}',
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: Color(0xff14A3B5),
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: dW * 0.005,
-                                      // ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

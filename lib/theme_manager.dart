@@ -6,7 +6,7 @@ import 'storage_manager.dart';
 class ThemeNotifier with ChangeNotifier {
 //
   final lightTheme = ThemeData(
-    primaryColor: const Color(0xFF15A5B7),
+    primaryColor: const Color(0xFF13A088),
     brightness: Brightness.light,
     fontFamily: 'Inter',
     backgroundColor: const Color(0xFF15A5B7),

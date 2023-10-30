@@ -56,7 +56,7 @@ class NotificationWidget extends StatelessWidget {
               children: [
                 TextWidgetPoppins(
                   title: title,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   fontSize: 16,
                   color: const Color(0xff242E42),
                 ),

@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jeeth_app/authModule/models/document_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/widgets/document_details_widget.dart';
 import 'package:jeeth_app/authModule/widgets/driver_details_btmsheet.dart';
 import 'package:jeeth_app/authModule/widgets/driver_doc_bottomsheet.dart';
@@ -36,7 +39,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
-  //  late User user;
+  late User user;
   String imgPath = '';
   String ownerImg = '';
   bool isDriverSlide = true;
@@ -47,6 +50,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   num ownerDocPercentage = 0;
   num ownerDetailsPercentage = 0;
   num driverDocPercentage = 0;
+  int selectedFiles = 0;
 
   num driverDetailsPercentage = 0;
 
@@ -55,6 +59,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   bool isLoading = false;
   bool validateForm1 = false;
   bool validateForm2 = false;
+  Doc? document;
 
   TextTheme get textTheme => Theme.of(context).textTheme;
   final TextEditingController _nameEditingController = TextEditingController();
@@ -71,6 +76,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
             : ownerImg = image?.path ?? '';
       });
       pop();
+      getAwsSignedUrl();
       return image;
     } catch (e) {
       return null;
@@ -367,33 +373,42 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   }
 
   bool get validateTab1 {
-    // return true;
-    setState(() {
-      validateForm2 = false;
-    });
-    if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
-      setState(() {
-        validateForm2 = true;
-      });
-    }
-    return validateForm2;
+    return true;
+    // setState(() {
+    //   validateForm2 = false;
+    // });
+    // if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
+    //   setState(() {
+    //     validateForm2 = true;
+    //   });
+    // }
+    // return validateForm2;
   }
 
   bool get validate {
-    setState(() {
-      validateForm1 = false;
-    });
-    if (vehicleDetailsPercentage == 100
-        //  &&
-        // vehicleDocPercentage == 100 &&
-        // ownerDocPercentage == 100 &&
-        // driverDetailsPercentage == 100
-        ) {
-      setState(() {
-        validateForm1 = true;
-      });
+    return true;
+    // setState(() {
+    //   validateForm1 = false;
+    // });
+    // if (showOwnerDetails == false
+    //     ? ownerDocPercentage == 100 &&
+    //         ownerDetailsPercentage == 100 &&
+    //         vehicleDetailsPercentage == 100 &&
+    //         vehicleDocPercentage == 100
+    //     : vehicleDetailsPercentage == 100 && vehicleDocPercentage == 100) {
+    //   setState(() {
+    //     validateForm1 = true;
+    //   });
+    // }
+    // return validateForm1;
+  }
+
+  fetchDriverDocuments() async {
+    final response = await Provider.of<DocumentProvider>(context, listen: false)
+        .getDriverDocuments(driver_id: user.driver.id.toString());
+    if (response['result'] != 'success') {
+      showSnackbar('something went wrong');
     }
-    return validateForm1;
   }
 
   Widget get tab1 {
@@ -736,6 +751,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
 
   fetchData() async {
     setState(() => isLoading = true);
+    fetchDriverDocuments();
     setState(() => isLoading = false);
   }
 
@@ -762,13 +778,80 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     return header;
   }
 
+  getAwsSignedUrl() async {
+    final response =
+        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
+      fileName:
+          isDriverSlide ? imgPath.split('/').last : ownerImg.split('/').last,
+      filePath: isDriverSlide ? imgPath : ownerImg,
+      // files: {'file': selectedPhoto},
+    );
+    if (response['result'] == 'success') {
+      final avatar = response['data']['signedUrl'].split('?')[0];
+
+      final updateProfileRes =
+          await Provider.of<AuthProvider>(context, listen: false)
+              .editDriverProfile(
+                  body: {'avatar': avatar, 'id': user.driver.id.toString()},
+                  files: {});
+
+      if (updateProfileRes['result'] != 'success') {
+        showSnackbar('Failed to update profile');
+      }
+    } else {
+      showSnackbar(response['message']);
+    }
+  }
+
+  double calculatePercentageFilled() {
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+
+    int totalFields = 8;
+
+    int selectedDocumentCount = selectedFiles;
+
+    if (user.driver.name.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.email.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.dob != null) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.address.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.gender != 'Select gender') {
+      selectedDocumentCount++;
+    }
+    if (user.driver.bankName != 'Select bank') {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.accNumber.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.ifscCode.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    return (selectedDocumentCount / totalFields) * 100;
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    calculatePercentageFilled();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
 
     // user = Provider.of<AuthProvider>(context, listen: false).user;
-    // fetchData();
+    fetchData();
   }
 
   @override
@@ -777,6 +860,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
+    final documents = Provider.of<DocumentProvider>(context).documents;
 
     return Scaffold(
       backgroundColor: themeColor,
@@ -866,7 +950,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                           // backgroundColor: blackColor3,
                                           name: _nameEditingController.text,
                                           avatar: isDriverSlide
-                                              ? imgPath
+                                              ? user.driver.avatar != ''
+                                                  ? user.driver.avatar
+                                                  : imgPath
                                               : ownerImg,
                                           radius: 50,
                                           fontSize: 26,

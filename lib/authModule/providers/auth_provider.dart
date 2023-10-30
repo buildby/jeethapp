@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jeeth_app/authModule/models/driver_model.dart';
+import 'package:jeeth_app/common_functions.dart';
 import 'package:localstorage/localstorage.dart';
 
 import '../../http_helper.dart';
@@ -24,6 +27,7 @@ class AuthProvider with ChangeNotifier {
         "getStarted": "Get started",
         "somethingWentWrong": "Something Went Wrong",
         "enterYourMobileNumber": "Enter your mobile number",
+        "message": "message",
         "phoneNumberToVerify":
             "We need your phone number to verify your identity",
         "get": "GET",
@@ -67,6 +71,7 @@ class AuthProvider with ChangeNotifier {
         "yes": "Yes",
         "no": "No",
         "name": "Name",
+        "email": "Email",
         "dob": "Date of birth",
         "fullAddress": "Full address",
         "gender": "Gender",
@@ -149,6 +154,19 @@ class AuthProvider with ChangeNotifier {
         "awaitingApproval": "Awaiting approval",
         "denied": "Denied",
         "approved": "Approved, Visit site location.",
+        "inductionPending": "INDUCTION PENDING!",
+        "decisionPending": "Decision Pending!",
+        "applicationDenied": "Application Denied!",
+        "pendingPara":
+            "Your application has been\nreceived by the vendor, and it is\nunder verification process.\nPlease check back later.",
+        "backHome": "Back Home",
+        "rejectedPara":
+            "Your application has been\ncarefully reviewed by the vendor\nbut unfortunately it is rejected for\nthe following reasons.",
+        "incorrectDocuments": "Incorrect Documents, ",
+        "kindlyReupload": "Kindly re-upload the pending documents and reapply.",
+        "takeMeToProfile": "Take me to Profile",
+        "fieldOfficer": "Field Officer",
+        "navigateToLocation": "Navigate to location",
       };
 
   late User user;
@@ -196,18 +214,18 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  fetchMyLocation() async {
-    late LatLng coord;
-    final location = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
-        .catchError((e) {
-      print(e);
-    });
-    coord = LatLng(location.latitude, location.longitude);
-    user.coordinates = coord;
-    notifyListeners();
-    return true;
-  }
+  // fetchMyLocation() async {
+  //   late LatLng coord;
+  //   final location = await Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.high)
+  //       .catchError((e) {
+  //     print(e);
+  //   });
+  //   coord = LatLng(location.latitude, location.longitude);
+  //   user.coordinates = coord;
+  //   notifyListeners();
+  //   return true;
+  // }
 
   sendOTPtoUser(String mobileNo, {bool business = false}) async {
     final url = '${webApi['domain']}${endPoint['sendOTPtoUser']}';
@@ -250,9 +268,12 @@ class AuthProvider with ChangeNotifier {
       final response = await RemoteServices.httpRequest(
           method: 'POST', url: url, body: body);
 
-      if (response['result'] == 'success' && response['data'] != null) {
-        user =
-            User.jsonToUser(response['data'], accessToken: response['token']);
+      if (response['result'] == 'success' && response['data']['user'] != null) {
+        response['data']['user']['driver'] = response['data']['driver'];
+        user = User.jsonToUser(response['data']['user'],
+            accessToken: response['token']);
+        // user = User.jsonToUser(response['data']['driver'],
+        //     accessToken: response['token']);
       }
       notifyListeners();
       return response;
@@ -372,43 +393,128 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future editProfile({
+  Future editDriverProfile({
     required Map<String, String> body,
     required Map<String, String> files,
-    // bool isLocationActive = true,
-    // bool isNotificationActive = true,
   }) async {
     try {
-      // body['isLocationActive'] = isLocationActive.toString();
-      // body['isNotificationActive'] = isNotificationActive.toString();
-
-      final url = '${webApi['domain']}${endPoint['editProfile']}';
-      final response = await RemoteServices.formDataRequest(
+      final url = '${webApi['domain']}${endPoint['editDriverProfile']}';
+      final response = await RemoteServices.httpRequest(
         method: 'PUT',
         url: url,
         body: body,
-        files: files,
+        // files: files,
         accessToken: user.accessToken,
       );
+      if (response['result'] == 'success') {
+        // user = User.jsonToUser(response['data'], accessToken: user.accessToken);
+        user.driver = Driver.jsonToDriver(response['data']);
+      }
 
-      // if (response['success']) {
-      //   if (body['isLocationAllowed'] != null) {
-      //     user.isLocationAllowed = body['isLocationAllowed'] == 'true';
-      //   } else if (body['isNotificationAllowed'] != null) {
-      //     user.isNotificationAllowed = body['isNotificationAllowed'] == 'true';
-      //   } else {
-      //     user = User.jsonToUser(
-      //       response['result'],
-      //       accessToken: user.accessToken,
-      //     );
-      //   }
-      // }
       notifyListeners();
       return response;
     } catch (error) {
       return {'success': false, 'message': 'failedToSave'};
     }
   }
+
+  Future updateDocument({
+    required String id,
+    required String driverId,
+    required String fileName,
+    required String filePath,
+  }) async {
+    //  String? fcmToken = await FirebaseMessaging.instance.getToken();
+    // if (fcmToken != null && fcmToken != '') {
+    //   query += '&fcmToken=$fcmToken';
+    // }
+
+    try {
+      final url = '${webApi['domain']}${endPoint['document']}/$id/$driverId';
+      final response =
+          await RemoteServices.httpRequest(method: 'PUT', url: url);
+
+      if (response['result'] == 'success') {
+        final s3Response = await http.put(
+          Uri.parse(response['data']['signedUrl']),
+          body: File(filePath).readAsBytesSync(),
+        );
+
+        if (s3Response != null) {
+          showSnackbar(s3Response.toString());
+        }
+      }
+      notifyListeners();
+      return response;
+    } catch (error) {
+      return {'success': false, 'message': 'failedToGetSignedUrl'};
+    }
+  }
+
+  Future getAwsSignedUrl({
+    required String fileName,
+    required String filePath,
+    // required Map<String, String> files,
+    // required Map<String, String> body,
+  }) async {
+    //  String? fcmToken = await FirebaseMessaging.instance.getToken();
+    // if (fcmToken != null && fcmToken != '') {
+    //   query += '&fcmToken=$fcmToken';
+    // }
+
+    try {
+      final url = '${webApi['domain']}${endPoint['getAwsSignedUrl']}/$fileName';
+      final response =
+          await RemoteServices.httpRequest(method: 'GET', url: url);
+
+      if (response['result'] == 'success') {
+        final s3Response = await http.put(
+          Uri.parse(response['data']['signedUrl']),
+          body: File(filePath).readAsBytesSync(),
+        );
+
+        // if (s3Response != null) {
+        //   showSnackbar(s3Response.toString());
+        // }
+      }
+
+      return response;
+    } catch (error) {
+      return {'result': 'failure', 'message': 'failedToGetSignedUrl'};
+    }
+  }
+
+  // Future getDriverDocuments({
+  //   required String fileName,
+  //   required String filePath,
+  //   required String type,
+  // }) async {
+  //   //  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  //   // if (fcmToken != null && fcmToken != '') {
+  //   //   query += '&fcmToken=$fcmToken';
+  //   // }
+
+  //   try {
+  //     final url = '${webApi['domain']}${endPoint['getAwsSignedUrl']}/$fileName';
+  //     final response =
+  //         await RemoteServices.httpRequest(method: 'GET', url: url);
+
+  //     if (response['result'] == 'success') {
+  //       final s3Response = await http.put(
+  //         Uri.parse(response['data']['signedUrl']),
+  //         body: File(filePath).readAsBytesSync(),
+  //       );
+
+  //       if (s3Response != null) {
+  //         showSnackbar(s3Response.toString());
+  //       }
+  //     }
+  //     notifyListeners();
+  //     return response;
+  //   } catch (error) {
+  //     return {'success': false, 'message': 'failedToGetSignedUrl'};
+  //   }
+  // }
 
   logout() async {
     // user = null;

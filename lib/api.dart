@@ -4,9 +4,9 @@
 // var webApi = {'domain': 'http://192.168.0.5:3000'}; // Atharv Work
 // var webApi = {'domain': 'http://172.20.10.5:3000'}; // Atharv Hotspot
 // var webApi = {'domain': 'http://192.168.227.72:3000'}; // Salman
-var webApi = {'domain': 'http://192.168.1.4:3000'}; // Darshan wifi
+var webApi = {'domain': 'http://192.168.1.3:3000'}; // Darshan wifi
 // var webApi = {'domain': 'http://192.168.95.161:3000'}; // Darshan hotspot2
-// var webApi = {'domain': 'http://192.168.234.161:3000'}; // Darshan hotspot
+// var webApi = {'domain': 'http://192.168.2.161:3000'}; // Darshan hotspot
 
 var endPoint = {
   // App Config
@@ -23,11 +23,18 @@ var endPoint = {
   'resendOTPtoUser': '/auth/resend-otp',
   'login': '/user/login',
   'register': '/user/register',
-  'editProfile': '/user/editProfile',
   'deleteFCMToken': '/user/deleteFCMToken',
   'updateAddress': '/user/updateAddress',
   'deleteAccount': '/user/deleteAccount',
   'refreshUser': '/user/refreshUser',
+
+  //Documents
+  'getAwsSignedUrl': '/aws/getSignedUrl',
+  'updateDriverDocument': '/document/updateDriverDocument',
+  'getDriverDocuments': '/document/getDriverDocuments',
+
+  //Driver
+  'editDriverProfile': '/driver/editDriverProfile',
 
   // Notifications
   'fetchNotifications': '/notification/fetchNotifications',

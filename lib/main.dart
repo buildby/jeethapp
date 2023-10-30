@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/screens/splash_screen.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => MarketplaceProvider()),
         ChangeNotifierProvider(create: (_) => DriverDetailsProvider()),
         ChangeNotifierProvider(create: (_) => MyApplicationProvider()),
+        ChangeNotifierProvider(create: (_) => DocumentProvider()),
       ],
       child: Consumer<ThemeNotifier>(
         builder: (context, theme, _) => MaterialApp(
