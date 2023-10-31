@@ -1,10 +1,10 @@
-class DriverDetails {
+class VehicleDetail {
   String vehicleModel;
   String vehicleType;
   String vehicleMake;
   String vehicleNumber;
 
-  DriverDetails({
+  VehicleDetail({
     required this.vehicleModel,
     required this.vehicleType,
     required this.vehicleMake,

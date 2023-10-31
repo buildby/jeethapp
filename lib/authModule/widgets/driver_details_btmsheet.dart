@@ -359,6 +359,7 @@ class DriverDetailsBottomSheetWidgetState
                         height: dW * 0.06,
                       ),
                       CustomTextFieldWithLabel(
+                          textCapitalization: TextCapitalization.words,
                           controller: nameController,
                           focusNode: nameFocus,
                           label: language['name'],
@@ -405,6 +406,7 @@ class DriverDetailsBottomSheetWidgetState
                         height: dW * 0.04,
                       ),
                       CustomTextFieldWithLabel(
+                          textCapitalization: TextCapitalization.sentences,
                           controller: addressController,
                           focusNode: addressFocus,
                           label: language['fullAddress'],

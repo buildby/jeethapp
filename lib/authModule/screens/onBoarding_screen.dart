@@ -65,10 +65,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: dW * 0.05,
+                    height: dW * 0.13,
                   ),
                   Image.asset(
-                    'assets/images/car2.png',
+                    'assets/images/car.png',
                   ),
                   Center(
                     child: Column(

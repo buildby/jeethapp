@@ -12,7 +12,8 @@ var endPoint = {
   // App Config
   'searchLocationFromGoogle': '/appConfig/searchLocationFromGoogle',
   'fetchCommonAppConfig': '/appConfig/fetchCommonAppConfig',
-  'getAppConfigs': '/appConfig/getAppConfigs',
+  'fetchVehicleConfigs': '/appConfig/fetchVehicleConfigs',
+  'createVehicleConfigs': '/appConfig/createVehicleConfigs',
 
   // Banner
   'fetchBanners': '/banner/fetchBanners',

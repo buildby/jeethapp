@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/models/driver_details.dart';
+import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/widgets/vehicle_make_widget.dart';
@@ -144,7 +144,7 @@ class VehicleDetailsBottomSheetWidgetState
     String vehicleMake = selectMake;
     String vehicleNumber = _vehicleNumberController.text;
 
-    DriverDetails newDriverDetails = DriverDetails(
+    VehicleDetail newDriverDetails = VehicleDetail(
       vehicleModel: vehicleModel,
       vehicleType: vehicleType,
       vehicleMake: vehicleMake,
@@ -152,7 +152,7 @@ class VehicleDetailsBottomSheetWidgetState
     );
 
     final driverDetailsProvider =
-        Provider.of<DriverDetailsProvider>(context, listen: false);
+        Provider.of<VehicleDetailProvider>(context, listen: false);
     driverDetailsProvider.addData(newDriverDetails);
 
     widget.onUpdatePercentage(percentageFilled);
@@ -166,7 +166,7 @@ class VehicleDetailsBottomSheetWidgetState
     fetchData();
 
     final driverDetailsProvider =
-        Provider.of<DriverDetailsProvider>(context, listen: false);
+        Provider.of<VehicleDetailProvider>(context, listen: false);
     if (driverDetailsProvider.driverDetails.isNotEmpty) {
       final existingData = driverDetailsProvider.driverDetails[0];
       selectedVehicleModel = existingData.vehicleModel;

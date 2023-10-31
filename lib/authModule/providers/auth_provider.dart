@@ -174,6 +174,67 @@ class AuthProvider with ChangeNotifier {
   String androidVersion = '0';
   String iOSVersion = '0';
   Map? deleteFeature;
+  final makes = ['Toyota', 'Maruti Suzuki', 'Kia', 'Honda', 'Hyundai'];
+  final models = [
+    {
+      'make': 'Toyota',
+      'type': 'Sedan',
+      'value': 'Corolla',
+    },
+    {
+      'make': 'Toyota',
+      'type': 'SUV',
+      'value': 'Innova',
+    },
+    {
+      'make': 'Toyota',
+      'type': 'SUV',
+      'value': 'Fortuner',
+    },
+    {
+      'make': 'Maruti Suzuki',
+      'type': 'Sedan',
+      'value': 'Swift',
+    },
+    {
+      'make': 'Maruti Suzuki',
+      'type': 'Mini',
+      'value': 'WagonR',
+    },
+    {
+      'make': 'Kia',
+      'type': 'SUV',
+      'value': 'Seltos',
+    },
+    {
+      'make': 'Kia',
+      'type': 'Maybach',
+      'value': 'Sonet',
+    },
+    {
+      'make': 'Honda',
+      'type': 'Sedan',
+      'value': 'Civic',
+    },
+    {
+      'make': 'Honda',
+      'type': 'Sedan',
+      'value': 'City',
+    },
+    {
+      'make': 'Hyundai',
+      'type': 'Sedan',
+      'value': 'Elantra',
+    },
+    {
+      'make': 'Hyundai',
+      'type': 'SUV',
+      'value': 'Creta',
+    },
+  ];
+
+  List<String> make = [];
+  List<String> model = [];
 
   // setGuestUser() {
   //   user = User(isGuest: true, id: '');
@@ -239,6 +300,94 @@ class AuthProvider with ChangeNotifier {
       return response;
     } catch (error) {
       return {'success': false, 'login': false};
+    }
+  }
+
+  createVehicleConfigs() async {
+    final url = '${webApi['domain']}${endPoint['createVehicleConfigs']}';
+    Map body = {
+      // 'value': ['Toyota', 'Maruti Suzuki', 'Kia', 'Honda', 'Hyundai'],
+      "type": 'Vehicle Models',
+      'value': [
+        {
+          'make': 'Toyota',
+          'type': 'Sedan',
+          'value': 'Corolla',
+        },
+        {
+          'make': 'Toyota',
+          'type': 'SUV',
+          'value': 'Innova',
+        },
+        {
+          'make': 'Toyota',
+          'type': 'SUV',
+          'value': 'Fortuner',
+        },
+        {
+          'make': 'Maruti Suzuki',
+          'type': 'Sedan',
+          'value': 'Swift',
+        },
+        {
+          'make': 'Maruti Suzuki',
+          'type': 'Mini',
+          'value': 'WagonR',
+        },
+        {
+          'make': 'Kia',
+          'type': 'SUV',
+          'value': 'Seltos',
+        },
+        {
+          'make': 'Kia',
+          'type': 'Maybach',
+          'value': 'Sonet',
+        },
+        {
+          'make': 'Honda',
+          'type': 'Sedan',
+          'value': 'Civic',
+        },
+        {
+          'make': 'Honda',
+          'type': 'Sedan',
+          'value': 'City',
+        },
+        {
+          'make': 'Hyundai',
+          'type': 'Sedan',
+          'value': 'Elantra',
+        },
+        {
+          'make': 'Hyundai',
+          'type': 'SUV',
+          'value': 'Creta',
+        },
+      ],
+    };
+    try {
+      final response =
+          await RemoteServices.httpRequest(method: 'PUT', url: url, body: body);
+
+      return response['result']['type'];
+    } catch (error) {
+      return {'success': false, 'login': false};
+    }
+  }
+
+  fetchVehicleConfigs() async {
+    final url = '${webApi['domain']}${endPoint['fetchVehicleConfigs']}';
+
+    try {
+      final response = await RemoteServices.httpRequest(
+        method: 'GET',
+        url: url,
+      );
+
+      return response['result']['data'];
+    } catch (error) {
+      return {'result': 'failure', 'data': null};
     }
   }
 

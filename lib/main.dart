@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => MarketplaceProvider()),
-        ChangeNotifierProvider(create: (_) => DriverDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => VehicleDetailProvider()),
         ChangeNotifierProvider(create: (_) => MyApplicationProvider()),
         ChangeNotifierProvider(create: (_) => DocumentProvider()),
       ],

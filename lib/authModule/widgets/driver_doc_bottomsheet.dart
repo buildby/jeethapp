@@ -160,6 +160,7 @@ class DriverDocBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+    calculatePercentageFilled();
 
     fetchData();
     user = Provider.of<AuthProvider>(context, listen: false).user;

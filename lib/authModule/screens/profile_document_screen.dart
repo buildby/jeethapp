@@ -59,7 +59,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   bool isLoading = false;
   bool validateForm1 = false;
   bool validateForm2 = false;
-  Doc? document;
+  List<Doc>? document;
 
   TextTheme get textTheme => Theme.of(context).textTheme;
   final TextEditingController _nameEditingController = TextEditingController();
@@ -373,39 +373,63 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   }
 
   bool get validateTab1 {
-    return true;
-    // setState(() {
-    //   validateForm2 = false;
-    // });
-    // if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
-    //   setState(() {
-    //     validateForm2 = true;
-    //   });
-    // }
-    // return validateForm2;
+    // return true;
+    setState(() {
+      validateForm2 = false;
+    });
+    if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
+      setState(() {
+        validateForm2 = true;
+      });
+    }
+    return validateForm2;
   }
 
   bool get validate {
-    return true;
-    // setState(() {
-    //   validateForm1 = false;
-    // });
-    // if (showOwnerDetails == false
-    //     ? ownerDocPercentage == 100 &&
-    //         ownerDetailsPercentage == 100 &&
-    //         vehicleDetailsPercentage == 100 &&
-    //         vehicleDocPercentage == 100
-    //     : vehicleDetailsPercentage == 100 && vehicleDocPercentage == 100) {
-    //   setState(() {
-    //     validateForm1 = true;
-    //   });
-    // }
-    // return validateForm1;
+    // return true;
+    setState(() {
+      validateForm1 = false;
+    });
+    if (showOwnerDetails == false
+        ? ownerDocPercentage == 100 &&
+            ownerDetailsPercentage == 100 &&
+            vehicleDetailsPercentage == 100 &&
+            vehicleDocPercentage == 100
+        : vehicleDetailsPercentage == 100 && vehicleDocPercentage == 100) {
+      setState(() {
+        validateForm1 = true;
+      });
+    }
+    return validateForm1;
   }
 
   fetchDriverDocuments() async {
     final response = await Provider.of<DocumentProvider>(context, listen: false)
         .getDriverDocuments(driver_id: user.driver.id.toString());
+    if (response['result'] != 'success') {
+      showSnackbar('something went wrong');
+    }
+  }
+
+  fetchVehicleModels() async {
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .fetchVehicleConfigs();
+    if (response['result'] == 'success') {
+      Provider.of<AuthProvider>(context, listen: false).model =
+          response['data']['models']['value'];
+    }
+    if (response['result'] != 'success') {
+      showSnackbar('something went wrong');
+    }
+  }
+
+  fetchVehicleMakes() async {
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .fetchVehicleConfigs();
+    if (response['result'] == 'success') {
+      Provider.of<AuthProvider>(context, listen: false).make =
+          response['data']['makes'];
+    }
     if (response['result'] != 'success') {
       showSnackbar('something went wrong');
     }
@@ -507,7 +531,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               buttonText: language['next'],
               onPressed: () {
                 validateTab1
-                    ? _tabController.animateTo(_tabController.index + 1)
+                    ? Provider.of<AuthProvider>(context, listen: false)
+                        .createVehicleConfigs()
+                    // _tabController.animateTo(_tabController.index + 1)
                     : () {};
               },
             ),
@@ -751,7 +777,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
 
   fetchData() async {
     setState(() => isLoading = true);
-    fetchDriverDocuments();
+    // await fetchVehicleModels();
+    // await fetchVehicleMakes();
+    await fetchDriverDocuments();
     setState(() => isLoading = false);
   }
 
@@ -803,12 +831,12 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     }
   }
 
-  double calculatePercentageFilled() {
+  double calculateDriverDetailsPercentage() {
     user = Provider.of<AuthProvider>(context, listen: false).user;
 
     int totalFields = 8;
 
-    int selectedDocumentCount = selectedFiles;
+    int selectedDocumentCount = 0;
 
     if (user.driver.name.isNotEmpty) {
       selectedDocumentCount++;
@@ -825,10 +853,10 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       selectedDocumentCount++;
     }
 
-    if (user.driver.gender != 'Select gender') {
+    if (user.driver.gender.isNotEmpty) {
       selectedDocumentCount++;
     }
-    if (user.driver.bankName != 'Select bank') {
+    if (user.driver.bankName.isNotEmpty) {
       selectedDocumentCount++;
     }
 
@@ -840,18 +868,32 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       selectedDocumentCount++;
     }
 
-    return (selectedDocumentCount / totalFields) * 100;
+    return driverDetailsPercentage =
+        (selectedDocumentCount / totalFields) * 100;
+  }
+
+  double calculateDriverDocPercentage() {
+    int totalFields = 5;
+
+    int selectedDocumentCount = 0;
+
+    for (int i = 0; i < document!.length; i++) {
+      selectedDocumentCount++;
+    }
+
+    return driverDocPercentage = (selectedDocumentCount / totalFields) * 100;
   }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
-    calculatePercentageFilled();
     user = Provider.of<AuthProvider>(context, listen: false).user;
+    calculateDriverDetailsPercentage();
+    document = Provider.of<DocumentProvider>(context, listen: false).documents;
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
+    _tabController = TabController(vsync: this, length: 2);
+    calculateDriverDocPercentage();
   }
 
   @override
@@ -860,7 +902,6 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
-    final documents = Provider.of<DocumentProvider>(context).documents;
 
     return Scaffold(
       backgroundColor: themeColor,
