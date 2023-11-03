@@ -187,9 +187,9 @@ class MobileNumberScreenState extends State<MobileNumberScreen> {
                                 borderColor: white,
                                 prefixIcon: Container(
                                   margin: EdgeInsets.only(right: dW * 0.15),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       TextWidget(
                                         title: '+91',
                                         fontSize: 24,

@@ -46,9 +46,9 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
 
     return Stack(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             AssetSvgIcon('approved_bg'),
           ],
         ),

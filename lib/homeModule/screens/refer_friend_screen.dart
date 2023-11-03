@@ -187,11 +187,11 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Expanded(
+                                Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
+                                    children: const [
                                       TextWidgetPoppins(
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
