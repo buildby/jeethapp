@@ -63,6 +63,8 @@ class AuthProvider with ChangeNotifier {
         "selectModel": "Select Model",
         "selectType": "Select Type",
         "selectMake": "Select Make",
+        "selectYear": "Select Year",
+        "selectVehicleYear": "Select Vehicle Year",
         "selectVehicleType": "Select Vehicle Type",
         "selectVehicleMake": "Select Vehicle Make",
         "bankAccountDetails": "Bank Account Details",
@@ -80,6 +82,10 @@ class AuthProvider with ChangeNotifier {
         "accNumber": "Account number",
         "confimrAccNumber": "Confirm account number",
         "ifscCode": "IFSC code",
+        "enterVehiclePhoto": "Please enter vehicle photo",
+        "enterDriverPhoto": "Please enter driver photo",
+        "enterFields": "Please enter details and documents",
+        "gotIt": "Got it",
 
 // Home Screen
         "chooseYourClient": "Choose your client",
@@ -174,67 +180,9 @@ class AuthProvider with ChangeNotifier {
   String androidVersion = '0';
   String iOSVersion = '0';
   Map? deleteFeature;
-  final makes = ['Toyota', 'Maruti Suzuki', 'Kia', 'Honda', 'Hyundai'];
-  final models = [
-    {
-      'make': 'Toyota',
-      'type': 'Sedan',
-      'value': 'Corolla',
-    },
-    {
-      'make': 'Toyota',
-      'type': 'SUV',
-      'value': 'Innova',
-    },
-    {
-      'make': 'Toyota',
-      'type': 'SUV',
-      'value': 'Fortuner',
-    },
-    {
-      'make': 'Maruti Suzuki',
-      'type': 'Sedan',
-      'value': 'Swift',
-    },
-    {
-      'make': 'Maruti Suzuki',
-      'type': 'Mini',
-      'value': 'WagonR',
-    },
-    {
-      'make': 'Kia',
-      'type': 'SUV',
-      'value': 'Seltos',
-    },
-    {
-      'make': 'Kia',
-      'type': 'Maybach',
-      'value': 'Sonet',
-    },
-    {
-      'make': 'Honda',
-      'type': 'Sedan',
-      'value': 'Civic',
-    },
-    {
-      'make': 'Honda',
-      'type': 'Sedan',
-      'value': 'City',
-    },
-    {
-      'make': 'Hyundai',
-      'type': 'Sedan',
-      'value': 'Elantra',
-    },
-    {
-      'make': 'Hyundai',
-      'type': 'SUV',
-      'value': 'Creta',
-    },
-  ];
 
-  List<String> make = [];
-  List<String> model = [];
+  List<String> makes = [];
+  List<Map<String, dynamic>> models = [];
 
   // setGuestUser() {
   //   user = User(isGuest: true, id: '');
@@ -384,8 +332,11 @@ class AuthProvider with ChangeNotifier {
         method: 'GET',
         url: url,
       );
-
-      return response['result']['data'];
+      if (response['result'] == 'success') {
+        makes = List.from(response['data']['makes']);
+        models = List.from(response['data']['models']);
+      }
+      return response;
     } catch (error) {
       return {'result': 'failure', 'data': null};
     }
@@ -543,20 +494,18 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future editDriverProfile({
-    required Map<String, String> body,
-    required Map<String, String> files,
+    required String id,
+    required Map body,
   }) async {
     try {
-      final url = '${webApi['domain']}${endPoint['editDriverProfile']}';
+      final url = '${webApi['domain']}${endPoint['editDriverProfile']}/$id';
       final response = await RemoteServices.httpRequest(
         method: 'PUT',
         url: url,
         body: body,
-        // files: files,
         accessToken: user.accessToken,
       );
       if (response['result'] == 'success') {
-        // user = User.jsonToUser(response['data'], accessToken: user.accessToken);
         user.driver = Driver.jsonToDriver(response['data']);
       }
 

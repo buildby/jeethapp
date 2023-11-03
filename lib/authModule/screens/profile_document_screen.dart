@@ -17,6 +17,7 @@ import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/bottom_aligned_widget.dart';
+import 'package:jeeth_app/common_widgets/cached_image_widget.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
@@ -58,8 +59,15 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   bool showOwnerDetails = true;
   bool isLoading = false;
   bool validateForm1 = false;
+  bool driverImgValidation = false;
+  bool vehicleImgValidation = false;
+  bool isDriverValidateActive = false;
+  bool isVehicleValidateActive = false;
+
   bool validateForm2 = false;
-  List<Doc>? document;
+  bool photoRemoved = false;
+
+  List<Doc> documents = [];
 
   TextTheme get textTheme => Theme.of(context).textTheme;
   final TextEditingController _nameEditingController = TextEditingController();
@@ -74,6 +82,15 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         isDriverSlide
             ? imgPath = image?.path ?? ''
             : ownerImg = image?.path ?? '';
+        // if (isDriverSlide) {
+        //   if (imgPath.isNotEmpty) {
+        //     photoRemoved = false;
+        //   } else {
+        //     if (ownerImg.isNotEmpty) {
+        //       photoRemoved = false;
+        //     }
+        //   }
+        // }
       });
       pop();
       getAwsSignedUrl();
@@ -91,6 +108,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       Color? backgroundColor,
       double fontSize = 18,
       FontWeight? fontWeight,
+      bool isNetworkImage = false,
       Color? fontColor,
       required double tS}) {
     _nameEditingController.addListener(() {
@@ -101,34 +119,105 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       alignment: Alignment.bottomRight,
       children: [
         Container(
-          width: radius,
-          height: radius,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundColor ??
-                  Theme.of(context).primaryColor.withOpacity(0.2)),
-          child: avatar == null || avatar == ''
-              ? Image.asset(
-                  'assets/images/profile.jpeg',
-                  fit: BoxFit.cover,
-                )
-              : Container(
-                  width: radius,
-                  height: radius,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.file(
-                      File(isDriverSlide ? imgPath : ownerImg),
-                      repeat: ImageRepeat.repeat,
-                      fit: BoxFit.cover,
-                      width: 32,
-                      height: 32,
-                    ),
-                  ),
-                ),
-        ),
+            width: radius,
+            height: radius,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                    color: isDriverSlide
+                        ? isDriverValidateActive
+                            ? validateDriverProf
+                                ? white
+                                : redColor
+                            : white
+                        : isVehicleValidateActive
+                            ? validateVehicleProf
+                                ? white
+                                : redColor
+                            : white,
+                    width: 2.5),
+                color: backgroundColor ??
+                    Theme.of(context).primaryColor.withOpacity(0.2)),
+            child: isDriverSlide
+                ? imgPath != ''
+                    ? Container(
+                        width: radius,
+                        height: radius,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.file(
+                            File(imgPath),
+                            repeat: ImageRepeat.repeat,
+                            fit: BoxFit.cover,
+                            width: 32,
+                            height: 32,
+                          ),
+                        ),
+                      )
+                    : avatar == null || avatar == ''
+                        ? Image.asset(
+                            'assets/images/cam.png',
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: radius,
+                            height: radius,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: isNetworkImage
+                                  ? CachedImageWidget(user.driver.avatar)
+                                  : Image.file(
+                                      File(imgPath),
+                                      repeat: ImageRepeat.repeat,
+                                      fit: BoxFit.cover,
+                                      width: 32,
+                                      height: 32,
+                                    ),
+                            ),
+                          )
+                : ownerImg != ''
+                    ? Container(
+                        width: radius,
+                        height: radius,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.file(
+                            File(ownerImg),
+                            repeat: ImageRepeat.repeat,
+                            fit: BoxFit.cover,
+                            width: 32,
+                            height: 32,
+                          ),
+                        ),
+                      )
+                    : avatar == null || avatar == ''
+                        ? Image.asset(
+                            'assets/images/cam.png',
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: radius,
+                            height: radius,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: isNetworkImage
+                                  ? CachedImageWidget(user.driver.vehicleImage)
+                                  : Image.file(
+                                      File(ownerImg),
+                                      repeat: ImageRepeat.repeat,
+                                      fit: BoxFit.cover,
+                                      width: 32,
+                                      height: 32,
+                                    ),
+                            ),
+                          )),
         Container(
           padding: EdgeInsets.all(dW * 0.015),
           decoration: BoxDecoration(
@@ -167,33 +256,46 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (isDriverSlide ? imgPath != '' : ownerImg != '')
-                        Container(
-                          margin: EdgeInsets.only(right: dW * 0.05),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() =>
-                                  isDriverSlide ? imgPath = '' : ownerImg = '');
+                      // if (isDriverSlide
+                      //     ? imgPath != '' ||
+                      //         (user.driver.avatar != '' && !photoRemoved)
+                      //     : ownerImg != '' ||
+                      //         (user.driver.vehicleImage != '' && !photoRemoved))
+                      //   Container(
+                      //     margin: EdgeInsets.only(right: dW * 0.05),
+                      //     child: GestureDetector(
+                      //       onTap: () {
+                      //         setState(() {
+                      //           if (isDriverSlide) {
+                      //             imgPath = '';
+                      //             user.driver.avatar = '';
+                      //             photoRemoved = true;
+                      //           } else {
+                      //             ownerImg = '';
+                      //             photoRemoved = true;
+                      //           }
+                      //         });
 
-                              pop();
-                            },
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: dW * .08,
-                                  backgroundColor: Colors.grey.withOpacity(0.4),
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                SizedBox(height: dW * .02),
-                                const Text('Remove '),
-                                const Text('Photo')
-                              ],
-                            ),
-                          ),
-                        ),
+                      //         pop();
+                      //       },
+                      //       child: Column(
+                      //         children: [
+                      //           CircleAvatar(
+                      //             radius: dW * .08,
+                      //             backgroundColor: Colors.grey.withOpacity(0.4),
+                      //             child: const Icon(
+                      //               Icons.delete,
+                      //               color: Colors.red,
+                      //             ),
+                      //           ),
+                      //           SizedBox(height: dW * .02),
+                      //           const Text('Remove '),
+                      //           const Text('Photo')
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+
                       // SizedBox(width: dW * .05),
                       if (isDriverSlide)
                         GestureDetector(
@@ -281,7 +383,11 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
           });
         },
       ),
-    );
+    ).then((value) {
+      setState(() {
+        calculateDriverDocPercentage();
+      });
+    });
   }
 
   void vehicleDetailsBottomSheet() {
@@ -303,7 +409,11 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
           });
         },
       ),
-    );
+    ).then((value) {
+      setState(() {
+        calculateVehicleDetailsPercentage();
+      });
+    });
   }
 
   void vehicleDocumentsBottomSheet() {
@@ -325,7 +435,11 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
           });
         },
       ),
-    );
+    ).then((value) {
+      setState(() {
+        calculateVehicleDocPercentage();
+      });
+    });
   }
 
   void ownerDetailsBottomSheet() {
@@ -369,38 +483,77 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
           });
         },
       ),
-    );
+    ).then((value) {
+      setState(() {
+        calculateOwnerDocPercentage();
+      });
+    });
   }
 
   bool get validateTab1 {
     // return true;
     setState(() {
-      validateForm2 = false;
-    });
-    if (driverDocPercentage == 100 && driverDetailsPercentage == 100) {
-      setState(() {
-        validateForm2 = true;
-      });
-    }
-    return validateForm2;
-  }
-
-  bool get validate {
-    // return true;
-    setState(() {
       validateForm1 = false;
     });
-    if (showOwnerDetails == false
-        ? ownerDocPercentage == 100 &&
-            ownerDetailsPercentage == 100 &&
-            vehicleDetailsPercentage == 100 &&
-            vehicleDocPercentage == 100
-        : vehicleDetailsPercentage == 100 && vehicleDocPercentage == 100) {
+    if (driverDocPercentage == 100 &&
+        driverDetailsPercentage == 100 &&
+        (user.driver.avatar.isNotEmpty || imgPath.isNotEmpty)) {
       setState(() {
         validateForm1 = true;
       });
     }
     return validateForm1;
+  }
+
+  bool get validateDriverProf {
+    // return true;
+
+    if (user.driver.avatar.isNotEmpty || imgPath.isNotEmpty) {
+      setState(() {
+        driverImgValidation = true;
+      });
+    } else {
+      setState(() {
+        driverImgValidation = false;
+      });
+    }
+    return driverImgValidation;
+  }
+
+  bool get validateVehicleProf {
+    // return true;
+
+    if (user.driver.vehicleImage.isNotEmpty || ownerImg.isNotEmpty) {
+      setState(() {
+        vehicleImgValidation = true;
+      });
+    } else {
+      setState(() {
+        vehicleImgValidation = false;
+      });
+    }
+    return vehicleImgValidation;
+  }
+
+  bool get validateTab2 {
+    // return true;
+    setState(() {
+      validateForm2 = false;
+    });
+    if (showOwnerDetails == false
+        ? ownerDocPercentage == 100 &&
+            ownerDetailsPercentage == 100 &&
+            vehicleDetailsPercentage == 100 &&
+            vehicleDocPercentage == 100 &&
+            (user.driver.vehicleImage.isNotEmpty || ownerImg.isNotEmpty)
+        : vehicleDetailsPercentage == 100 &&
+            vehicleDocPercentage == 100 &&
+            (user.driver.vehicleImage.isNotEmpty || ownerImg.isNotEmpty)) {
+      setState(() {
+        validateForm2 = true;
+      });
+    }
+    return validateForm2;
   }
 
   fetchDriverDocuments() async {
@@ -411,26 +564,11 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     }
   }
 
-  fetchVehicleModels() async {
+  fetchVehicleConfigs() async {
     final response = await Provider.of<AuthProvider>(context, listen: false)
         .fetchVehicleConfigs();
     if (response['result'] == 'success') {
-      Provider.of<AuthProvider>(context, listen: false).model =
-          response['data']['models']['value'];
-    }
-    if (response['result'] != 'success') {
-      showSnackbar('something went wrong');
-    }
-  }
-
-  fetchVehicleMakes() async {
-    final response = await Provider.of<AuthProvider>(context, listen: false)
-        .fetchVehicleConfigs();
-    if (response['result'] == 'success') {
-      Provider.of<AuthProvider>(context, listen: false).make =
-          response['data']['makes'];
-    }
-    if (response['result'] != 'success') {
+    } else {
       showSnackbar('something went wrong');
     }
   }
@@ -527,14 +665,26 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               width: dW,
               height: dW * 0.15,
               radius: 21,
-              buttonColor: validateTab1 ? themeColor : Colors.grey,
+              buttonColor: (validateTab1 && validateDriverProf)
+                  ? themeColor
+                  : Colors.grey,
               buttonText: language['next'],
               onPressed: () {
-                validateTab1
-                    ? Provider.of<AuthProvider>(context, listen: false)
-                        .createVehicleConfigs()
-                    // _tabController.animateTo(_tabController.index + 1)
-                    : () {};
+                setState(() {
+                  isDriverValidateActive = true;
+                });
+
+                if (validateTab1) {
+                  //  Provider.of<AuthProvider>(context, listen: false)
+                  //     .createVehicleConfigs()
+                  _tabController.animateTo(_tabController.index + 1);
+                } else {
+                  if (user.driver.avatar.isEmpty && imgPath.isEmpty) {
+                    showSnackbar(language['enterDriverPhoto']);
+                  } else {
+                    showSnackbar(language['enterFields']);
+                  }
+                }
               },
             ),
           ),
@@ -549,10 +699,10 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       child: Column(
         children: [
           Expanded(
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  child: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
                     margin: EdgeInsets.only(bottom: dW * 0.03),
                     padding: EdgeInsets.symmetric(
                         horizontal: dW * 0.04, vertical: dW * 0.05),
@@ -714,11 +864,11 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          validate
+          validateTab2
               ? const SizedBox()
               : Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -763,11 +913,22 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               height: dW * 0.15,
               radius: 21,
               buttonText: language['next'],
-              onPressed: validate
-                  ? () => push(NamedRoute.bottomNavBarScreen,
-                      arguments: BottomNavArguments())
-                  : () {},
-              buttonColor: validate ? buttonColor : Colors.grey,
+              onPressed: () {
+                setState(() {
+                  isVehicleValidateActive = true;
+                });
+                if (validateTab2) {
+                  push(NamedRoute.bottomNavBarScreen,
+                      arguments: BottomNavArguments());
+                } else {
+                  if (user.driver.vehicleImage.isEmpty && ownerImg.isEmpty) {
+                    showSnackbar(language['enterVehiclePhoto']);
+                  } else {
+                    showSnackbar(language['enterFields']);
+                  }
+                }
+              },
+              buttonColor: validateTab2 ? buttonColor : Colors.grey,
             ),
           ),
         ],
@@ -779,7 +940,12 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     setState(() => isLoading = true);
     // await fetchVehicleModels();
     // await fetchVehicleMakes();
+    await fetchVehicleConfigs();
     await fetchDriverDocuments();
+    await calculateOwnerDocPercentage();
+    await calculateDriverDocPercentage();
+    await calculateVehicleDocPercentage();
+
     setState(() => isLoading = false);
   }
 
@@ -820,8 +986,16 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       final updateProfileRes =
           await Provider.of<AuthProvider>(context, listen: false)
               .editDriverProfile(
-                  body: {'avatar': avatar, 'id': user.driver.id.toString()},
-                  files: {});
+                  body: isDriverSlide
+                      ? {
+                          'driver': {'avatar': avatar},
+                          'id': user.driver.id.toString()
+                        }
+                      : {
+                          'owner': {'vehicleImage': avatar},
+                          'id': user.driver.id.toString()
+                        },
+                  id: user.driver.id.toString());
 
       if (updateProfileRes['result'] != 'success') {
         showSnackbar('Failed to update profile');
@@ -829,6 +1003,55 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     } else {
       showSnackbar(response['message']);
     }
+  }
+
+  double calculateOwnerDetailsPercentage() {
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+
+    int totalFields = 3;
+
+    int selectedDocumentCount = 0;
+
+    if (user.driver.ownerName.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.ownerPhoneNumber.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.ownerAddress.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    return ownerDetailsPercentage = (selectedDocumentCount / totalFields) * 100;
+  }
+
+  double calculateVehicleDetailsPercentage() {
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+
+    int totalFields = 5;
+
+    int selectedDocumentCount = 0;
+
+    if (user.driver.vehicle.vehicleMake.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.vehicle.vehicleModel.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    if (user.driver.vehicle.vehicleType.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.vehicle.vehicleYear.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+    if (user.driver.vehicle.vehicleNumber.isNotEmpty) {
+      selectedDocumentCount++;
+    }
+
+    return vehicleDetailsPercentage =
+        (selectedDocumentCount / totalFields) * 100;
   }
 
   double calculateDriverDetailsPercentage() {
@@ -872,16 +1095,76 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
         (selectedDocumentCount / totalFields) * 100;
   }
 
-  double calculateDriverDocPercentage() {
+  calculateDriverDocPercentage() {
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
+
     int totalFields = 5;
 
     int selectedDocumentCount = 0;
 
-    for (int i = 0; i < document!.length; i++) {
-      selectedDocumentCount++;
+    for (int i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Aadhar Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Pan Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'License') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Police Verification Certificate') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Bank Passbook/Cancelled Cheque/Statement') {
+        selectedDocumentCount++;
+      }
     }
 
     return driverDocPercentage = (selectedDocumentCount / totalFields) * 100;
+  }
+
+  calculateOwnerDocPercentage() {
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
+
+    int totalFields = 2;
+
+    int selectedDocumentCount = 0;
+    for (var i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Owner Aadhar Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Owner Lease Agreement') {
+        selectedDocumentCount++;
+      }
+    }
+    return ownerDocPercentage = (selectedDocumentCount / totalFields) * 100;
+  }
+
+  calculateVehicleDocPercentage() {
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
+
+    int totalFields = 5;
+    int selectedDocumentCount = 0;
+
+    for (var i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Vehicle RC') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Fitness') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Permit') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Insurance') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle PUC') {
+        selectedDocumentCount++;
+      }
+    }
+
+    return vehicleDocPercentage = (selectedDocumentCount / totalFields) * 100;
   }
 
   @override
@@ -889,11 +1172,14 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     super.initState();
     user = Provider.of<AuthProvider>(context, listen: false).user;
     calculateDriverDetailsPercentage();
-    document = Provider.of<DocumentProvider>(context, listen: false).documents;
+    calculateVehicleDetailsPercentage();
+
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
 
     fetchData();
+
     _tabController = TabController(vsync: this, length: 2);
-    calculateDriverDocPercentage();
+    calculateOwnerDetailsPercentage();
   }
 
   @override
@@ -902,6 +1188,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
+    documents = Provider.of<DocumentProvider>(
+      context,
+    ).documents;
 
     return Scaffold(
       backgroundColor: themeColor,
@@ -990,11 +1279,16 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                                           context: context,
                                           // backgroundColor: blackColor3,
                                           name: _nameEditingController.text,
+                                          isNetworkImage: isDriverSlide
+                                              ? user.driver.avatar != ''
+                                              : user.driver.vehicleImage != '',
                                           avatar: isDriverSlide
                                               ? user.driver.avatar != ''
                                                   ? user.driver.avatar
                                                   : imgPath
-                                              : ownerImg,
+                                              : user.driver.vehicleImage != ''
+                                                  ? user.driver.vehicleImage
+                                                  : ownerImg,
                                           radius: 50,
                                           fontSize: 26,
                                           tS: tS),

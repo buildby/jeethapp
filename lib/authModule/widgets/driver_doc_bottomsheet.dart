@@ -72,27 +72,6 @@ class DriverDocBottomSheetWidgetState
         : null;
   }
 
-  void driverGenderBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      context: context,
-      builder: (context) => GestureDetector(
-        child: RadioBtnBtmSheet(
-          updateSelectedCount: updateSelectedModel,
-          selecteditem: selectedVehicleModel,
-          storedSelectedCount: selectGender,
-          entries: const ['Male', 'Female', 'Others'],
-          title: 'selectGender',
-        ),
-      ),
-    );
-  }
-
   getAwsSignedUrl({required String filePath}) async {
     final response =
         await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
@@ -108,6 +87,9 @@ class DriverDocBottomSheetWidgetState
 
   uploadDocument(
       {required String documentName, required PlatformFile file}) async {
+    setState(() {
+      isLoading = true;
+    });
     int docId = 0;
     int i = Provider.of<DocumentProvider>(context, listen: false)
         .documents
@@ -140,12 +122,34 @@ class DriverDocBottomSheetWidgetState
     } else {
       showSnackbar(response['message']);
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   double calculatePercentageFilled() {
     int totalFields = 5;
 
-    int selectedDocumentCount = documents.length;
+    int selectedDocumentCount = 0;
+
+    for (var i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Aadhar Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Pan Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'License') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Police Verification Certificate') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Bank Passbook/Cancelled Cheque/Statement') {
+        selectedDocumentCount++;
+      }
+    }
 
     return (selectedDocumentCount / totalFields) * 100;
   }
@@ -160,10 +164,11 @@ class DriverDocBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+
     calculatePercentageFilled();
 
     fetchData();
-    user = Provider.of<AuthProvider>(context, listen: false).user;
   }
 
   @override
@@ -226,11 +231,11 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
-                      // document: documents.indexWhere((element) => element.filename == 'Aadhar Card') != -1 ?  documents.firstWhere((element) => element.filename == 'Aadhar Card') : null,
+                      // isLoading: isLoading,
                       document: returnDocOrNull('Aadhar Card'),
-                      onFileSelected: (file) {
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          uploadDocument(
+                          await uploadDocument(
                               documentName: 'Aadhar Card', file: file);
                         }
                       },
@@ -255,10 +260,12 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      // isLoading: isLoading,
                       document: returnDocOrNull('Pan Card'),
-                      onFileSelected: (file) {
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          uploadDocument(documentName: 'Pan Card', file: file);
+                          await uploadDocument(
+                              documentName: 'Pan Card', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -282,10 +289,12 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      // isLoading: isLoading,
                       document: returnDocOrNull('License'),
-                      onFileSelected: (file) {
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          uploadDocument(documentName: 'License', file: file);
+                          await uploadDocument(
+                              documentName: 'License', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -309,15 +318,14 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      // isLoading: isLoading,
                       document:
                           returnDocOrNull('Police Verification Certificate'),
-                      onFileSelected: (file) {
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          setState(() {
-                            uploadDocument(
-                                documentName: 'Police Verification Certificate',
-                                file: file);
-                          });
+                          await uploadDocument(
+                              documentName: 'Police Verification Certificate',
+                              file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -342,16 +350,15 @@ class DriverDocBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
+                      // isLoading: isLoading,
                       document: returnDocOrNull(
                           'Bank Passbook/Cancelled Cheque/Statement'),
-                      onFileSelected: (file) {
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          setState(() {
-                            uploadDocument(
-                                documentName:
-                                    'Bank Passbook/Cancelled Cheque/Statement',
-                                file: file);
-                          });
+                          await uploadDocument(
+                              documentName:
+                                  'Bank Passbook/Cancelled Cheque/Statement',
+                              file: file);
                         }
                       },
                       deleteFile: (file) {

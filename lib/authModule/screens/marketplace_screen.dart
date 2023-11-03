@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/widgets/incomplete_prof_bottomsheet_widget.dart';
+import 'package:jeeth_app/authModule/widgets/info_bottomsheet.dart';
 import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
+import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +31,21 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   bool isLoading = false;
   bool isScrolled = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+
+  void infoBottomSheet() {
+    showModalBottomSheet(
+      // isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: dH * 0.5),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => const InfoBottomSheetWidget(),
+    );
+  }
 
   void incompleteProfBottomSheet() {
     showModalBottomSheet(
@@ -69,37 +86,47 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
       backgroundColor: themeColor,
       // appBar: CustomAppBar(title: '', dW: dW),
 
-      body: NestedScrollView(
-        headerSliverBuilder: (
-          context,
-          innerBoxIsScrolled,
-        ) {
-          isScrolled = innerBoxIsScrolled;
-          return [
-            SliverAppBar(
-              leadingWidth: 0,
-              elevation: 0,
-              leading: null,
-              floating: true,
-              backgroundColor: themeColor,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: innerBoxIsScrolled
-                      ? TextWidget(
-                          title: language['marketplace'],
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22,
-                          color: white,
-                        )
-                      : const SizedBox(),
+      body: Container(
+        padding: EdgeInsets.only(top: dW * 0.03),
+        child: NestedScrollView(
+          headerSliverBuilder: (
+            context,
+            innerBoxIsScrolled,
+          ) {
+            isScrolled = innerBoxIsScrolled;
+            return [
+              SliverAppBar(
+                leadingWidth: dW * 0.15,
+                elevation: 0,
+                leading: GestureDetector(
+                  onTap: () => infoBottomSheet(),
+                  child: const Center(
+                    child: AssetSvgIcon(
+                      'info',
+                    ),
+                  ),
+                ),
+                floating: true,
+                backgroundColor: themeColor,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: innerBoxIsScrolled
+                        ? TextWidget(
+                            title: language['marketplace'],
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            color: white,
+                          )
+                        : const SizedBox(),
+                  ),
                 ),
               ),
-            ),
-          ];
-        },
-        body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
+            ];
+          },
+          body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
+        ),
       ),
 
       // body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),

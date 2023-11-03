@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
@@ -33,12 +34,65 @@ class OwnerDetailsBottomSheetWidgetState
   bool isLoading = false;
   fetchData() async {}
   TextEditingController _ownerNameController = TextEditingController();
-  TextEditingController _ownerMobileNumberController = TextEditingController();
+  TextEditingController _ownerPhoneNumberController = TextEditingController();
   TextEditingController _ownerAddressController = TextEditingController();
-
+  bool validatePhone = false;
   FocusNode ownerMobileNumberFocus = FocusNode();
   FocusNode addressFocus = FocusNode();
   FocusNode nameFocus = FocusNode();
+  final _formKey = GlobalKey<FormState>();
+  late User user;
+
+  bool get validateNumber {
+    setState(() {
+      validatePhone = false;
+    });
+    String pattern = r'([6,7,8,9][0-9]{9})';
+    RegExp regExp = RegExp(pattern);
+    String amount = _ownerPhoneNumberController.text.toString();
+
+    if (amount.length < 10 || amount.isEmpty || !regExp.hasMatch(amount)) {
+      setState(() {
+        validatePhone = false;
+      });
+      return false;
+    }
+    setState(() {
+      validatePhone = true;
+    });
+    return true;
+  }
+
+  editProfile() async {
+    bool isValid = _formKey.currentState!.validate();
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+
+    setState(() => isLoading = true);
+    final Map<String, String> body = {
+      'id': user.driver.id.toString(),
+      "ownerName": _ownerNameController.text.trim(),
+      "ownerPhoneNumber": _ownerPhoneNumberController.text.trim(),
+      'ownerAddress': _ownerAddressController.text.trim(),
+    };
+
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .editDriverProfile(
+            body: {'owner': body}, id: user.driver.id.toString());
+    setState(() => isLoading = false);
+
+    if (response['result'] == 'success') {
+      double percentageFilled = calculatePercentageFilled();
+
+      widget.onUpdatePercentage(percentageFilled);
+      pop();
+    } else {
+      showSnackbar(language[response['message']]);
+    }
+  }
 
   double calculatePercentageFilled() {
     int totalFields = 3;
@@ -47,7 +101,7 @@ class OwnerDetailsBottomSheetWidgetState
     if (_ownerNameController.text.isNotEmpty) {
       filledFields++;
     }
-    if (_ownerMobileNumberController.text.isNotEmpty) {
+    if (_ownerPhoneNumberController.text.isNotEmpty) {
       filledFields++;
     }
     if (_ownerAddressController.text.isNotEmpty) {
@@ -66,6 +120,11 @@ class OwnerDetailsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    _ownerNameController.text = user.driver.ownerName;
+    _ownerPhoneNumberController.text = user.driver.ownerPhoneNumber;
+    _ownerAddressController.text = user.driver.ownerAddress;
+    calculatePercentageFilled();
 
     fetchData();
   }
@@ -103,70 +162,83 @@ class OwnerDetailsBottomSheetWidgetState
             //         ),
             //   ],
             // ),
-            Column(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Divider(
-                    indent: dW * 0.27,
-                    endIndent: dW * 0.27,
-                    color: Colors.black,
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: dW * 0.06,
-                  ),
-                  CustomTextFieldWithLabel(
-                      controller: _ownerNameController,
-                      focusNode: nameFocus,
-                      // initValue: vehicleNumber,
-                      label: language['enterOwnerName'],
-                      hintText: language['enterOwnerName']),
-                  SizedBox(
-                    height: dW * 0.04,
-                  ),
-                  CustomTextFieldWithLabel(
-                      controller: _ownerMobileNumberController,
-                      focusNode: ownerMobileNumberFocus,
-                      inputType: TextInputType.phone,
-                      inputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-                      ],
-                      // initValue: vehicleNumber,
-                      label: language['enterOwnerMobileNumber'],
-                      hintText: language['enterOwnerMobileNumber']),
-                  SizedBox(
-                    height: dW * 0.04,
-                  ),
-                  CustomTextFieldWithLabel(
-                      controller: _ownerAddressController,
-                      focusNode: addressFocus,
+            Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Divider(
+                      indent: dW * 0.27,
+                      endIndent: dW * 0.27,
+                      color: Colors.black,
+                      thickness: 5,
+                    ),
+                    SizedBox(
+                      height: dW * 0.06,
+                    ),
+                    CustomTextFieldWithLabel(
+                        controller: _ownerNameController,
+                        focusNode: nameFocus,
+                        textCapitalization: TextCapitalization.words,
+                        // initValue: vehicleNumber,
+                        label: language['enterOwnerName'],
+                        hintText: language['enterOwnerName']),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    CustomTextFieldWithLabel(
+                        controller: _ownerPhoneNumberController,
+                        focusNode: ownerMobileNumberFocus,
+                        inputType: TextInputType.phone,
+                        maxLength: 10,
+                        inputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                        ],
+                        onChanged: (newValue) {
+                          setState(() {
+                            validateNumber;
+                          });
+                        },
+                        // initValue: vehicleNumber,
+                        label: language['enterOwnerMobileNumber'],
+                        hintText: language['enterOwnerMobileNumber']),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                    CustomTextFieldWithLabel(
+                        controller: _ownerAddressController,
+                        focusNode: addressFocus,
+                        textCapitalization: TextCapitalization.sentences,
 
-                      // initValue: vehicleNumber,
-                      label: language['enterownerAddress'],
-                      hintText: language['enterownerAddress']),
-                  SizedBox(
-                    height: dW * 0.04,
-                  ),
-                ],
+                        // initValue: vehicleNumber,
+                        label: language['enterownerAddress'],
+                        hintText: language['enterownerAddress']),
+                    SizedBox(
+                      height: dW * 0.04,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: dW * 0.05,
-                left: dW * 0.1,
-                right: dW * 0.1,
+              Container(
+                margin: EdgeInsets.only(
+                  top: dW * 0.05,
+                  left: dW * 0.1,
+                  right: dW * 0.1,
+                ),
+                child: CustomButton(
+                  isLoading: isLoading,
+                  width: dW,
+                  height: dW * 0.15,
+                  radius: 21,
+                  buttonText: language['save'],
+                  buttonColor: validateNumber ? themeColor : Colors.grey,
+                  onPressed: validateNumber ? editProfile : () {},
+                ),
               ),
-              child: CustomButton(
-                width: dW,
-                height: dW * 0.15,
-                radius: 21,
-                buttonText: language['save'],
-                onPressed: saveForm,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

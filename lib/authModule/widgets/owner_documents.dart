@@ -1,6 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/document_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/widgets/custom_file_widget.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
@@ -33,6 +36,9 @@ class OwnerDocumentsBottomSheetWidgetState
   bool isLoading = false;
   fetchData() async {}
   FocusNode bankDetailsFocus = FocusNode();
+  // Doc? document;
+  late User user;
+  List<Doc> documents = [];
 
   void addDocument(String name, PlatformFile file) {
     setState(() {
@@ -46,16 +52,78 @@ class OwnerDocumentsBottomSheetWidgetState
 //     });
 //   }
   void removeDocument(value) {
-    setState(() {
-      selectedFiles.remove(value);
+    // setState(() {
+    //   selectedFiles.remove(value);
+    // });
+  }
+
+  returnDocOrNull(String docName) {
+    return documents.indexWhere((element) => element.filename == docName) != -1
+        ? documents.firstWhere((element) => element.filename == docName)
+        : null;
+  }
+
+  getAwsSignedUrl({required String filePath}) async {
+    final response =
+        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
+      fileName: filePath.split('/').last,
+      filePath: filePath,
+    );
+    if (response['result'] == 'success') {
+      return response['data']['signedUrl'].split('?')[0];
+    } else {
+      return null;
+    }
+  }
+
+  uploadDocument(
+      {required String documentName, required PlatformFile file}) async {
+    int docId = 0;
+    int i = Provider.of<DocumentProvider>(context, listen: false)
+        .documents
+        .indexWhere((element) => element.filename == documentName);
+    if (i != -1) {
+      final a =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      docId =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
+    }
+
+    final s3Url = await getAwsSignedUrl(
+      filePath: file.path!,
+    );
+
+    if (s3Url == null) {
+      showSnackbar('Failed to upload document');
+      return;
+    }
+
+    final response = await Provider.of<DocumentProvider>(context, listen: false)
+        .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
+      "filename": documentName,
+      "url": s3Url,
+      "filePath": file.path!,
+      "type": file.path!.split('.').last == 'pdf' ? 'Document' : 'Image',
     });
+    if (response['result'] == 'success') {
+      showSnackbar('Document added successfully', greenColor);
+    } else {
+      showSnackbar(response['message']);
+    }
   }
 
   double calculatePercentageFilled() {
     int totalFields = 2;
-    // int filledFields = 0;
 
-    int selectedDocumentCount = selectedFiles.length;
+    int selectedDocumentCount = 0;
+    for (var i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Owner Aadhar Card') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Owner Lease Agreement') {
+        selectedDocumentCount++;
+      }
+    }
 
     return (selectedDocumentCount / totalFields) * 100;
   }
@@ -70,7 +138,10 @@ class OwnerDocumentsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
 
+    // calculatePercentageFilled();
     fetchData();
   }
 
@@ -81,6 +152,7 @@ class OwnerDocumentsBottomSheetWidgetState
 
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
+    documents = Provider.of<DocumentProvider>(context).documents;
 
     return GestureDetector(
       onTap: () => hideKeyBoard(),
@@ -119,8 +191,8 @@ class OwnerDocumentsBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.06,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Aadhaar',
                           fontSize: 14,
@@ -133,11 +205,11 @@ class OwnerDocumentsBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
-                      onFileSelected: (file) {
+                      document: returnDocOrNull('Owner Aadhar Card'),
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          setState(() {
-                            selectedFiles.add(file);
-                          });
+                          await uploadDocument(
+                              documentName: 'Owner Aadhar Card', file: file);
                         }
                       },
                       deleteFile: (file) {
@@ -147,8 +219,8 @@ class OwnerDocumentsBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Lease Agreement',
                           fontSize: 14,
@@ -161,11 +233,12 @@ class OwnerDocumentsBottomSheetWidgetState
                       ],
                     ),
                     FilePickerWidget(
-                      onFileSelected: (file) {
+                      document: returnDocOrNull('Owner Lease Agreement'),
+                      onFileSelected: (file) async {
                         if (file != null) {
-                          setState(() {
-                            selectedFiles.add(file);
-                          });
+                          await uploadDocument(
+                              documentName: 'Owner Lease Agreement',
+                              file: file);
                         }
                       },
                       deleteFile: (file) {

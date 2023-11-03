@@ -1,11 +1,14 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:jeeth_app/authModule/models/document_model.dart';
 import 'package:jeeth_app/colors.dart';
+import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 
 class FilePickerWidget extends StatefulWidget {
-  final Function(PlatformFile?) onFileSelected;
+  Future<void> Function(PlatformFile?) onFileSelected;
   final Function(PlatformFile?) deleteFile;
   final Doc? document;
 
@@ -25,6 +28,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
   PlatformFile? selectedFile;
   double dH = 0.0;
   double dW = 0.0;
+  bool isLoading = false;
 
   Future<void> _pickFile() async {
     try {
@@ -32,6 +36,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
         type: FileType.custom,
         allowedExtensions: [
           'pdf',
+          'PDF',
           'jpeg',
           'png',
           'jpg',
@@ -42,7 +47,13 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
         setState(() {
           selectedFile = result.files.first;
         });
-        widget.onFileSelected(selectedFile);
+        setState(() {
+          isLoading = true;
+        });
+        await widget.onFileSelected(selectedFile);
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       print('Error picking file: $e');
@@ -64,7 +75,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: selectedFile == null ? _pickFile : null,
+      onTap: isLoading ? null : _pickFile,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -89,19 +100,8 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
               ),
             ),
             widget.document != null
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _removeFile();
-                        // widget.deleteFile;
-                      });
-                    },
-                    child: Icon(
-                      Icons.edit,
-                      color: themeColor,
-                    ))
-                : selectedFile == null
-                    ? const Icon(Icons.add)
+                ? isLoading
+                    ? circularForButton(23, sW: 2, color: themeColor)
                     : GestureDetector(
                         onTap: () {
                           setState(() {
@@ -110,11 +110,26 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
                           });
                         },
                         child: Icon(
-                          // Icons.remove,
                           Icons.edit,
-
                           color: themeColor,
-                        )),
+                        ))
+                : selectedFile == null
+                    ? const Icon(Icons.add)
+                    : isLoading
+                        ? circularForButton(23, sW: 2, color: themeColor)
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _removeFile();
+                                // widget.deleteFile;
+                              });
+                            },
+                            child: Icon(
+                              // Icons.remove,
+                              Icons.edit,
+
+                              color: themeColor,
+                            )),
           ],
         ),
       ),

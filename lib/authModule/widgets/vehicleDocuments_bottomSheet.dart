@@ -1,6 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/document_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/widgets/custom_file_widget.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
@@ -32,11 +35,13 @@ class VehicleDocumentsBottomSheetWidgetState
   bool isLoading = false;
   fetchData() async {}
   TextEditingController documentNameController = TextEditingController();
+  late User user;
+  List<Doc> documents = [];
 
   void removeDocument(value) {
-    setState(() {
-      selectedFiles.remove(value);
-    });
+    // setState(() {
+    //   selectedFiles.remove(value);
+    // });
   }
 
   Future<void> showAddDocumentDialog(
@@ -171,20 +176,89 @@ class VehicleDocumentsBottomSheetWidgetState
     });
   }
 
-  double calculatePercentageFilled() {
-    int totalRequiredDocuments = 5;
-    // + (selectedFiles.length);
-
-    int selectedDocumentCount = selectedFiles.length;
-
-    double percentageFilled =
-        (selectedDocumentCount / totalRequiredDocuments) * 100;
-
-    return percentageFilled;
+  returnDocOrNull(String docName) {
+    return documents.indexWhere((element) => element.filename == docName) != -1
+        ? documents.firstWhere((element) => element.filename == docName)
+        : null;
   }
 
-  void saveFiles() {
+  getAwsSignedUrl({required String filePath}) async {
+    final response =
+        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
+      fileName: filePath.split('/').last,
+      filePath: filePath,
+    );
+    if (response['result'] == 'success') {
+      return response['data']['signedUrl'].split('?')[0];
+    } else {
+      return null;
+    }
+  }
+
+  uploadDocument(
+      {required String documentName, required PlatformFile file}) async {
+    int docId = 0;
+    int i = Provider.of<DocumentProvider>(context, listen: false)
+        .documents
+        .indexWhere((element) => element.filename == documentName);
+    if (i != -1) {
+      final a =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      docId =
+          Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
+    }
+
+    final s3Url = await getAwsSignedUrl(
+      filePath: file.path!,
+    );
+
+    if (s3Url == null) {
+      showSnackbar('Failed to upload document');
+      return;
+    }
+
+    final response = await Provider.of<DocumentProvider>(context, listen: false)
+        .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
+      "filename": documentName,
+      "url": s3Url,
+      "filePath": file.path!,
+      "type": file.path!.split('.').last == 'pdf' ? 'Document' : 'Image',
+    });
+    if (response['result'] == 'success') {
+      showSnackbar('Document added successfully', greenColor);
+    } else {
+      showSnackbar(response['message']);
+    }
+  }
+
+  double calculatePercentageFilled() {
+    int totalFields = 5;
+    int selectedDocumentCount = 0;
+
+    for (var i = 0; i < documents.length; i++) {
+      if (documents[i].filename == 'Vehicle RC') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Fitness') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Permit') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle Insurance') {
+        selectedDocumentCount++;
+      }
+      if (documents[i].filename == 'Vehicle PUC') {
+        selectedDocumentCount++;
+      }
+    }
+
+    return (selectedDocumentCount / totalFields) * 100;
+  }
+
+  void saveForm() {
     double percentageFilled = calculatePercentageFilled();
+
     widget.onUpdatePercentage(percentageFilled);
     pop();
   }
@@ -192,6 +266,8 @@ class VehicleDocumentsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    documents = Provider.of<DocumentProvider>(context, listen: false).documents;
 
     fetchData();
   }
@@ -240,8 +316,8 @@ class VehicleDocumentsBottomSheetWidgetState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload RC',
                         fontSize: 14,
@@ -254,11 +330,11 @@ class VehicleDocumentsBottomSheetWidgetState
                     ],
                   ),
                   FilePickerWidget(
-                    onFileSelected: (file) {
+                    document: returnDocOrNull('Vehicle RC'),
+                    onFileSelected: (file) async {
                       if (file != null) {
-                        setState(() {
-                          selectedFiles.add(file);
-                        });
+                        await uploadDocument(
+                            documentName: 'Vehicle RC', file: file);
                       }
                     },
                     deleteFile: (file) {
@@ -268,8 +344,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Fitness',
                         fontSize: 14,
@@ -282,11 +358,11 @@ class VehicleDocumentsBottomSheetWidgetState
                     ],
                   ),
                   FilePickerWidget(
-                    onFileSelected: (file) {
+                    document: returnDocOrNull('Vehicle Fitness'),
+                    onFileSelected: (file) async {
                       if (file != null) {
-                        setState(() {
-                          selectedFiles.add(file);
-                        });
+                        await uploadDocument(
+                            documentName: 'Vehicle Fitness', file: file);
                       }
                     },
                     deleteFile: (file) {
@@ -296,8 +372,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Permit',
                         fontSize: 14,
@@ -310,11 +386,11 @@ class VehicleDocumentsBottomSheetWidgetState
                     ],
                   ),
                   FilePickerWidget(
-                    onFileSelected: (file) {
+                    document: returnDocOrNull('Vehicle Permit'),
+                    onFileSelected: (file) async {
                       if (file != null) {
-                        setState(() {
-                          selectedFiles.add(file);
-                        });
+                        await uploadDocument(
+                            documentName: 'Vehicle Permit', file: file);
                       }
                     },
                     deleteFile: (file) {
@@ -324,8 +400,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Insurance',
                         fontSize: 14,
@@ -338,11 +414,11 @@ class VehicleDocumentsBottomSheetWidgetState
                     ],
                   ),
                   FilePickerWidget(
-                    onFileSelected: (file) {
+                    document: returnDocOrNull('Vehicle Insurance'),
+                    onFileSelected: (file) async {
                       if (file != null) {
-                        setState(() {
-                          selectedFiles.add(file);
-                        });
+                        await uploadDocument(
+                            documentName: 'Vehicle Insurance', file: file);
                       }
                     },
                     deleteFile: (file) {
@@ -352,8 +428,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload PUC',
                         fontSize: 14,
@@ -366,11 +442,11 @@ class VehicleDocumentsBottomSheetWidgetState
                     ],
                   ),
                   FilePickerWidget(
-                    onFileSelected: (file) {
+                    document: returnDocOrNull('Vehicle PUC'),
+                    onFileSelected: (file) async {
                       if (file != null) {
-                        setState(() {
-                          selectedFiles.add(file);
-                        });
+                        await uploadDocument(
+                            documentName: 'Vehicle PUC', file: file);
                       }
                     },
                     deleteFile: (file) {
@@ -419,7 +495,7 @@ class VehicleDocumentsBottomSheetWidgetState
               height: dW * 0.15,
               radius: 21,
               buttonText: language['save'],
-              onPressed: saveFiles,
+              onPressed: saveForm,
             ),
           ),
         ],

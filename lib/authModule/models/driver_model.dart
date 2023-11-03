@@ -1,3 +1,4 @@
+import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
 import 'package:jeeth_app/common_functions.dart';
 
 class Driver {
@@ -13,7 +14,11 @@ class Driver {
   String accNumber;
   String ifscCode;
   String address;
-
+  String ownerName;
+  String ownerPhoneNumber;
+  String ownerAddress;
+  String vehicleImage;
+  Vehicle vehicle;
   String accessToken;
   String fcmToken;
   bool isActive;
@@ -31,6 +36,11 @@ class Driver {
     this.ifscCode = '',
     this.avatar = '',
     this.gender = '',
+    this.ownerName = '',
+    this.ownerPhoneNumber = '',
+    this.ownerAddress = '',
+    this.vehicleImage = '',
+    required this.vehicle,
     this.accessToken = '',
     this.fcmToken = '',
     this.isActive = false,
@@ -51,6 +61,17 @@ class Driver {
         email: driver['email'] ?? '',
         dob: getParseDate(driver['dob']),
         avatar: driver['avatar'] ?? '',
+        ownerName: driver['ownerName'] ?? '',
+        ownerAddress: driver['ownerAddress'] ?? '',
+        ownerPhoneNumber: driver['ownerPhoneNumber'] ?? '',
+        vehicleImage: driver['vehicleImage'] ?? '',
+        vehicle: Vehicle(
+          vehicleModel: driver['vehicleModel'] ?? '',
+          vehicleType: driver['vehicleType'] ?? '',
+          vehicleMake: driver['vehicleMake'] ?? '',
+          vehicleNumber: driver['vehicleNumber'] ?? '',
+          vehicleYear: driver['vehicleYear'] ?? '',
+        ),
 
         isActive: driver['isActive'] ?? true,
 

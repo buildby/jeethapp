@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
@@ -64,11 +65,14 @@ class DriverDetailsBottomSheetWidgetState
   late User user;
 
   _selectDate(BuildContext context) async {
+    DateTime currentDate = DateTime.now();
+    DateTime firstDate = currentDate.subtract(Duration(days: 18 * 365));
+
     DateTime? newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate != null ? _selectedDate! : DateTime.now(),
+      initialDate: _selectedDate ?? firstDate,
       firstDate: DateTime(1950),
-      lastDate: DateTime(2040),
+      lastDate: firstDate,
       // builder: (BuildContext context, Widget? child) {
       //   return Theme(
       //     data: ThemeData.dark().copyWith(
@@ -115,6 +119,13 @@ class DriverDetailsBottomSheetWidgetState
   String? validateDob(String value) {
     if (value.isEmpty) {
       return 'Please enter your date of birth';
+    }
+    return null;
+  }
+
+  String? validateConfirmAccNumber(String value) {
+    if (confirmAccNumberController.text != accNumberController.text) {
+      return 'Please enter same account number';
     }
     return null;
   }
@@ -219,6 +230,7 @@ class DriverDetailsBottomSheetWidgetState
     if (accNumberController.text != confirmAccNumberController.text ||
         accNumberController.text.isEmpty ||
         confirmAccNumberController.text.isEmpty ||
+        ifscController.text.isEmpty ||
         name.isEmpty ||
         email.isEmpty ||
         dob.isEmpty ||
@@ -262,9 +274,7 @@ class DriverDetailsBottomSheetWidgetState
 
     final response = await Provider.of<AuthProvider>(context, listen: false)
         .editDriverProfile(
-      body: body,
-      files: files,
-    );
+            body: {'driver': body}, id: user.driver.id.toString());
     setState(() => isLoading = false);
 
     if (response['result'] == 'success') {
@@ -361,6 +371,14 @@ class DriverDetailsBottomSheetWidgetState
                       CustomTextFieldWithLabel(
                           textCapitalization: TextCapitalization.words,
                           controller: nameController,
+                          onChanged: (text) {
+                            final words = text.split(' ');
+
+                            if (words.length > 2) {
+                              nameController.text =
+                                  words.sublist(0, 2).join(' ');
+                            }
+                          },
                           focusNode: nameFocus,
                           label: language['name'],
                           hintText: language['name']),
@@ -517,6 +535,7 @@ class DriverDetailsBottomSheetWidgetState
                       CustomTextFieldWithLabel(
                           controller: confirmAccNumberController,
                           focusNode: confirmAccFocus,
+                          validator: validateConfirmAccNumber,
                           // obscureText: true,
                           maxLines: 1,
                           label: language['confimrAccNumber'],
@@ -526,6 +545,7 @@ class DriverDetailsBottomSheetWidgetState
                       ),
                       CustomTextFieldWithLabel(
                           controller: ifscController,
+                          textCapitalization: TextCapitalization.characters,
                           focusNode: ifscFocus,
                           label: language['ifscCode'],
                           hintText: language['ifscCode']),

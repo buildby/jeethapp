@@ -29,7 +29,7 @@ class VehicleMakeWidgetState extends State<VehicleMakeWidget> {
   fetchData() async {}
 
   String? selectedMake;
-  List<String> makes = ['SUV', 'Sedan', 'Hatchback'];
+  List<String> makes = [];
   void selectMake(String make) {
     widget.updateSelectedCount(make);
     setState(() {
@@ -41,6 +41,7 @@ class VehicleMakeWidgetState extends State<VehicleMakeWidget> {
   @override
   void initState() {
     super.initState();
+    makes = Provider.of<AuthProvider>(context, listen: false).makes;
     selectedMake = widget.selectedVehicleMake;
     if (widget.storedSelectedCount != null) {
       selectedMake = widget.storedSelectedCount;
