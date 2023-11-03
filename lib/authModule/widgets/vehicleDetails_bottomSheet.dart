@@ -463,6 +463,7 @@ class VehicleDetailsBottomSheetWidgetState
               right: dW * 0.1,
             ),
             child: CustomButton(
+              isLoading: isLoading,
               width: dW,
               height: dW * 0.15,
               radius: 21,

@@ -115,11 +115,7 @@ class SplashScreenState extends State<SplashScreen> {
                 const Duration(
                   seconds: 2,
                 ), () {
-              // if (user.isLocationAllowed) {
-              //   checkAndGetLocationPermission();
-              // } else {
-              //   push(NamedRoute.locationScreen);
-              // }
+              //  if()
             });
           } else {
             goToOnBoardingScreen();

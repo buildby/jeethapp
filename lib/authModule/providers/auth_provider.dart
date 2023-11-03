@@ -372,6 +372,15 @@ class AuthProvider with ChangeNotifier {
         response['data']['user']['driver'] = response['data']['driver'];
         user = User.jsonToUser(response['data']['user'],
             accessToken: response['token']);
+
+        await storage.ready;
+        await storage.setItem(
+            'accessToken',
+            json.encode({
+              "token": user.accessToken,
+              "phone": user.phone,
+            }));
+
         // user = User.jsonToUser(response['data']['driver'],
         //     accessToken: response['token']);
       }
