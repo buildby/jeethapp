@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  final LocalStorage storage = LocalStorage('re_household');
+  final LocalStorage storage = LocalStorage('jeeth_app');
   bool isLoggedOut = true;
   bool isFetchingFleetData = true;
   bool isLoading = false;
@@ -105,18 +105,16 @@ class SplashScreenState extends State<SplashScreen> {
         var accessToken = json.decode(accessTokenString);
         if (accessToken != null) {
           final loginResponse =
-              await authProvider.login(query: "?phone=${accessToken['phone']}");
+              await authProvider.driverAutoLogin(phone: accessToken['phone']);
 
-          if (loginResponse['success'] &&
-              loginResponse['login'] &&
+          if (loginResponse['result'] == 'success' &&
+              loginResponse['data']['user'] != null &&
               languageResponse['success']) {
             final user = Provider.of<AuthProvider>(context, listen: false).user;
             Future.delayed(
-                const Duration(
-                  seconds: 2,
-                ), () {
-              //  if()
-            });
+                const Duration(seconds: 2),
+                () => pushAndRemoveUntil(NamedRoute.bottomNavBarScreen,
+                    arguments: BottomNavArguments()));
           } else {
             goToOnBoardingScreen();
           }

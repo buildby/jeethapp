@@ -380,7 +380,8 @@ class AuthProvider with ChangeNotifier {
               "token": user.accessToken,
               "phone": user.phone,
             }));
-
+        final accessTokenString = storage.getItem('accessToken');
+        print(accessTokenString);
         // user = User.jsonToUser(response['data']['driver'],
         //     accessToken: response['token']);
       }
@@ -428,24 +429,21 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future login({required String query}) async {
+  Future driverAutoLogin({required String phone}) async {
     // String? fcmToken = await FirebaseMessaging.instance.getToken();
     // if (fcmToken != null && fcmToken != '') {
     //   query += '&fcmToken=$fcmToken';
     // }
 
     try {
-      final url = '${webApi['domain']}${endPoint['login']}$query';
+      final url = '${webApi['domain']}${endPoint['driverAutoLogin']}/$phone';
       final response =
           await RemoteServices.httpRequest(method: 'GET', url: url);
 
-      if (response['success'] && response['login']) {
-        user = User.jsonToUser(
-          response['result'],
-          accessToken: response['accessToken'],
-        );
-
-        // user.fcmToken = fcmToken ?? '';
+      if (response['result'] == 'success' && response['data']['user'] != null) {
+        response['data']['user']['driver'] = response['data']['driver'];
+        user = User.jsonToUser(response['data']['user'],
+            accessToken: response['token']);
 
         await storage.ready;
         await storage.setItem(
@@ -458,7 +456,7 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return response;
     } catch (error) {
-      return {'success': false, 'login': false};
+      return {'result': 'Faliure'};
     }
   }
 

@@ -1,11 +1,8 @@
 // var webApi = {'domain': 'https://api.jeeth.co.in'}; //PROD
 // var webApi = {'domain': 'http://43.205.30.95:3000'}; //DEV PROD
 // var webApi = {'domain': 'http://192.168.1.33:3000'}; // Atharv Home
-// var webApi = {'domain': 'http://192.168.0.5:3000'}; // Atharv Work
-// var webApi = {'domain': 'http://172.20.10.5:3000'}; // Atharv Hotspot
-// var webApi = {'domain': 'http://192.168.227.72:3000'}; // Salman
+var webApi = {'domain': 'http://192.168.90.72:3000'}; // Salman
 // var webApi = {'domain': 'http://192.168.1.2:3000'}; // Darshan wifi
-var webApi = {'domain': 'http://192.168.232.161:3000'}; // Darshan hotspot2
 // var webApi = {'domain': 'http://192.168.2.161:3000'}; // Darshan hotspot
 
 var endPoint = {
@@ -23,6 +20,7 @@ var endPoint = {
   'verifyOTPofUser': '/auth/verify-otp',
   'resendOTPtoUser': '/auth/resend-otp',
   'login': '/user/login',
+  'driverAutoLogin': '/auth/driverAutoLogin',
   'register': '/user/register',
   'deleteFCMToken': '/user/deleteFCMToken',
   'updateAddress': '/user/updateAddress',
