@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
@@ -9,6 +10,8 @@ import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
+
+import '../../authModule/models/user_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -28,11 +31,24 @@ class HomeScreenState extends State<HomeScreen> {
   double tS = 0.0;
   //  late User user;
   Map language = {};
-  bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
-  fetchData() async {
+  late User user;
+  bool isLoading = false;
+
+  List<Marketplace> marketplaces = [];
+
+  fetchMarketPlace() async {
     setState(() => isLoading = true);
+
+    final response =
+        await Provider.of<MarketplaceProvider>(context, listen: false)
+            .fetchMarketPlace(
+      accessToken: user.accessToken,
+    );
+    if (response['result'] == 'success') {
+      // showSnackbar(response['message']);
+    }
     setState(() => isLoading = false);
   }
 
@@ -40,8 +56,8 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
-    fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    fetchMarketPlace();
   }
 
   @override
@@ -80,7 +96,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   screenBody() {
-    final marketplace =
+    marketplaces =
         Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
     return isLoading
         ? const Center(child: CircularLoader())
@@ -126,7 +142,7 @@ class HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         child: ListView.builder(
-                          itemCount: marketplace.length,
+                          itemCount: marketplaces.length,
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => GestureDetector(
@@ -134,11 +150,11 @@ class HomeScreenState extends State<HomeScreen> {
                               widget.onIndexChanged(0);
                               push(NamedRoute.exploreDealScreen,
                                   arguments: ExploreDealScreenArguments(
-                                      marketplace: marketplace[index]));
+                                      marketplace: marketplaces[index]));
                             },
                             child: MarketplaceWidget(
-                              key: ValueKey(marketplace[index].id),
-                              marketplace: marketplace[index],
+                              key: ValueKey(marketplaces[index].id),
+                              marketplace: marketplaces[index],
                             ),
                           ),
                         ),

@@ -8,6 +8,8 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/cached_image_widget.dart';
+
 class MarketplaceWidget extends StatefulWidget {
   final Marketplace marketplace;
   bool loggedIn;
@@ -25,16 +27,6 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
-
-  fetchData() async {
-    setState(() => isLoading = true);
-    setState(() => isLoading = false);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +49,21 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                widget.marketplace.image,
-                scale: 1.8,
-              ),
+            children: const [
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(3),
+              //   child: CachedImageWidget(
+              //     widget.marketplace.clientSite.avatar,
+              //     boxFit: BoxFit.cover,
+              //     width: dW * 0.1,
+              //     height: dW * 0.1,
+              //   ),
+              // ),
+              // Image.network(widget.marketplace.clientSite.avatar, scale: 1.8)
+              // Image.asset(
+              //   widget.marketplace.image,
+              //   scale: 1.8,
+              // ),
             ],
           ),
           // SizedBox(
