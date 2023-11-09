@@ -194,7 +194,7 @@ class EarningsScreenState extends State<EarningsScreen> {
       child: isLoading
           ? const Center(child: CircularLoader())
           : Stack(
-              clipBehavior: Clip.none,
+              //  clipBehavior: Clip.none,
               children: [
                 Container(
                   color: white,
@@ -212,7 +212,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                   top: 15,
                   left: 0,
                   right: 0,
-                  child: Padding(
+                  child: Container(
+                    height: dH - (dH * 0.25),
                     padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                     child: SingleChildScrollView(
                       child: Column(
@@ -456,6 +457,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                             sideTitles:
                                                 SideTitles(showTitles: false)),
                                         bottomTitles: AxisTitles(
+                                          // axisNameSize: 10,
                                           sideTitles: _bottomTitles,
                                         ),
 

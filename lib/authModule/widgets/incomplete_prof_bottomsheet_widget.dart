@@ -44,8 +44,7 @@ class IncompleteProfBottomSheetWidgetState
 
     return Container(
       padding: EdgeInsets.symmetric(
-          vertical: dW * horizontalPaddingFactor,
-          horizontal: dW * horizontalPaddingFactor),
+          vertical: dW * 0.04, horizontal: dW * horizontalPaddingFactor),
       child: Column(
         children: [
           Expanded(
@@ -87,7 +86,7 @@ class IncompleteProfBottomSheetWidgetState
           ),
           Container(
             margin: EdgeInsets.only(
-                left: dW * 0.1, right: dW * 0.1, bottom: dW * 0.1),
+                left: dW * 0.1, right: dW * 0.1, bottom: dW * 0.05),
             child: CustomButton(
               width: dW,
               height: dW * 0.15,

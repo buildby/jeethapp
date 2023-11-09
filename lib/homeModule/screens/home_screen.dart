@@ -67,6 +67,9 @@ class HomeScreenState extends State<HomeScreen> {
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
+    marketplaces =
+        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+
     return Scaffold(
       // key: _scaffoldKey,
       // drawer: const MyNavigationDrawer(),
@@ -96,8 +99,6 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   screenBody() {
-    marketplaces =
-        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(

@@ -1,14 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/agreement_widget.dart';
 import 'package:jeeth_app/authModule/widgets/submitted_widget.dart';
 import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
-import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
-import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 class AgreementBottomSheetWidget extends StatefulWidget {
@@ -58,9 +56,8 @@ class AgreementBottomSheetWidgetState
       children: [
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(
-                vertical: dW * horizontalPaddingFactor,
-                horizontal: dW * horizontalPaddingFactor),
+            padding:
+                EdgeInsets.symmetric(horizontal: dW * horizontalPaddingFactor),
             child: currentWidget,
           ),
         ),

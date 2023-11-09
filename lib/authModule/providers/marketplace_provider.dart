@@ -34,4 +34,37 @@ class MarketplaceProvider with ChangeNotifier {
       };
     }
   }
+
+  //   String _bankName = '';
+
+  // String get bankName => _bankName;
+
+  // getBankName({required String ifsc}) async {
+  //   try {
+  //     final url = 'https://ifsc.razorpay.com/$ifsc';
+  //     final response =
+  //         await RemoteServices.httpRequest(method: 'GET', url: url);
+
+  //     if (response['result'] == 'success') {
+  //       _bankName = response['BANK'];
+  //       notifyListeners();
+  //     }
+  //     return response;
+  //   } catch (e) {
+  //     return 'Not Found';
+  //   }
+  // }
+
+  getBankName({required String ifsc}) async {
+    try {
+      final url = 'https://ifsc.razorpay.com/$ifsc';
+      final response =
+          await RemoteServices.httpRequest(method: 'GET', url: url);
+
+      if (response['result'] == 'success') {}
+      return response;
+    } catch (e) {
+      return 'Not Found';
+    }
+  }
 }

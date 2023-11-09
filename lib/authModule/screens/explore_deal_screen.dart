@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class ExploreDealScreen extends StatefulWidget {
   final ExploreDealScreenArguments args;
-  ExploreDealScreen({
+  const ExploreDealScreen({
     Key? key,
     required this.args,
   }) : super(key: key);
@@ -27,6 +27,8 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
+
+  late Map businessModel;
   //  late User user;
   String imgPath = '';
   String ownerImg = '';
@@ -79,12 +81,20 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
     setState(() => isLoading = false);
   }
 
+  Map slots = {};
+
+  List getSlots(Map slots) {
+    return slots.keys.toList();
+  }
+
   @override
   void initState() {
     super.initState();
 
     // user = Provider.of<AuthProvider>(context, listen: false).user;
     // fetchData();
+    slots = widget.args.marketplace.data;
+    businessModel = widget.args.marketplace.clientSite.businessModel.last;
   }
 
   @override
@@ -285,8 +295,11 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                           width: dW,
                           margin: EdgeInsets.only(
                               top: dW * 0.03, bottom: dW * 0.03),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: dW * 0.04, vertical: dW * 0.05),
+                          padding: EdgeInsets.only(
+                              left: dW * 0.04,
+                              right: dW * 0.04,
+                              top: dW * 0.03,
+                              bottom: dW * 0.02),
                           decoration: BoxDecoration(
                             color: white,
                             borderRadius: BorderRadius.circular(10),
@@ -311,14 +324,14 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                       children: [
                                         Row(
                                           children: [
-                                            TextWidget(
-                                              title:
-                                                  '${language['company']} : ',
-                                              fontWeight: FontWeight.w300,
-                                              color: const Color(0xff242E42),
-                                            ),
+                                            // TextWidget(
+                                            //   title:
+                                            //       '${language['company']} : ',
+                                            //   fontWeight: FontWeight.w300,
+                                            //   color: const Color(0xff242E42),
+                                            // ),
                                             Image.asset(
-                                              widget.args.marketplace.image,
+                                              'assets/images/google.png',
                                               scale: 6,
                                             ),
                                             SizedBox(
@@ -331,7 +344,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                                 textOverflow:
                                                     TextOverflow.ellipsis,
                                                 title: widget.args.marketplace
-                                                    .companyName,
+                                                    .clientSite.name,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
@@ -389,40 +402,39 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                               ),
                               Wrap(
                                 children: [
-                                  for (int i = 0; i < 8; i++)
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        right: i == 5 ? 0 : dW * 0.025,
-                                        bottom: dW * 0.03,
-                                      ),
-                                      padding: EdgeInsets.only(
-                                        left: dW * 0.02,
-                                        right: dW * 0.015,
-                                        top: dW * 0.01,
-                                        bottom: dW * 0.01,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: ((i == 3) || (i == 5))
-                                            ? const Color(0xffD5FBE0)
-                                            : const Color(0xffFCF4CB),
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                      child: TextWidgetRoboto(
-                                        title: [
-                                          '05:30',
-                                          '08:30',
-                                          '10:40',
-                                          '13:00',
-                                          '18:00',
-                                          '13:00',
-                                          '18:00',
-                                          '20:30'
-                                        ][i],
-                                        color: const Color(0xff505050),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                  ...getSlots(slots['loginSlot'])
+                                      .map(
+                                        (time) => Container(
+                                          margin: EdgeInsets.only(
+                                            right:
+                                                //  i == 5 ? 0 :
+                                                dW * 0.025,
+                                            bottom: dW * 0.03,
+                                          ),
+                                          padding: EdgeInsets.only(
+                                            left: dW * 0.02,
+                                            right: dW * 0.015,
+                                            top: dW * 0.01,
+                                            bottom: dW * 0.01,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                // ((i == 3) || (i == 5))
+                                                //     ? const Color(0xffD5FBE0)
+                                                //     :
+                                                const Color(0xffFCF4CB),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          child: TextWidgetRoboto(
+                                            title: time,
+                                            color: const Color(0xff505050),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      )
+                                      .toList()
                                 ],
                               ),
                               SizedBox(
@@ -439,40 +451,39 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                               ),
                               Wrap(
                                 children: [
-                                  for (int i = 0; i < 8; i++)
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        right: i == 5 ? 0 : dW * 0.025,
-                                        bottom: dW * 0.03,
-                                      ),
-                                      padding: EdgeInsets.only(
-                                        left: dW * 0.02,
-                                        right: dW * 0.015,
-                                        top: dW * 0.01,
-                                        bottom: dW * 0.01,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: ((i == 3) || (i == 5))
-                                            ? const Color(0xffD5FBE0)
-                                            : const Color(0xffFCF4CB),
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                      child: TextWidgetRoboto(
-                                        title: [
-                                          '05:30',
-                                          '08:30',
-                                          '10:40',
-                                          '13:00',
-                                          '18:00',
-                                          '13:00',
-                                          '18:00',
-                                          '20:30'
-                                        ][i],
-                                        color: const Color(0xff505050),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                  ...getSlots(slots['logoutSlot'])
+                                      .map(
+                                        (time) => Container(
+                                          margin: EdgeInsets.only(
+                                            right:
+                                                //  i == 5 ? 0 :
+                                                dW * 0.025,
+                                            bottom: dW * 0.03,
+                                          ),
+                                          padding: EdgeInsets.only(
+                                            left: dW * 0.02,
+                                            right: dW * 0.015,
+                                            top: dW * 0.01,
+                                            bottom: dW * 0.01,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                // ((i == 3) || (i == 5))
+                                                //     ? const Color(0xffD5FBE0)
+                                                //     :
+                                                const Color(0xffFCF4CB),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                          child: TextWidgetRoboto(
+                                            title: time,
+                                            color: const Color(0xff505050),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      )
+                                      .toList()
                                 ],
                               ),
                             ],
@@ -481,8 +492,11 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                         Container(
                           width: dW,
                           margin: EdgeInsets.only(bottom: dW * 0.03),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: dW * 0.04, vertical: dW * 0.05),
+                          padding: EdgeInsets.only(
+                              left: dW * 0.04,
+                              right: dW * 0.04,
+                              top: dW * 0.03,
+                              bottom: dW * 0.02),
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color(0xffF4F4F4), width: 1),
@@ -500,18 +514,20 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Column(
                                         children: [
                                           Row(
-                                            children: const [
-                                              TextWidget(
+                                            children: [
+                                              const TextWidget(
                                                 title: 'Business model : ',
                                                 fontWeight: FontWeight.w300,
                                               ),
                                               TextWidget(
-                                                title: 'Trip wise',
+                                                title: businessModel['type'],
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ],
@@ -524,9 +540,9 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                       color: Color(0xff767676),
                                       fontWeight: FontWeight.w300,
                                     ),
-                                    SizedBox(
-                                      width: dW * 0.08,
-                                    ),
+                                    // SizedBox(
+                                    //   width: dW * 0.08,
+                                    // ),
                                   ],
                                 ),
                                 SizedBox(
@@ -578,7 +594,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                       // crossAxisAlignment:
                                       //     CrossAxisAlignment.end,
                                       children: [
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '\u20b9',
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
@@ -587,7 +603,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                         SizedBox(
                                           width: dW * 0.01,
                                         ),
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '466.82',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
@@ -642,7 +658,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                       // crossAxisAlignment:
                                       //     CrossAxisAlignment.end,
                                       children: [
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '\u20b9',
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
@@ -651,7 +667,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                         SizedBox(
                                           width: dW * 0.01,
                                         ),
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '533.26',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
@@ -706,7 +722,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                       // crossAxisAlignment:
                                       //     CrossAxisAlignment.end,
                                       children: [
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '\u20b9',
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
@@ -715,7 +731,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                         SizedBox(
                                           width: dW * 0.01,
                                         ),
-                                        TextWidgetRoboto(
+                                        const TextWidgetRoboto(
                                           title: '679.15',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
@@ -734,8 +750,8 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                           margin: EdgeInsets.only(
                               left: dW * 0.15,
                               right: dW * 0.15,
-                              // bottom: dW * 0.1,
-                              top: dW * 0.05),
+                              bottom: dW * 0.2,
+                              top: dW * 0.02),
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(

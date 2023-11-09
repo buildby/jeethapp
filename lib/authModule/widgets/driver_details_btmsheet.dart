@@ -16,6 +16,8 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/marketplace_provider.dart';
+
 class DriverDetailsBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
   DriverDetailsBottomSheetWidget({super.key, required this.onUpdatePercentage});
@@ -33,6 +35,7 @@ class DriverDetailsBottomSheetWidgetState
   TextTheme customTextTheme = const TextTheme();
   Map language = {};
   bool isLoading = false;
+  bool isIfsc = false;
   String? selectedGender;
   String? selectedBank;
 
@@ -63,6 +66,24 @@ class DriverDetailsBottomSheetWidgetState
 
   final _formKey = GlobalKey<FormState>();
   late User user;
+
+  bool ifscInvalid = false;
+
+  getBankName() async {
+    setState(() => isIfsc = true);
+
+    final response =
+        await Provider.of<MarketplaceProvider>(context, listen: false)
+            .getBankName(ifsc: ifscController.text);
+    if (response is String) {
+      ifscInvalid = true;
+    } else {
+      selectBank = response['BANK'];
+      ifscInvalid = false;
+    }
+    setState(() => isIfsc = false);
+    return response;
+  }
 
   _selectDate(BuildContext context) async {
     DateTime currentDate = DateTime.now();
@@ -323,6 +344,9 @@ class DriverDetailsBottomSheetWidgetState
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
+    // final bankName =
+    //     Provider.of<MarketplaceProvider>(context, listen: false).bankName;
+
     return GestureDetector(
       onTap: () => hideKeyBoard(),
       child: Container(
@@ -477,6 +501,38 @@ class DriverDetailsBottomSheetWidgetState
                       SizedBox(
                         height: dW * 0.04,
                       ),
+                      CustomTextFieldWithLabel(
+                          maxLength: 11,
+                          onChanged: (text) {
+                            if (text.length == 11) {
+                              getBankName();
+                            } else {
+                              setState(() {
+                                selectBank = '';
+                              });
+                            }
+                          },
+                          validator: (text) {
+                            if (text != null &&
+                                (text.length != 11 || ifscInvalid)) {
+                              return 'Invalid IFSC Code';
+                            }
+                          },
+                          controller: ifscController,
+                          textCapitalization: TextCapitalization.characters,
+                          focusNode: ifscFocus,
+                          label: language['ifscCode'],
+                          hintText: language['ifscCode']),
+                      SizedBox(
+                        height: ifscFocus.hasFocus ||
+                                confirmAccFocus.hasFocus ||
+                                accFocus.hasFocus
+                            ? dW * 0.6
+                            : dW * 0.04,
+                      ),
+                      SizedBox(
+                        height: dW * 0.04,
+                      ),
                       Row(
                         children: [
                           TextWidget(
@@ -491,7 +547,9 @@ class DriverDetailsBottomSheetWidgetState
                         ],
                       ),
                       GestureDetector(
-                        onTap: () => bankBottomSheet(context),
+                        onTap: () {
+                          // bankBottomSheet(context);
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
@@ -510,11 +568,11 @@ class DriverDetailsBottomSheetWidgetState
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              AssetSvgIcon(
-                                'down_arrow',
-                                width: dW * 0.05,
-                                color: blackColor3,
-                              )
+                              // AssetSvgIcon(
+                              //   'down_arrow',
+                              //   width: dW * 0.05,
+                              //   color: blackColor3,
+                              // )
                             ],
                           ),
                         ),
@@ -540,22 +598,6 @@ class DriverDetailsBottomSheetWidgetState
                           maxLines: 1,
                           label: language['confimrAccNumber'],
                           hintText: language['confimrAccNumber']),
-                      SizedBox(
-                        height: dW * 0.04,
-                      ),
-                      CustomTextFieldWithLabel(
-                          controller: ifscController,
-                          textCapitalization: TextCapitalization.characters,
-                          focusNode: ifscFocus,
-                          label: language['ifscCode'],
-                          hintText: language['ifscCode']),
-                      SizedBox(
-                        height: ifscFocus.hasFocus ||
-                                confirmAccFocus.hasFocus ||
-                                accFocus.hasFocus
-                            ? dW * 0.6
-                            : dW * 0.04,
-                      ),
                     ],
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
+import 'package:jeeth_app/common_widgets/cached_image_widget.dart';
 import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../authModule/providers/auth_provider.dart';
 import '../../colors.dart';
 import '../../navigation/routes.dart';
+import '../authModule/models/user_model.dart';
 
 class MyNavigationDrawer extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -28,8 +30,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
   double tS = 0.0;
   TextTheme customTextTheme = const TextTheme();
   Map language = {};
+  late User user;
   bool isLoading = false;
-  String imgPath = '';
 
   fetchData() async {}
 
@@ -82,6 +84,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
   void initState() {
     super.initState();
     fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
   }
 
   @override
@@ -126,34 +129,31 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: imgPath == ''
+                          child: user.driver.avatar.isEmpty
                               ? Image.asset(
                                   'assets/images/avatar.png',
                                   fit: BoxFit.cover,
                                 )
                               : Container(
-                                  width: 90,
-                                  height: 90,
+                                  width: 70,
+                                  height: 70,
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.file(
-                                      File(imgPath),
-                                      repeat: ImageRepeat.repeat,
-                                      fit: BoxFit.cover,
-                                      width: 32,
-                                      height: 32,
-                                    ),
-                                  ),
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: CachedImageWidget(
+                                          user.driver.avatar,
+                                          height: 32,
+                                          width: 32)),
                                 ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // SizedBox(height: dW * 0.04),
-                            const TextWidgetPoppins(
-                              title: 'Darshan Tada',
+                            TextWidgetPoppins(
+                              title: user.driver.name,
                               textOverflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w900,
                               fontSize: 16,

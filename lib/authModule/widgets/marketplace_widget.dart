@@ -1,5 +1,6 @@
-import 'dart:ui';
+// ignore_for_file: must_be_immutable
 
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
@@ -7,8 +8,6 @@ import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
-
-import '../../common_widgets/cached_image_widget.dart';
 
 class MarketplaceWidget extends StatefulWidget {
   final Marketplace marketplace;
@@ -27,6 +26,26 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+
+  Map vehicle = {};
+
+  getVehicleCount(Map slots, String vehicleType) {
+    num totalVehicleCount = 0;
+
+    slots.forEach((timeSlot, vehicleCounts) {
+      if (vehicleCounts.containsKey(vehicleType)) {
+        totalVehicleCount += vehicleCounts[vehicleType];
+      }
+    });
+    return totalVehicleCount;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    vehicle = widget.marketplace.data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +68,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               // ClipRRect(
               //   borderRadius: BorderRadius.circular(3),
               //   child: CachedImageWidget(
@@ -59,11 +78,10 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
               //     height: dW * 0.1,
               //   ),
               // ),
-              // Image.network(widget.marketplace.clientSite.avatar, scale: 1.8)
-              // Image.asset(
-              //   widget.marketplace.image,
-              //   scale: 1.8,
-              // ),
+              Image.asset(
+                'assets/images/google.png',
+                scale: 1.8,
+              ),
             ],
           ),
           // SizedBox(
@@ -142,7 +160,8 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                         fontWeight: FontWeight.w300,
                       ),
                       TextWidgetRoboto(
-                        title: widget.marketplace.totalSedan.toString(),
+                        title: getVehicleCount(vehicle["loginSlot"], "sedan")
+                            .toString(),
                         fontWeight: FontWeight.w600,
                       ),
                     ],
@@ -157,7 +176,8 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                         fontWeight: FontWeight.w300,
                       ),
                       TextWidgetRoboto(
-                        title: widget.marketplace.totalSuv.toString(),
+                        title: getVehicleCount(vehicle["loginSlot"], "suv")
+                            .toString(),
                         fontWeight: FontWeight.w600,
                       ),
                     ],

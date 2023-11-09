@@ -16,7 +16,6 @@ import 'package:jeeth_app/authModule/widgets/vehicleDocuments_bottomSheet.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
-import 'package:jeeth_app/common_widgets/bottom_aligned_widget.dart';
 import 'package:jeeth_app/common_widgets/cached_image_widget.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
