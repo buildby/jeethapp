@@ -20,7 +20,9 @@ import '../providers/marketplace_provider.dart';
 
 class DriverDetailsBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
-  DriverDetailsBottomSheetWidget({super.key, required this.onUpdatePercentage});
+  final double keybHeight;
+  DriverDetailsBottomSheetWidget(
+      {super.key, required this.onUpdatePercentage, required this.keybHeight});
 
   @override
   DriverDetailsBottomSheetWidgetState createState() =>
@@ -350,16 +352,21 @@ class DriverDetailsBottomSheetWidgetState
     return GestureDetector(
       onTap: () => hideKeyBoard(),
       child: Container(
-        height: nameFocus.hasFocus || addressFocus.hasFocus
-            ? dH * 0.95
-            : ifscFocus.hasFocus ||
-                    confirmAccFocus.hasFocus ||
-                    accFocus.hasFocus
-                ? dH * 3
-                : dW * 1.4,
-        padding: EdgeInsets.symmetric(
-            vertical: dW * horizontalPaddingFactor,
-            horizontal: dW * horizontalPaddingFactor),
+        // height: nameFocus.hasFocus || addressFocus.hasFocus
+        //     ? dH * 0.95
+        //     : ifscFocus.hasFocus ||
+        //             confirmAccFocus.hasFocus ||
+        //             accFocus.hasFocus
+        //         ? dH * 3
+        //         : dW * 1.4,
+        height: dH * 0.7,
+        padding: EdgeInsets.only(
+          top: dW * horizontalPaddingFactor,
+          bottom: (dW * horizontalPaddingFactor) +
+              MediaQuery.of(context).viewInsets.bottom,
+          left: dW * horizontalPaddingFactor,
+          right: dW * horizontalPaddingFactor,
+        ),
         child:
             // Column(
             //   children: [
@@ -524,11 +531,13 @@ class DriverDetailsBottomSheetWidgetState
                           label: language['ifscCode'],
                           hintText: language['ifscCode']),
                       SizedBox(
-                        height: ifscFocus.hasFocus ||
-                                confirmAccFocus.hasFocus ||
-                                accFocus.hasFocus
-                            ? dW * 0.6
-                            : dW * 0.04,
+                        height:
+                            //  ifscFocus.hasFocus ||
+                            //         confirmAccFocus.hasFocus ||
+                            //         accFocus.hasFocus
+                            //     ? dW * 0.6
+                            //     :
+                            dW * 0.04,
                       ),
                       SizedBox(
                         height: dW * 0.04,
@@ -602,23 +611,24 @@ class DriverDetailsBottomSheetWidgetState
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  top: dW * 0.05,
-                  bottom: dW * 0.02,
-                  left: dW * 0.1,
-                  right: dW * 0.1,
+              if (MediaQuery.of(context).viewInsets.bottom < 20)
+                Container(
+                  margin: EdgeInsets.only(
+                    top: dW * 0.05,
+                    bottom: dW * 0.02,
+                    left: dW * 0.1,
+                    right: dW * 0.1,
+                  ),
+                  child: CustomButton(
+                    width: dW,
+                    height: dW * 0.15,
+                    isLoading: isLoading,
+                    radius: 21,
+                    buttonText: language['save'],
+                    buttonColor: validate ? themeColor : Colors.grey,
+                    onPressed: validate ? editProfile : () {},
+                  ),
                 ),
-                child: CustomButton(
-                  width: dW,
-                  height: dW * 0.15,
-                  isLoading: isLoading,
-                  radius: 21,
-                  buttonText: language['save'],
-                  buttonColor: validate ? themeColor : Colors.grey,
-                  onPressed: validate ? editProfile : () {},
-                ),
-              ),
             ],
           ),
         ),

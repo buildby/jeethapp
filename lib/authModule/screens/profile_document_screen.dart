@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -62,6 +64,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   bool vehicleImgValidation = false;
   bool isDriverValidateActive = false;
   bool isVehicleValidateActive = false;
+  double keybHeight = 0;
 
   bool validateForm2 = false;
   bool photoRemoved = false;
@@ -354,6 +357,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       ),
       context: context,
       builder: (context) => DriverDetailsBottomSheetWidget(
+        keybHeight: keybHeight,
         onUpdatePercentage: (percentage) {
           setState(() {
             driverDetailsPercentage = percentage;
@@ -935,6 +939,26 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     );
   }
 
+  anyDriverDocExists(List<Doc> docs) {
+    for (var i = 0; i < docs.length; i++) {
+      if (docs[i].filename == 'Owner Aadhar Card') {
+        setState(() {
+          showOwnerDetails = false;
+        });
+        return;
+      }
+      if (docs[i].filename == 'Owner Lease Agreement') {
+        setState(() {
+          showOwnerDetails = false;
+        });
+        return;
+      }
+    }
+    setState(() {
+      showOwnerDetails = true;
+    });
+  }
+
   fetchData() async {
     setState(() => isLoading = true);
     // await fetchVehicleModels();
@@ -944,6 +968,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     await calculateOwnerDocPercentage();
     await calculateDriverDocPercentage();
     await calculateVehicleDocPercentage();
+
+    anyDriverDocExists(
+        Provider.of<DocumentProvider>(context, listen: false).documents);
 
     setState(() => isLoading = false);
   }
@@ -1187,9 +1214,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
-    documents = Provider.of<DocumentProvider>(
-      context,
-    ).documents;
+    keybHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    documents = Provider.of<DocumentProvider>(context).documents;
 
     return Scaffold(
       backgroundColor: themeColor,

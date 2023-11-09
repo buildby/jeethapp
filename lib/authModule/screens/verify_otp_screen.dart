@@ -14,6 +14,9 @@ import 'package:jeeth_app/navigation/routes.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
+import '../models/document_model.dart';
+import '../models/driver_model.dart';
+
 class VerifyOtpScreen extends StatefulWidget {
   final VerifyOtpArguments args;
 
@@ -61,6 +64,92 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
     return true;
   }
 
+  anyDriverDocExists(List<Doc> docs) {
+    for (var i = 0; i < docs.length; i++) {
+      if (docs[i].filename == 'Owner Aadhar Card') {
+        return true;
+      }
+      if (docs[i].filename == 'Owner Lease Agreement') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<bool> isProfileComplete(List driverDocs) async {
+    final docs = driverDocs.map((d) => Doc.jsonToDoc(d)).toList();
+
+    final Driver profile =
+        Provider.of<AuthProvider>(context, listen: false).user.driver;
+
+    if (
+        // profile.avatar == '' ||
+        //   profile.name == '' ||
+        //   profile.email == '' ||
+        //   profile.dob == null ||
+        //   profile.address == '' ||
+        //   profile.gender == '' ||
+        //   profile.ifscCode == '' ||
+        //   profile.bankName == '' ||
+        //   profile.accNumber == '' ||
+        // profile.vehicle.vehicleMake == '' ||
+        // profile.vehicle.vehicleModel == '' ||
+        // profile.vehicle.vehicleType == '' ||
+        // profile.vehicle.vehicleYear == '' ||
+        profile.vehicle.vehicleNumber == '' || profile.vehicleImage == '') {
+      return false;
+    } else {
+      int selectedDocumentCount = 0;
+
+      for (var i = 0; i < docs.length; i++) {
+        if (docs[i].filename == 'Vehicle RC') {
+          selectedDocumentCount++;
+        }
+        if (docs[i].filename == 'Vehicle Fitness') {
+          selectedDocumentCount++;
+        }
+        if (docs[i].filename == 'Vehicle Permit') {
+          selectedDocumentCount++;
+        }
+        if (docs[i].filename == 'Vehicle Insurance') {
+          selectedDocumentCount++;
+        }
+        if (docs[i].filename == 'Vehicle PUC') {
+          selectedDocumentCount++;
+        }
+      }
+
+      if (selectedDocumentCount < 5) {
+        return false;
+      } else if (profile.ownerName != '' ||
+          profile.ownerAddress != '' ||
+          profile.ownerPhoneNumber != '' ||
+          anyDriverDocExists(docs)) {
+        if (profile.ownerName == '' ||
+            profile.ownerAddress == '' ||
+            profile.ownerPhoneNumber == '') {
+          return false;
+        }
+
+        int selectedOwnerDocumentCount = 0;
+        for (var i = 0; i < docs.length; i++) {
+          if (docs[i].filename == 'Owner Aadhar Card') {
+            selectedOwnerDocumentCount++;
+          }
+          if (docs[i].filename == 'Owner Lease Agreement') {
+            selectedOwnerDocumentCount++;
+          }
+        }
+
+        if (selectedOwnerDocumentCount < 2) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   Future<void> verifyOTP() async {
     setState(() {
       isLoading = true;
@@ -71,7 +160,15 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
             widget.args.mobileNo.toString(), _otpEditingController.text);
 
     if (response['result'] == 'success' && response['data'] != null) {
-      pushAndRemoveUntil(NamedRoute.marketPlaceScreen);
+      if (await isProfileComplete(response['data']['driverDocs'])) {
+        Future.delayed(
+            const Duration(seconds: 2),
+            () => pushAndRemoveUntil(NamedRoute.bottomNavBarScreen,
+                arguments: BottomNavArguments()));
+      } else {
+        Future.delayed(const Duration(seconds: 2),
+            () => pushAndRemoveUntil(NamedRoute.marketPlaceScreen));
+      }
     } else if (response['result'] == 'failure') {
       if (response['message'] != null) {
         showSnackbar(response['message']);

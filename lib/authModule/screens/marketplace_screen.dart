@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/widgets/incomplete_prof_bottomsheet_widget.dart';
@@ -10,6 +11,8 @@ import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
   // final MarketPlaceScreenArguments args;
@@ -31,6 +34,10 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   bool isLoading = false;
   bool isScrolled = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+
+  List<Marketplace> marketplace = [];
+
+  late User user;
 
   void infoBottomSheet() {
     showModalBottomSheet(
@@ -62,8 +69,17 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
     );
   }
 
-  fetchData() async {
+  fetchMarketPlace() async {
     setState(() => isLoading = true);
+
+    final response =
+        await Provider.of<MarketplaceProvider>(context, listen: false)
+            .fetchMarketPlace(
+      accessToken: user.accessToken,
+    );
+    if (response['result'] == 'success') {
+      // showSnackbar(response['message']);
+    }
     setState(() => isLoading = false);
   }
 
@@ -71,8 +87,8 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
-    // fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    fetchMarketPlace();
   }
 
   @override
@@ -89,30 +105,35 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
       body: Container(
         padding: EdgeInsets.only(top: dW * 0.03),
         child: NestedScrollView(
-          headerSliverBuilder: (
-            context,
-            innerBoxIsScrolled,
-          ) {
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
             isScrolled = innerBoxIsScrolled;
+
             return [
               SliverAppBar(
-                leadingWidth: dW * 0.15,
+                leadingWidth: 0,
                 elevation: 0,
-                leading: GestureDetector(
-                  onTap: () => infoBottomSheet(),
-                  child: const Center(
-                    child: AssetSvgIcon(
-                      'info',
+                actions: [
+                  Padding(
+                    padding: EdgeInsets.only(right: dW * 0.06),
+                    child: GestureDetector(
+                      onTap: () => infoBottomSheet(),
+                      child: const Center(
+                        child: AssetSvgIcon('info'),
+                      ),
                     ),
                   ),
-                ),
+                ],
                 floating: true,
                 backgroundColor: themeColor,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.only(
+                    left: dW * 0.05,
+                    bottom: dW * 0.05,
+                  ),
                   title: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: innerBoxIsScrolled
+                    child: isScrolled
                         ? TextWidget(
                             title: language['marketplace'],
                             fontWeight: FontWeight.w600,
@@ -134,8 +155,20 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
   }
 
   screenBody() {
-    final marketplace =
-        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+    marketplace = Provider.of<MarketplaceProvider>(context, listen: false)
+            .marketplaces //
+        // +
+        // Provider.of<MarketplaceProvider>(context, listen: false)
+        //     .marketplaces +
+        // Provider.of<MarketplaceProvider>(context, listen: false)
+        //     .marketplaces +
+        // Provider.of<MarketplaceProvider>(context, listen: false)
+        //     .marketplaces +
+        // Provider.of<MarketplaceProvider>(context, listen: false)
+        //     .marketplaces +
+        // Provider.of<MarketplaceProvider>(context, listen: false)
+        //     .marketplaces //
+        ;
 
     return isLoading
         ? const Center(child: CircularLoader())
@@ -152,7 +185,9 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     if (!isScrolled)
                       Container(
                         padding: EdgeInsets.only(
-                            right: dW * 0.01, bottom: dW * 0.03),
+                          right: dW * 0.01,
+                          bottom: dW * 0.03,
+                        ),
                         height: dW * 0.3,
                         width: dW,
                         color: themeColor,
