@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 child: child!,
               );
             },
-            title: 'Recyclink',
+            title: 'Jeeth',
             theme: theme.getTheme(),
             debugShowCheckedModeBanner: false,
             initialRoute: '/',

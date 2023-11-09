@@ -29,7 +29,7 @@
     </queries>
 
     <application
-        android:label="jeeth_app"
+        android:label="Jeeth"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

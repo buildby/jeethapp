@@ -333,8 +333,8 @@ class AuthProvider with ChangeNotifier {
         url: url,
       );
       if (response['result'] == 'success') {
-        makes = List.from(response['data']['makes']);
-        models = List.from(response['data']['models']);
+        makes = List.from(response['data']['makes'] ?? []);
+        models = List.from(response['data']['models'] ?? []);
       }
       return response;
     } catch (error) {
