@@ -59,4 +59,7 @@ var endPoint = {
   // More Screen
   'fetchFaqs': '/faq/fetchFaqs',
   'fetchFaqTopics': '/faqTopic/fetchFaqTopics',
+
+  // Market place
+  'fetchAllCampaignsApp': '/campaign/fetchAllCampaignsApp',
 };
