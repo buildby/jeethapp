@@ -90,6 +90,7 @@ class Driver {
         vehicleMake: driver['vehicleMake'] ?? '',
         vehicleNumber: driver['vehicleNumber'] ?? '',
         vehicleYear: driver['vehicleYear'] ?? '',
+        vehicleFuelType: driver['vehicleFuelType'] ?? '',
       ),
 
       isActive: driver['isActive'] ?? true,
