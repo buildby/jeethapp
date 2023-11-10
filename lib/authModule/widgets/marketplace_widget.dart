@@ -58,8 +58,8 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
 
     return Container(
       margin: EdgeInsets.only(bottom: dW * 0.05),
-      padding:
-          EdgeInsets.only(left: dW * 0.02, right: dW * 0.02, bottom: dW * 0.06),
+      padding: EdgeInsets.only(
+          left: dW * 0.015, right: dW * 0.02, bottom: dW * 0.06),
       decoration: BoxDecoration(
           border: Border(
               bottom:
@@ -76,10 +76,15 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                 child: CachedImageWidget(
                   widget.marketplace.clientSite.avatar,
                   boxFit: BoxFit.cover,
-                  width: dW * 0.15,
-                  height: dW * 0.15,
+                  width: dW * 0.12,
+                  height: dW * 0.12,
+                  scale: 1.8,
                 ),
               ),
+              // Image.asset(
+              //   'assets/images/google.png',
+              //   scale: 1.8,
+              // ),
             ],
           ),
           // SizedBox(
@@ -149,13 +154,14 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                     ]),
                   ),
                   SizedBox(
-                    width: dW * 0.028,
+                    width: dW * 0.01,
                   ),
                   Row(
                     children: [
-                      const TextWidgetRoboto(
-                        title: 'Sedan : ',
+                      TextWidgetRoboto(
+                        title: 'Sedan: ',
                         fontWeight: FontWeight.w300,
+                        fontSize: tS * 12,
                       ),
                       TextWidgetRoboto(
                         title: getVehicleCount(vehicle["loginSlot"], "sedan")
@@ -169,12 +175,30 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   ),
                   Row(
                     children: [
-                      const TextWidgetRoboto(
-                        title: 'SUV : ',
+                      TextWidgetRoboto(
+                        title: 'SUV: ',
                         fontWeight: FontWeight.w300,
+                        fontSize: tS * 12,
                       ),
                       TextWidgetRoboto(
                         title: getVehicleCount(vehicle["loginSlot"], "suv")
+                            .toString(),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: dW * 0.015,
+                  ),
+                  Row(
+                    children: [
+                      TextWidgetRoboto(
+                        title: 'Mini: ',
+                        fontWeight: FontWeight.w300,
+                        fontSize: tS * 12,
+                      ),
+                      TextWidgetRoboto(
+                        title: getVehicleCount(vehicle["loginSlot"], "mini")
                             .toString(),
                         fontWeight: FontWeight.w600,
                       ),

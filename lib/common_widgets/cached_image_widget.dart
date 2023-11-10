@@ -9,6 +9,7 @@ class CachedImageWidget extends StatefulWidget {
   // final String uniqueId;
   final double? height;
   final double? width;
+  final double? scale;
   final BoxFit boxFit;
 
   const CachedImageWidget(
@@ -16,6 +17,7 @@ class CachedImageWidget extends StatefulWidget {
     // required this.uniqueId,
     this.height,
     this.width,
+    this.scale,
     this.boxFit = BoxFit.cover,
   });
 
@@ -72,12 +74,20 @@ class CachedImageWidgetState extends State<CachedImageWidget> {
             fit: BoxFit.cover,
             height: widget.height,
             width: widget.width,
+            // errorBuilder: (context, _, __) => Image.asset(
+            //   'assets/placeholders/placeholder.png',
+            //   fit: BoxFit.cover,
+            //   height: widget.height,
+            //   width: widget.width,
+            //   scale: widget.scale,
+            // ),
           )
         : Image.asset(
             'assets/placeholders/placeholder.png',
             fit: BoxFit.cover,
             height: widget.height,
             width: widget.width,
+            scale: widget.scale,
           );
   }
 }

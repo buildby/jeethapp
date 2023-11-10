@@ -514,7 +514,9 @@ class AuthProvider with ChangeNotifier {
         accessToken: user.accessToken,
       );
       if (response['result'] == 'success') {
+        final earnings = user.driver.earnings;
         user.driver = Driver.jsonToDriver(response['data']);
+        user.driver.earnings = earnings;
       }
 
       notifyListeners();
@@ -680,6 +682,31 @@ class AuthProvider with ChangeNotifier {
 
       if (!response['success']) {
       } else {}
+
+      notifyListeners();
+      return response;
+    } catch (e) {
+      return {'success': false, 'message': 'deleteAccountFail'};
+    }
+  }
+
+  refreshUserEarnings({required String driverId}) async {
+    final String url =
+        '${webApi['domain']}${endPoint['refreshUserEarnings']}/$driverId';
+    try {
+      final response = await RemoteServices.httpRequest(
+        method: 'GET',
+        url: url,
+        accessToken: user.accessToken,
+      );
+
+      if (response['result'] == 'success') {
+        if (response['data'] != null && response['data']['value'] != null) {
+          final earningsData = json.decode(response['data']['value']);
+          user.driver.earnings.accrued = earningsData['Accrued'];
+          user.driver.earnings.currentMonth = earningsData['Current Month'];
+        }
+      }
 
       notifyListeners();
       return response;

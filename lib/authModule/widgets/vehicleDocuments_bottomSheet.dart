@@ -474,12 +474,12 @@ class VehicleDocumentsBottomSheetWidgetState
                   //   },
                   // ),
 
-                  ElevatedButton(
-                    onPressed: () {
-                      showAddDocumentDialog(context, selectedFiles);
-                    },
-                    child: const Text('Add More Documents'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     showAddDocumentDialog(context, selectedFiles);
+                  //   },
+                  //   child: const Text('Add More Documents'),
+                  // ),
                 ],
               ),
             ),

@@ -9,8 +9,14 @@ class CustomContainer extends StatefulWidget {
   String name;
   Widget? widgets;
   Function()? onTap;
-  CustomContainer({Key? key, required this.name, this.widgets, this.onTap})
-      : super(key: key);
+  final MainAxisAlignment? axisAlignment;
+  CustomContainer({
+    Key? key,
+    required this.name,
+    this.widgets,
+    this.onTap,
+    this.axisAlignment,
+  }) : super(key: key);
 
   @override
   CustomContainerState createState() => CustomContainerState();
@@ -61,7 +67,7 @@ class CustomContainerState extends State<CustomContainer> {
         child: Row(
           mainAxisAlignment: widget.widgets == null
               ? MainAxisAlignment.start
-              : MainAxisAlignment.spaceBetween,
+              : (widget.axisAlignment ?? MainAxisAlignment.spaceBetween),
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextWidget(
@@ -69,7 +75,7 @@ class CustomContainerState extends State<CustomContainer> {
               fontWeight: FontWeight.w400,
               fontSize: 15,
             ),
-            widget.widgets != null ? widget.widgets! : const SizedBox(),
+            if (widget.widgets != null) widget.widgets!,
           ],
         ),
       ),

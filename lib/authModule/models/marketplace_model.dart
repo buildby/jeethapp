@@ -2,7 +2,7 @@ class Marketplace {
   final int id;
   String vendername;
   String companyName;
-  String image;
+  String vendorAvatar;
   num rating;
   num totalSedan;
   num totalSuv;
@@ -16,7 +16,7 @@ class Marketplace {
     required this.id,
     this.vendername = '',
     this.companyName = '',
-    this.image = '',
+    this.vendorAvatar = '',
     this.rating = 0,
     this.totalSedan = 0,
     this.totalSuv = 0,
@@ -29,9 +29,9 @@ class Marketplace {
 
   static Marketplace jsonToMarketplace(Map marketplace) => Marketplace(
         id: marketplace['id'],
-        vendername: marketplace['name'] ?? '',
+        vendername: marketplace['Vendor']['name'] ?? '',
         companyName: marketplace['companyName'] ?? '',
-        image: marketplace['image'] ?? '',
+        vendorAvatar: marketplace['Vendor']['avatar'] ?? '',
         rating: marketplace['rating'] ?? 0,
         totalSedan: marketplace['totalSedan'] ?? 0,
         totalSuv: marketplace['totalSuv'] ?? 0,

@@ -16,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int fontSize;
   final FontWeight? fontWeight;
   final String? fontFamily;
+  final double? customTopMargin;
 
   CustomAppBar({
     super.key,
@@ -31,9 +32,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.bgColor,
     this.centerTitle,
+    this.customTopMargin,
   });
 
-  final double topMargin = Platform.isIOS ? 0 : 0.03;
+  double get topMargin => Platform.isIOS ? 0 : (customTopMargin ?? 0.03);
 
   @override
   Widget build(BuildContext context) {

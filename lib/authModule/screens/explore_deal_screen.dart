@@ -12,6 +12,7 @@ import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
+import '../../common_widgets/cached_image_widget.dart';
 
 class ExploreDealScreen extends StatefulWidget {
   final ExploreDealScreenArguments args;
@@ -194,10 +195,20 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                 children: [
                                   Column(
                                     children: [
-                                      Image.asset(
-                                        'assets/images/vendor.png',
-                                        scale: 1.8,
-                                      )
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: CachedImageWidget(
+                                                widget.args.marketplace
+                                                    .vendorAvatar,
+                                                height: 32,
+                                                width: 32)),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
@@ -233,9 +244,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                                             .rating >=
                                                         4
                                                     ? const Color(0xff0CD78E)
-                                                    : const Color(
-                                                        (0xffF4B617),
-                                                      ),
+                                                    : const Color((0xffF4B617)),
                                                 borderRadius:
                                                     BorderRadius.circular(2)),
                                             child: Row(children: [
@@ -267,26 +276,26 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                               TextWidgetRoboto(
                                                 title: widget
                                                     .args.marketplace.rating
-                                                    .toString(),
+                                                    .toStringAsFixed(1),
                                                 color: white,
                                                 fontSize: 12,
                                               )
                                             ]),
                                           ),
-                                          Row(
-                                            children: const [
-                                              TextWidgetRoboto(
-                                                title: 'Vintage :~ ',
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 12,
-                                              ),
-                                              TextWidgetRoboto(
-                                                title: '40 Years',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 12,
-                                              ),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   children: const [
+                                          //     TextWidgetRoboto(
+                                          //       title: 'Vintage :~ ',
+                                          //       fontWeight: FontWeight.w300,
+                                          //       fontSize: 12,
+                                          //     ),
+                                          //     TextWidgetRoboto(
+                                          //       title: '40 Years',
+                                          //       fontWeight: FontWeight.w400,
+                                          //       fontSize: 12,
+                                          //     ),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ],
@@ -319,80 +328,82 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            // TextWidget(
-                                            //   title:
-                                            //       '${language['company']} : ',
-                                            //   fontWeight: FontWeight.w300,
-                                            //   color: const Color(0xff242E42),
-                                            // ),
-                                            Image.asset(
-                                              'assets/images/google.png',
-                                              scale: 6,
-                                            ),
-                                            SizedBox(
-                                              width: dW * 0.015,
-                                            ),
-                                            Container(
-                                              width: dW * 0.23,
-                                              child: TextWidget(
-                                                color: const Color(0xff242E42),
-                                                textOverflow:
-                                                    TextOverflow.ellipsis,
-                                                title: widget.args.marketplace
-                                                    .clientSite.name,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.07,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const TextWidget(
-                                              title: 'Midspace : ',
-                                              fontWeight: FontWeight.w300,
-                                              color: Color(0xff242E42),
-                                            ),
-                                            SizedBox(
-                                              width: dW * 0.16,
-                                              child: const TextWidget(
-                                                color: Color(0xff242E42),
-                                                title: 'Hitesh Chaudhary',
-                                                fontWeight: FontWeight.w400,
-                                                textOverflow:
-                                                    TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: dW * 0.01,
-                              ),
-                              const Divider(
-                                color: Color(0xffF4F4F4),
-                                thickness: 1,
-                              ),
+                              // FittedBox(
+                              //   fit: BoxFit.scaleDown,
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Column(
+                              //         children: [
+                              //           Row(
+                              //             children: [
+                              //               TextWidget(
+                              //                 title:
+                              //                     '${language['company']} : ',
+                              //                 fontWeight: FontWeight.w300,
+                              //                 color: const Color(0xff242E42),
+                              //               ),
+                              //               Container(
+                              //                 width: 20,
+                              //                 height: 20,
+                              //                 decoration: const BoxDecoration(
+                              //                     shape: BoxShape.circle),
+                              //                 child: ClipRRect(
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(
+                              //                             100),
+                              //                     child: CachedImageWidget(
+                              //                         widget.args.marketplace
+                              //                             .clientSite.avatar,
+                              //                         height: 32,
+                              //                         width: 32)),
+                              //               ),
+                              //               SizedBox(width: dW * 0.015),
+                              //               Container(
+                              //                 width: dW * 0.23,
+                              //                 child: TextWidget(
+                              //                   color: const Color(0xff242E42),
+                              //                   textOverflow:
+                              //                       TextOverflow.ellipsis,
+                              //                   title: widget.args.marketplace
+                              //                       .clientSite.name,
+                              //                   fontWeight: FontWeight.w400,
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ],
+                              //       ),
+                              //       SizedBox(width: dW * 0.05),
+                              //       Row(
+                              //         children: [
+                              //           const TextWidget(
+                              //             title: 'Mindspace : ',
+                              //             fontWeight: FontWeight.w300,
+                              //             color: Color(0xff242E42),
+                              //           ),
+                              //           SizedBox(
+                              //             width: dW * 0.16,
+                              //             child: const TextWidget(
+                              //               color: Color(0xff242E42),
+                              //               title: 'Hitesh Chaudhary',
+                              //               fontWeight: FontWeight.w400,
+                              //               textOverflow: TextOverflow.ellipsis,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: dW * 0.01,
+                              // ),
+                              // const Divider(
+                              //   color: Color(0xffF4F4F4),
+                              //   thickness: 1,
+                              // ),
                               SizedBox(
                                 height: dW * 0.01,
                               ),
@@ -494,263 +505,82 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                             ],
                           ),
                         ),
-                        Container(
-                          width: dW,
-                          margin: EdgeInsets.only(bottom: dW * 0.03),
-                          padding: EdgeInsets.only(
-                              left: dW * 0.04,
-                              right: dW * 0.04,
-                              top: dW * 0.03,
-                              bottom: dW * 0.02),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color(0xffF4F4F4), width: 1),
-                            color: white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(.1),
-                                  blurRadius: 20,
-                                  spreadRadius: 0,
-                                  offset: const Offset(0, -5))
-                            ],
+                        if (businessModel['type'] == 'SLAB')
+                          Container(
+                            width: dW,
+                            margin: EdgeInsets.only(bottom: dW * 0.03),
+                            padding: EdgeInsets.only(
+                                left: dW * 0.04,
+                                right: dW * 0.04,
+                                top: dW * 0.03,
+                                bottom: dW * 0.02),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: const Color(0xffF4F4F4), width: 1),
+                              color: white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(.1),
+                                    blurRadius: 20,
+                                    spreadRadius: 0,
+                                    offset: const Offset(0, -5))
+                              ],
+                            ),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const TextWidget(
+                                                  title: 'Business model : ',
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                                TextWidget(
+                                                  title: businessModel['type'],
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const TextWidget(
+                                        title: 'Net Fare',
+                                        color: Color(0xff767676),
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                      // SizedBox(
+                                      //   width: dW * 0.08,
+                                      // ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: dW * 0.01,
+                                  ),
+                                  const Divider(
+                                    color: Color(0xffF4F4F4),
+                                    thickness: 1,
+                                  ),
+                                  SizedBox(
+                                    height: dW * 0.01,
+                                  ),
+                                  ...List.generate(
+                                      businessModel['modeldata'].length, (i) {
+                                    return BusinessModelRow(
+                                        i: i,
+                                        data: (businessModel['modeldata']
+                                            as List)[i]);
+                                  }),
+                                ]),
                           ),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const TextWidget(
-                                                title: 'Business model : ',
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                              TextWidget(
-                                                title: businessModel['type'],
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const TextWidget(
-                                      title: 'Net Fare',
-                                      color: Color(0xff767676),
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                    // SizedBox(
-                                    //   width: dW * 0.08,
-                                    // ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: dW * 0.01,
-                                ),
-                                const Divider(
-                                  color: Color(0xffF4F4F4),
-                                  thickness: 1,
-                                ),
-                                SizedBox(
-                                  height: dW * 0.01,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    right: dW * 0.025),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: dW * 0.015,
-                                                    vertical: dW * 0.005),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    color: themeColor),
-                                                child: const TextWidget(
-                                                  title: '1',
-                                                  color: white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              const TextWidgetRoboto(
-                                                title: '0-20 Kms',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      // crossAxisAlignment:
-                                      //     CrossAxisAlignment.end,
-                                      children: [
-                                        const TextWidgetRoboto(
-                                          title: '\u20b9',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff464646),
-                                        ),
-                                        SizedBox(
-                                          width: dW * 0.01,
-                                        ),
-                                        const TextWidgetRoboto(
-                                          title: '466.82',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xff464646),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.07,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    right: dW * 0.025),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: dW * 0.015,
-                                                    vertical: dW * 0.005),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    color: themeColor),
-                                                child: const TextWidget(
-                                                  title: '2',
-                                                  color: white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              const TextWidgetRoboto(
-                                                title: '21-40 Kms',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      // crossAxisAlignment:
-                                      //     CrossAxisAlignment.end,
-                                      children: [
-                                        const TextWidgetRoboto(
-                                          title: '\u20b9',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff464646),
-                                        ),
-                                        SizedBox(
-                                          width: dW * 0.01,
-                                        ),
-                                        const TextWidgetRoboto(
-                                          title: '533.26',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xff464646),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.07,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    right: dW * 0.025),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: dW * 0.015,
-                                                    vertical: dW * 0.005),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    color: themeColor),
-                                                child: const TextWidget(
-                                                  title: '3',
-                                                  color: white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              const TextWidgetRoboto(
-                                                title: '41-60 Kms',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      // crossAxisAlignment:
-                                      //     CrossAxisAlignment.end,
-                                      children: [
-                                        const TextWidgetRoboto(
-                                          title: '\u20b9',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff464646),
-                                        ),
-                                        SizedBox(
-                                          width: dW * 0.01,
-                                        ),
-                                        const TextWidgetRoboto(
-                                          title: '679.15',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xff464646),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.07,
-                                    ),
-                                  ],
-                                ),
-                              ]),
-                        ),
                         Container(
                           margin: EdgeInsets.only(
                               left: dW * 0.15,
@@ -781,6 +611,92 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                 ),
               ],
             ),
+    );
+  }
+}
+
+class BusinessModelRow extends StatelessWidget {
+  final int i;
+  final Map data;
+  BusinessModelRow({
+    super.key,
+    required this.i,
+    required this.data,
+  });
+
+  double dW = 0.0;
+  double tS = 0.0;
+  Map language = {};
+  TextTheme get textTheme => Theme.of(bContext).textTheme;
+
+  num get amount {
+    num toReturn = 0;
+    final availableData = data['vehicle_type']['suv'] ??
+        data['vehicle_type']['sedan'] ??
+        data['vehicle_type']['mini'];
+    toReturn = availableData['Petrol/Diesel'] ??
+        availableData['CNG'] ??
+        availableData['EV'];
+    return toReturn;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    dW = MediaQuery.of(context).size.width;
+    tS = MediaQuery.of(context).textScaleFactor;
+    language = Provider.of<AuthProvider>(context).selectedLanguage;
+
+    return Container(
+      padding: EdgeInsets.only(bottom: dW * 0.03),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: dW * 0.025),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: dW * 0.015, vertical: dW * 0.005),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: themeColor),
+                  child: TextWidget(
+                    title: i.toString(),
+                    color: white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                TextWidgetRoboto(
+                  title:
+                      '${data['range']['min']} - ${data['range']['max']} Kms',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                ),
+              ],
+            ),
+          ),
+          Row(
+            // crossAxisAlignment:
+            //     CrossAxisAlignment.end,
+            children: [
+              Container(
+                alignment: Alignment.centerRight,
+                width: dW * 0.25,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: TextWidgetRoboto(
+                    title: '\u20b9 ' + convertAmountString(amount.toDouble()),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff464646),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

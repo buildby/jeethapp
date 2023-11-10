@@ -14,6 +14,7 @@ import '../../authModule/providers/auth_provider.dart';
 import '../../colors.dart';
 import '../../navigation/routes.dart';
 import '../authModule/models/user_model.dart';
+import '../navigation/arguments.dart';
 
 class MyNavigationDrawer extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -100,8 +101,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
       child: Drawer(
         backgroundColor: themeColor,
         width: dW * 0.8,
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+        child: Container(
+          height: dH,
           child: Column(
             children: [
               // SizedBox(
@@ -182,7 +183,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                       margin: EdgeInsets.only(
                                           top: dW * 0.01, left: dW * 0.03),
                                       child: TextWidgetPoppins(
-                                        title: '\u20b9 ${'12,500'}',
+                                        title:
+                                            '\u20b9 ${user.driver.earnings.accrued}',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 11,
                                         color: themeColor,
@@ -208,126 +210,146 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                 ],
               ),
               // SizedBox(height: dW * .05),
-              Container(
-                color: white,
-                padding: EdgeInsets.only(
-                  right: dW * .05,
-                  top: dW * .05,
-                  bottom: dW * .05,
-                  left: dW * 0.07,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'my_profile',
-                      text: language['myProfile'],
-                      onTap: () => push(NamedRoute.profileDocumentsScreen),
-                    ),
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'my_applications',
-                      text: language['myApplications'],
-                      onTap: () => push(NamedRoute.myApplicationsScreen),
-                    ),
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'notifications',
-                      text: language['notifications'],
-                      onTap: () => push(NamedRoute.notificationsScreen),
-                    ),
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'refer_friend',
-                      text: language['referAFriend'],
-                      onTap: () => push(NamedRoute.referAFriendScreen),
-                    ),
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'settings',
-                      text: language['appSettings'],
-                      onTap: () => push(NamedRoute.settingsScreen),
-                    ),
-                    buildOptionWidget(
-                      context: context,
-                      iconName: 'logout',
-                      text: language['logout'],
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => CustomDialog(
-                          title: language['logout'],
-                          subTitle: language['wantToLogout'],
-                          noText: language['no'],
-                          yesText: language['yes'],
-                          noFunction: () {
-                            pop();
-                          },
-                          yesFunction: () {
-                            logout();
-                          },
+              Expanded(
+                child: Container(
+                  color: white,
+                  padding: EdgeInsets.only(
+                    right: dW * .05,
+                    top: dW * .05,
+                    bottom: dW * .05,
+                    left: dW * 0.07,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'my_profile',
+                          text: language['myProfile'],
+                          onTap: () => push(NamedRoute.profileDocumentsScreen),
                         ),
-                      ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'my_applications',
+                          text: language['myApplications'],
+                          onTap: () => push(NamedRoute.myApplicationsScreen),
+                        ),
+                        // buildOptionWidget(
+                        //   context: context,
+                        //   iconName: 'notifications',
+                        //   text: language['notifications'],
+                        //   onTap: () => push(NamedRoute.notificationsScreen),
+                        // ),
+                        // buildOptionWidget(
+                        //   context: context,
+                        //   iconName: 'refer_friend',
+                        //   text: language['referAFriend'],
+                        //   onTap: () => push(NamedRoute.referAFriendScreen),
+                        // ),
+                        // buildOptionWidget(
+                        //   context: context,
+                        //   iconName: 'settings',
+                        //   text: language['appSettings'],
+                        //   onTap: () => push(NamedRoute.settingsScreen),
+                        // ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'logout',
+                          text: language['logout'],
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => CustomDialog(
+                              title: language['logout'],
+                              subTitle: language['wantToLogout'],
+                              noText: language['no'],
+                              yesText: language['yes'],
+                              noFunction: () {
+                                pop();
+                              },
+                              yesFunction: () {
+                                logout();
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: dW * 0.03,
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Color(0xffDCDCDC),
+                        ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        // const TextWidgetPoppins(
+                        //   title: 'FAQ’s',
+                        //   color: Color(0xff757575),
+                        //   fontWeight: FontWeight.w400,
+                        // ),
+                        // SizedBox(
+                        //   height: dW * 0.06,
+                        // ),
+                        GestureDetector(
+                          onTap: () => push(NamedRoute.webviewScreen,
+                              arguments: WebviewScreenArguments(
+                                title: 'Terms & Conditions',
+                                link: 'https://staging.jeeth.co.in/terms',
+                              )),
+                          child: const TextWidgetPoppins(
+                            title: 'Terms & Conditions',
+                            color: Color(0xff757575),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        GestureDetector(
+                          onTap: () => push(NamedRoute.webviewScreen,
+                              arguments: WebviewScreenArguments(
+                                title: 'Privacy Policy',
+                                link:
+                                    'https://staging.jeeth.co.in/privacy-policy',
+                              )),
+                          child: const TextWidgetPoppins(
+                            title: 'Privacy Policy',
+                            color: Color(0xff757575),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        // const TextWidgetPoppins(
+                        //   title: 'Payment Policy',
+                        //   color: Color(0xff757575),
+                        //   fontWeight: FontWeight.w400,
+                        // ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        // const TextWidgetPoppins(
+                        //   title: 'Revenue Policy',
+                        //   color: Color(0xff757575),
+                        //   fontWeight: FontWeight.w400,
+                        // ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        // const TextWidgetPoppins(
+                        //   title: 'Grievances',
+                        //   color: Color(0xff757575),
+                        //   fontWeight: FontWeight.w400,
+                        // ),
+                        SizedBox(
+                          height: dW * 0.06,
+                        ),
+                        // const Spacer(),
+                      ],
                     ),
-                    SizedBox(
-                      height: dW * 0.03,
-                    ),
-                    const Divider(
-                      thickness: 1,
-                      color: Color(0xffDCDCDC),
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'FAQ’s',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'Terms & Conditions',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'Privacy Policy',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'Payment Policy',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'Revenue Policy',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                    const TextWidgetPoppins(
-                      title: 'Grievances',
-                      color: Color(0xff757575),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: dW * 0.06,
-                    ),
-                  ],
+                  ),
                 ),
               )
             ],

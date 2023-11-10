@@ -392,3 +392,15 @@ void launchWhatsApp({required String phoneNumber}) async {
 }
 
 const bouncing = BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+
+Widget get comingSoonText => Padding(
+      padding: EdgeInsets.only(left: _mediaQuery.size.width * 0.04),
+      child: Text(
+        'Coming soon!',
+        style: TextStyle(
+          color: Colors.yellow.shade800,
+          fontWeight: FontWeight.w500,
+          fontSize: _tS * 15.5,
+        ),
+      ),
+    );

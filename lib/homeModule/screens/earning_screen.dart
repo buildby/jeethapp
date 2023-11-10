@@ -13,6 +13,9 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
 
+import '../../authModule/models/user_model.dart';
+import '../../common_widgets/cached_image_widget.dart';
+
 class EarningsScreen extends StatefulWidget {
   final Function(int)? onIndexChanged;
 
@@ -26,7 +29,7 @@ class EarningsScreenState extends State<EarningsScreen> {
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
-  //  late User user;
+  late User user;
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
@@ -145,17 +148,26 @@ class EarningsScreenState extends State<EarningsScreen> {
     ),
   ];
 
-  fetchData() async {
+  num get withrawableAmount => (80 / 100) * user.driver.earnings.accrued;
+
+  refreshUserEarnings() async {
     setState(() => isLoading = true);
-    setState(() => isLoading = false);
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .refreshUserEarnings(driverId: user.driver.id.toString());
+
+    if (response['result'] != 'success') {
+      refreshUserEarnings();
+    } else {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
-    fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    refreshUserEarnings();
   }
 
   @override
@@ -164,6 +176,8 @@ class EarningsScreenState extends State<EarningsScreen> {
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
+
+    user = Provider.of<AuthProvider>(context).user;
 
     return Scaffold(
       backgroundColor: themeColor,
@@ -259,16 +273,34 @@ class EarningsScreenState extends State<EarningsScreen> {
                                     Column(
                                       children: [
                                         Container(
-                                            width: 50,
-                                            height: 50,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.asset(
-                                              'assets/images/profile.jpeg',
-                                              fit: BoxFit.cover,
-                                            )),
+                                          width: 50,
+                                          height: 50,
+                                          alignment: Alignment.center,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: user.driver.avatar.isEmpty
+                                              ? Image.asset(
+                                                  'assets/images/profile.jpeg',
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Container(
+                                                  width: 50,
+                                                  height: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      child: CachedImageWidget(
+                                                          user.driver.avatar,
+                                                          height: 32,
+                                                          width: 32)),
+                                                ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
@@ -320,9 +352,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                             const AssetSvgIcon(
                                               'coin',
                                             ),
-                                            SizedBox(
-                                              width: dW * 0.01,
-                                            ),
+                                            SizedBox(width: dW * 0.015),
                                             ShaderMask(
                                               shaderCallback: (Rect bounds) {
                                                 return const LinearGradient(
@@ -334,8 +364,10 @@ class EarningsScreenState extends State<EarningsScreen> {
                                                   stops: [0.0, 0.5, 1.0],
                                                 ).createShader(bounds);
                                               },
-                                              child: const TextWidgetRoboto(
-                                                title: '30,000.00',
+                                              child: TextWidgetRoboto(
+                                                title: convertAmountString(user
+                                                    .driver.earnings.accrued
+                                                    .toDouble()),
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w700,
                                                 color: white,
@@ -373,12 +405,13 @@ class EarningsScreenState extends State<EarningsScreen> {
                                 CustomContainer(
                                   name: language['currentMonthEarnings'],
                                   widgets: Row(
-                                    children: const [
+                                    children: [
                                       TextWidgetRoboto(
-                                        title: 'Rs.1,00,00',
-                                        color: Color(0xff78B84C),
+                                        title:
+                                            'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
+                                        color: const Color(0xff78B84C),
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12,
+                                        fontSize: 16,
                                       ),
                                     ],
                                   ),
@@ -389,11 +422,12 @@ class EarningsScreenState extends State<EarningsScreen> {
                                 CustomContainer(
                                   name: language['eligibleToWithdraw'],
                                   widgets: Row(
-                                    children: const [
+                                    children: [
                                       TextWidgetRoboto(
-                                        title: 'Rs. 21,000',
+                                        title:
+                                            'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12,
+                                        fontSize: 16,
                                       ),
                                     ],
                                   ),
