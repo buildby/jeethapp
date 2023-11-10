@@ -35,3 +35,10 @@ class MyApplicationsStatusArguments {
   MyApplicationsStatusArguments(
       {required this.myApplication, required this.vendorName});
 }
+
+class WebviewScreenArguments {
+  final String link;
+  final String title;
+  // final String status;
+  WebviewScreenArguments({required this.link, required this.title});
+}

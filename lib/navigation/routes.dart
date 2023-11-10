@@ -10,7 +10,7 @@ class NamedRoute {
   static const String marketPlaceScreen = '/marketPlaceScreen';
   static const String selectLanguageScreen = "/selectLanguageScreen";
 
-  // static const String termsOfServicesScreen = '/termsOfServicesScreen';
+  static const String webviewScreen = '/webviewScreen';
 
   static const String loginScreen = '/loginScreen';
   static const String verifyOtpScreen = "/verifyOtpScreen";

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
 import 'package:jeeth_app/common_functions.dart';
 
@@ -22,6 +24,7 @@ class Driver {
   String accessToken;
   String fcmToken;
   bool isActive;
+  Earnings earnings;
 
   Driver({
     required this.id,
@@ -44,37 +47,64 @@ class Driver {
     this.accessToken = '',
     this.fcmToken = '',
     this.isActive = false,
+    required this.earnings,
   });
 
-  static Driver jsonToDriver(Map driver) => Driver(
-        id: driver['id'],
-        name: driver['name'] ?? '',
-        address: driver['address'] ?? '',
+  static Driver jsonToDriver(Map driver) {
+    Earnings earning = Earnings(
+      accrued: 0,
+      currentMonth: 0,
+    );
 
-        phone: driver['phone'],
-        bankName: driver['bankName'] ?? '',
-        accNumber: driver['accNumber'] ?? '',
-        ifscCode: driver['ifscCode'] ?? '',
+    final int i = driver['MetaData'] != null
+        ? (driver['MetaData'] as List)
+            .indexWhere((element) => element['key'] == 'Earnings')
+        : -1;
+    if (i != -1) {
+      final earningsMap = json.decode(driver['MetaData'][i]['value']);
+      earning.accrued = earningsMap['Accrued'] ?? 0;
+      earning.currentMonth = earningsMap['Current Month'] ?? 0;
+    }
+    return Driver(
+      id: driver['id'],
+      name: driver['name'] ?? '',
+      address: driver['address'] ?? '',
 
-        countryCode: driver['countryCode'] ?? '91',
-        gender: driver['gender'] ?? '',
-        email: driver['email'] ?? '',
-        dob: getParseDate(driver['dob']),
-        avatar: driver['avatar'] ?? '',
-        ownerName: driver['ownerName'] ?? '',
-        ownerAddress: driver['ownerAddress'] ?? '',
-        ownerPhoneNumber: driver['ownerPhoneNumber'] ?? '',
-        vehicleImage: driver['vehicleImage'] ?? '',
-        vehicle: Vehicle(
-          vehicleModel: driver['vehicleModel'] ?? '',
-          vehicleType: driver['vehicleType'] ?? '',
-          vehicleMake: driver['vehicleMake'] ?? '',
-          vehicleNumber: driver['vehicleNumber'] ?? '',
-          vehicleYear: driver['vehicleYear'] ?? '',
-        ),
+      phone: driver['phone'],
+      bankName: driver['bankName'] ?? '',
+      accNumber: driver['accNumber'] ?? '',
+      ifscCode: driver['ifscCode'] ?? '',
+      earnings: earning,
+      countryCode: driver['countryCode'] ?? '91',
+      gender: driver['gender'] ?? '',
+      email: driver['email'] ?? '',
+      dob: getParseDate(driver['dob']),
+      avatar: driver['avatar'] ?? '',
+      ownerName: driver['ownerName'] ?? '',
+      ownerAddress: driver['ownerAddress'] ?? '',
+      ownerPhoneNumber: driver['ownerPhoneNumber'] ?? '',
+      vehicleImage: driver['vehicleImage'] ?? '',
+      vehicle: Vehicle(
+        vehicleModel: driver['vehicleModel'] ?? '',
+        vehicleType: driver['vehicleType'] ?? '',
+        vehicleMake: driver['vehicleMake'] ?? '',
+        vehicleNumber: driver['vehicleNumber'] ?? '',
+        vehicleYear: driver['vehicleYear'] ?? '',
+      ),
 
-        isActive: driver['isActive'] ?? true,
+      isActive: driver['isActive'] ?? true,
 
-        // fcmToken: user['fcmToken'] ?? '',
-      );
+      // fcmToken: user['fcmToken'] ?? '',
+    );
+  }
+}
+
+class Earnings {
+  num accrued;
+  num currentMonth;
+
+  Earnings({
+    required this.accrued,
+    required this.currentMonth,
+  });
 }

@@ -8,6 +8,9 @@ import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../authModule/models/user_model.dart';
+import '../../common_widgets/cached_image_widget.dart';
+
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({Key? key}) : super(key: key);
 
@@ -20,7 +23,7 @@ class ReportsScreenState extends State<ReportsScreen>
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
-  //  late User user;
+  late User user;
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
@@ -34,7 +37,7 @@ class ReportsScreenState extends State<ReportsScreen>
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
+    user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
   }
 
@@ -138,16 +141,34 @@ class ReportsScreenState extends State<ReportsScreen>
                                     Column(
                                       children: [
                                         Container(
-                                            width: 50,
-                                            height: 50,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Image.asset(
-                                              'assets/images/profile.jpeg',
-                                              fit: BoxFit.cover,
-                                            )),
+                                          width: 50,
+                                          height: 50,
+                                          alignment: Alignment.center,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: user.driver.avatar.isEmpty
+                                              ? Image.asset(
+                                                  'assets/images/profile.jpeg',
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Container(
+                                                  width: 50,
+                                                  height: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      child: CachedImageWidget(
+                                                          user.driver.avatar,
+                                                          height: 32,
+                                                          width: 32)),
+                                                ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
@@ -226,17 +247,27 @@ class ReportsScreenState extends State<ReportsScreen>
                             ),
                             child: Column(
                               children: [
-                                CustomContainer(name: language['MISReport']),
+                                CustomContainer(
+                                  name: language['MISReport'],
+                                  axisAlignment: MainAxisAlignment.start,
+                                  widgets: comingSoonText,
+                                ),
                                 SizedBox(
                                   height: dW * 0.03,
                                 ),
                                 CustomContainer(
-                                    name: language['performanceReport']),
+                                  name: language['performanceReport'],
+                                  axisAlignment: MainAxisAlignment.start,
+                                  widgets: comingSoonText,
+                                ),
                                 SizedBox(
                                   height: dW * 0.03,
                                 ),
                                 CustomContainer(
-                                    name: language['earningsReport']),
+                                  name: language['earningsReport'],
+                                  axisAlignment: MainAxisAlignment.start,
+                                  widgets: comingSoonText,
+                                ),
                               ],
                             ),
                           ),

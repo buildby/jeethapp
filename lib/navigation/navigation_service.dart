@@ -14,6 +14,7 @@ import 'package:jeeth_app/homeModule/screens/notifications_screen.dart';
 import 'package:jeeth_app/homeModule/screens/refer_friend_screen.dart';
 import 'package:jeeth_app/homeModule/screens/settings_screen.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
+import '../homeModule/screens/webview_screen.dart';
 import 'routes.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -66,6 +67,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case NamedRoute.myApplicationsStatusScreen:
       return _getPageRoute(MyApplicationsStatusScreen(
           args: settings.arguments as MyApplicationsStatusArguments));
+
+    case NamedRoute.webviewScreen:
+      return _getPageRoute(
+          WebviewScreen(args: settings.arguments as WebviewScreenArguments));
 
     default:
       return _getPageRoute(const SplashScreen());

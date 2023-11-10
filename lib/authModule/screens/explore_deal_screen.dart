@@ -228,9 +228,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                                             .rating >=
                                                         4
                                                     ? const Color(0xff0CD78E)
-                                                    : const Color(
-                                                        (0xffF4B617),
-                                                      ),
+                                                    : const Color((0xffF4B617)),
                                                 borderRadius:
                                                     BorderRadius.circular(2)),
                                             child: Row(children: [
@@ -262,7 +260,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                               TextWidgetRoboto(
                                                 title: widget
                                                     .args.marketplace.rating
-                                                    .toString(),
+                                                    .toStringAsFixed(1),
                                                 color: white,
                                                 fontSize: 12,
                                               )

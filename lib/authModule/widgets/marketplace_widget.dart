@@ -9,6 +9,8 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/cached_image_widget.dart';
+
 class MarketplaceWidget extends StatefulWidget {
   final Marketplace marketplace;
   bool loggedIn;
@@ -69,19 +71,20 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(3),
-              //   child: CachedImageWidget(
-              //     widget.marketplace.clientSite.avatar,
-              //     boxFit: BoxFit.cover,
-              //     width: dW * 0.1,
-              //     height: dW * 0.1,
-              //   ),
-              // ),
-              Image.asset(
-                'assets/images/google.png',
-                scale: 1.8,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: CachedImageWidget(
+                  widget.marketplace.clientSite.avatar,
+                  boxFit: BoxFit.cover,
+                  width: dW * 0.12,
+                  height: dW * 0.12,
+                  scale: 1.8,
+                ),
               ),
+              // Image.asset(
+              //   'assets/images/google.png',
+              //   scale: 1.8,
+              // ),
             ],
           ),
           // SizedBox(
