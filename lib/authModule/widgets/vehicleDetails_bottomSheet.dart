@@ -3,6 +3,7 @@ import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
+import 'package:jeeth_app/authModule/widgets/vehicle_fuel_type_bottomSheet.dart';
 import 'package:jeeth_app/authModule/widgets/vehicle_make_widget.dart';
 import 'package:jeeth_app/authModule/widgets/vehicle_model_widget.dart';
 import 'package:jeeth_app/authModule/widgets/vehicle_type_bottomSheet.dart';
@@ -43,6 +44,7 @@ class VehicleDetailsBottomSheetWidgetState
   String? selectedVehicleYear;
   // String? selectedMake;
   String? selectedVehicleType;
+  String? selectedVehicleFuelType;
   String? selectedVehicleMake;
   String vehicleNumber = '';
   late User user;
@@ -127,6 +129,29 @@ class VehicleDetailsBottomSheetWidgetState
     );
   }
 
+  String selectFuelType = '';
+  void updateSelectedFuelType(String count) {
+    setState(() {
+      selectFuelType = count;
+    });
+  }
+
+  void vehicleFuelTypeBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) => GestureDetector(
+        child: VehicleFuelTypeWidget(
+            updateSelectedFuelType, selectedVehicleFuelType, selectFuelType),
+      ),
+    );
+  }
+
   String selectMake = 'Select make';
   void updateSelectedMake(String count) {
     setState(() {
@@ -165,6 +190,7 @@ class VehicleDetailsBottomSheetWidgetState
     if (selectType != 'Select type') {
       selectedDocumentCount++;
     }
+    //selectFuelType
     if (selectYear != 'Select year') {
       selectedDocumentCount++;
     }
@@ -191,6 +217,7 @@ class VehicleDetailsBottomSheetWidgetState
       "vehicleModel": selectModel,
       'vehicleType': selectType,
       'vehicleYear': selectYear,
+      'vehicleFuelType': selectFuelType,
       'vehicleNumber': _vehicleNumberController.text.toString(),
     };
 
@@ -220,6 +247,7 @@ class VehicleDetailsBottomSheetWidgetState
     selectMake = user.driver.vehicle.vehicleMake;
     selectModel = user.driver.vehicle.vehicleModel;
     selectType = user.driver.vehicle.vehicleType;
+    selectFuelType = user.driver.vehicle.vehicleFuelType;
     selectYear = user.driver.vehicle.vehicleYear;
     _vehicleNumberController.text = user.driver.vehicle.vehicleNumber;
     calculatePercentageFilled();
@@ -431,6 +459,49 @@ class VehicleDetailsBottomSheetWidgetState
                               title:
                                   //  selectedVehicleModel ??
                                   selectYear,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          AssetSvgIcon(
+                            'down_arrow',
+                            width: dW * 0.05,
+                            color: blackColor3,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: dW * 0.04,
+                  ),
+                  Row(
+                    children: [
+                      TextWidget(
+                        title: language['selectFuelType'],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      const TextWidget(
+                        title: '*',
+                        color: redColor,
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () => vehicleFuelTypeBottomSheet(context),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: themeColor)),
+                      padding: EdgeInsets.symmetric(
+                          vertical: dW * 0.037, horizontal: dW * 0.04),
+                      margin: EdgeInsets.symmetric(vertical: dW * 0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextWidget(
+                              title: selectFuelType,
                               fontWeight: FontWeight.w400,
                             ),
                           ),

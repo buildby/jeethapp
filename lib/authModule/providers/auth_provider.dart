@@ -86,6 +86,7 @@ class AuthProvider with ChangeNotifier {
         "enterDriverPhoto": "Please enter driver photo",
         "enterFields": "Please enter details and documents",
         "gotIt": "Got it",
+        "selectFuelType": "Select Fuel Type",
 
 // Home Screen
         "chooseYourClient": "Choose your client",

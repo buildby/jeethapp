@@ -4,6 +4,7 @@ class Vehicle {
   String vehicleMake;
   String vehicleNumber;
   String vehicleYear;
+  String vehicleFuelType;
 
   Vehicle({
     required this.vehicleModel,
@@ -11,6 +12,7 @@ class Vehicle {
     required this.vehicleMake,
     required this.vehicleNumber,
     required this.vehicleYear,
+    required this.vehicleFuelType,
   });
 
   static Vehicle jsonToVehicle(Map vehicle) => Vehicle(
@@ -19,5 +21,6 @@ class Vehicle {
         vehicleType: vehicle['vehicleType'] ?? '',
         vehicleYear: vehicle['vehicleYear'] ?? '',
         vehicleNumber: vehicle['vehicleNumber'] ?? '',
+        vehicleFuelType: vehicle['vehicleFuelType'] ?? '',
       );
 }
