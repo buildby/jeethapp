@@ -148,11 +148,18 @@ class EarningsScreenState extends State<EarningsScreen> {
     ),
   ];
 
-  num get withrawableAmount => (80 / 100) * user.driver.earnings.currentMonth;
+  num get withrawableAmount => (80 / 100) * user.driver.earnings.accrued;
 
-  fetchData() async {
+  refreshUserEarnings() async {
     setState(() => isLoading = true);
-    setState(() => isLoading = false);
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .refreshUserEarnings(driverId: user.driver.id.toString());
+
+    if (response['result'] != 'success') {
+      refreshUserEarnings();
+    } else {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -160,7 +167,7 @@ class EarningsScreenState extends State<EarningsScreen> {
     super.initState();
 
     user = Provider.of<AuthProvider>(context, listen: false).user;
-    fetchData();
+    refreshUserEarnings();
   }
 
   @override
@@ -404,7 +411,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                             'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
                                         color: const Color(0xff78B84C),
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12,
+                                        fontSize: 16,
                                       ),
                                     ],
                                   ),
@@ -420,7 +427,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                         title:
                                             'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12,
+                                        fontSize: 16,
                                       ),
                                     ],
                                   ),

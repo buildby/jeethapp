@@ -35,6 +35,7 @@ var endPoint = {
 
   //Driver
   'editDriverProfile': '/driver/editDriverProfile',
+  'refreshUserEarnings': '/driver/refreshUserEarnings',
 
   // Notifications
   'fetchNotifications': '/notification/fetchNotifications',

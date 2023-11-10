@@ -582,46 +582,42 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       child: Column(
         children: [
           Expanded(
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.only(top: dW * 0.03, bottom: dW * 0.5),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: dW * 0.04, vertical: dW * 0.05),
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(.1),
-                            blurRadius: 10,
-                            spreadRadius: 0,
-                            offset: const Offset(0, -5))
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        DocumentDetailWidget(
-                          name: language['driverDetails'],
-                          percentage:
-                              '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                          onTap: () => driverDetailsBottomSheet(),
-                        ),
-                        SizedBox(
-                          height: dW * 0.025,
-                        ),
-                        DocumentDetailWidget(
-                          name: language['driverDocuments'],
-                          percentage:
-                              '${double.parse(driverDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
-                          onTap: () => driverDocBottomSheet(),
-                        ),
-                      ],
-                    ),
-                  ),
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.only(top: dW * 0.03, bottom: dW * 0.5),
+                padding: EdgeInsets.symmetric(
+                    horizontal: dW * 0.04, vertical: dW * 0.05),
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(.1),
+                        blurRadius: 10,
+                        spreadRadius: 0,
+                        offset: const Offset(0, -5))
+                  ],
                 ),
-              ],
+                child: Column(
+                  children: [
+                    DocumentDetailWidget(
+                      name: language['driverDetails'],
+                      percentage:
+                          '${double.parse(driverDetailsPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                      onTap: () => driverDetailsBottomSheet(),
+                    ),
+                    SizedBox(
+                      height: dW * 0.025,
+                    ),
+                    DocumentDetailWidget(
+                      name: language['driverDocuments'],
+                      percentage:
+                          '${double.parse(driverDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
+                      onTap: () => driverDocBottomSheet(),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           validateTab1

@@ -201,7 +201,8 @@ class ReportsScreenState extends State<ReportsScreen>
                                               fontSize: 18,
                                             ),
                                             const TextWidget(
-                                              title: '81${'%'}',
+                                              // title: '81${'%'}',
+                                              title: ' --',
                                               fontWeight: FontWeight.w600,
                                               color: Color(0xffEAC02A),
                                               fontSize: 18,
@@ -215,7 +216,8 @@ class ReportsScreenState extends State<ReportsScreen>
                                               fontSize: 18,
                                             ),
                                             const TextWidget(
-                                              title: '91${'%'}',
+                                              // title: '91${'%'}',
+                                              title: ' --',
                                               fontWeight: FontWeight.w600,
                                               color: Color(0xff78B84C),
                                               fontSize: 18,
@@ -247,26 +249,35 @@ class ReportsScreenState extends State<ReportsScreen>
                             ),
                             child: Column(
                               children: [
-                                CustomContainer(
-                                  name: language['MISReport'],
-                                  axisAlignment: MainAxisAlignment.start,
-                                  widgets: comingSoonText,
+                                GestureDetector(
+                                  onTap: () =>
+                                      showSnackbar('Coming soon!!', themeColor),
+                                  child: CustomContainer(
+                                    name: language['MISReport'],
+                                    axisAlignment: MainAxisAlignment.start,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: dW * 0.03,
                                 ),
-                                CustomContainer(
-                                  name: language['performanceReport'],
-                                  axisAlignment: MainAxisAlignment.start,
-                                  widgets: comingSoonText,
+                                GestureDetector(
+                                  onTap: () =>
+                                      showSnackbar('Coming soon!!', themeColor),
+                                  child: CustomContainer(
+                                    name: language['performanceReport'],
+                                    axisAlignment: MainAxisAlignment.start,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: dW * 0.03,
                                 ),
-                                CustomContainer(
-                                  name: language['earningsReport'],
-                                  axisAlignment: MainAxisAlignment.start,
-                                  widgets: comingSoonText,
+                                GestureDetector(
+                                  onTap: () =>
+                                      showSnackbar('Coming soon!!', themeColor),
+                                  child: CustomContainer(
+                                    name: language['earningsReport'],
+                                    axisAlignment: MainAxisAlignment.start,
+                                  ),
                                 ),
                               ],
                             ),
