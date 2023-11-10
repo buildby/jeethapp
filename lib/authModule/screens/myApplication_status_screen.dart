@@ -71,22 +71,23 @@ class MyApplicationsStatusScreenState
   }
 
   screenBody() {
-    Widget currentWidget = widget.args.myApplication.status == 'Pending!'
+    Widget currentWidget = widget.args.myApplication.status == 'PENDING' ||
+            widget.args.myApplication.status == 'HOLD'
         ? PendingWidget(
             args: MyApplicationsStatusArguments(
-                myApplication: widget.args.myApplication,
-                vendorName: widget.args.vendorName),
+              myApplication: widget.args.myApplication,
+            ),
           )
-        : widget.args.myApplication.status == 'Rejected!'
+        : widget.args.myApplication.status == 'REJECTED'
             ? RejectedWidget(
                 args: MyApplicationsStatusArguments(
-                    myApplication: widget.args.myApplication,
-                    vendorName: widget.args.vendorName),
+                  myApplication: widget.args.myApplication,
+                ),
               )
             : ApprovedWidget(
                 args: MyApplicationsStatusArguments(
-                    myApplication: widget.args.myApplication,
-                    vendorName: widget.args.vendorName),
+                  myApplication: widget.args.myApplication,
+                ),
               );
 
     return isLoading ? const Center(child: CircularLoader()) : currentWidget;

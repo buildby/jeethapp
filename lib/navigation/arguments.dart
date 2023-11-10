@@ -29,9 +29,7 @@ class ExploreDealScreenArguments {
 }
 
 class MyApplicationsStatusArguments {
-  final String vendorName;
   final MyApplication myApplication;
   // final String status;
-  MyApplicationsStatusArguments(
-      {required this.myApplication, required this.vendorName});
+  MyApplicationsStatusArguments({required this.myApplication});
 }

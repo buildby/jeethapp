@@ -11,6 +11,8 @@ import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
+
 class ExploreDealScreen extends StatefulWidget {
   final ExploreDealScreenArguments args;
   const ExploreDealScreen({
@@ -27,6 +29,8 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
+
+  late User user;
 
   late Map businessModel;
   //  late User user;
@@ -72,6 +76,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
       context: context,
       builder: (context) => AgreementBottomSheetWidget(
         vendorName: widget.args.marketplace.vendername,
+        campaignId: widget.args.marketplace.id,
       ),
     );
   }
@@ -91,7 +96,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
+    user = Provider.of<AuthProvider>(context, listen: false).user;
     // fetchData();
     slots = widget.args.marketplace.data;
     businessModel = widget.args.marketplace.clientSite.businessModel.last;

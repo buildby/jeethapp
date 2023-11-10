@@ -62,4 +62,8 @@ var endPoint = {
 
   // Market place
   'fetchAllCampaignsApp': '/campaign/fetchAllCampaignsApp',
+
+  // My Application
+  'createMyApplication': '/driverApplication',
+  'fetchMyApplication': '/driverApplication',
 };

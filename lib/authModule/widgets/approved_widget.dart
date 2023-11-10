@@ -7,6 +7,8 @@ import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/cached_image_widget.dart';
+
 class ApprovedWidget extends StatefulWidget {
   final MyApplicationsStatusArguments args;
   const ApprovedWidget({Key? key, required this.args}) : super(key: key);
@@ -80,7 +82,7 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                             height: dW * 0.15,
                           ),
                           TextWidgetPoppins(
-                            title: widget.args.vendorName,
+                            title: widget.args.myApplication.vendorName,
                             fontWeight: FontWeight.w900,
                             fontSize: 17,
                           ),
@@ -88,7 +90,7 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                             height: dW * 0.015,
                           ),
                           TextWidgetPoppins(
-                            title: widget.args.myApplication.area,
+                            title: widget.args.myApplication.clientSiteName,
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff8A8A8F),
                             fontSize: 15,
@@ -164,8 +166,7 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                                   width: dW * 0.05,
                                 ),
                                 TextWidgetPoppins(
-                                  title: widget
-                                      .args.myApplication.fieldOfficerName,
+                                  title: widget.args.myApplication.vendorName,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
                                 ),
@@ -203,34 +204,34 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                                 SizedBox(
                                   width: dW * 0.04,
                                 ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Wrap(
-                                        children: [
-                                          ...widget.args.myApplication
-                                              .fieldOfficerNumbers
-                                              .map(
-                                            (number) => TextWidgetPoppins(
-                                              title: number ==
-                                                      widget
-                                                          .args
-                                                          .myApplication
-                                                          .fieldOfficerNumbers
-                                                          .last
-                                                  ? number
-                                                  : '$number,',
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // Expanded(
+                                //   child: Column(
+                                //     crossAxisAlignment:
+                                //         CrossAxisAlignment.start,
+                                //     children: [
+                                //       Wrap(
+                                //         children: [
+                                //           ...widget.args.myApplication
+                                //               .fieldOfficerNumbers
+                                //               .map(
+                                //             (number) => TextWidgetPoppins(
+                                //               title: number ==
+                                //                       widget
+                                //                           .args
+                                //                           .myApplication
+                                //                           .fieldOfficerNumbers
+                                //                           .last
+                                //                   ? number
+                                //                   : '$number,',
+                                //               fontWeight: FontWeight.w600,
+                                //               fontSize: 14,
+                                //             ),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -277,13 +278,11 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                   top: -48,
                   right: 18,
                   left: 0,
-                  child: CircleAvatar(
-                    radius: 50,
-                    child: Image.asset(
-                      widget.args.myApplication.logo,
-                      scale: 1.3,
-                    ),
-                  ),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: CachedImageWidget(
+                        widget.args.myApplication.vendorAvatar,
+                      )),
                 )
               ],
             ),

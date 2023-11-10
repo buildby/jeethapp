@@ -1,22 +1,36 @@
-import 'package:jeeth_app/authModule/models/marketplace_model.dart';
-
 class MyApplication {
   int id;
-  Marketplace vendorName;
+  int campaignId;
+  String campaignName;
+  String clientSiteName;
+  int vendorId;
+  String vendorName;
+  String vendorPhone;
+  String vendorAvatar;
   String status;
-  String area;
-  String fieldOfficerName;
-  List<String> fieldOfficerNumbers;
-  String? inCorrectDocs;
-  String logo;
 
   MyApplication(
-      {required this.vendorName,
-      required this.id,
-      required this.status,
-      required this.area,
-      required this.fieldOfficerName,
-      required this.fieldOfficerNumbers,
-      required this.logo,
-      this.inCorrectDocs});
+      {required this.id,
+      required this.campaignId,
+      required this.campaignName,
+      required this.clientSiteName,
+      required this.vendorId,
+      required this.vendorName,
+      required this.vendorPhone,
+      required this.vendorAvatar,
+      required this.status});
+
+  static MyApplication jsonToMyApplication(Map myApplication) {
+    return MyApplication(
+      id: myApplication['id'],
+      campaignId: myApplication['campaign_id'],
+      campaignName: myApplication['Campaign']['name'],
+      clientSiteName: myApplication['Campaign']['ClientSite']['name'],
+      vendorId: myApplication['Campaign']['Vendor']['id'],
+      vendorName: myApplication['Campaign']['Vendor']['name'],
+      vendorPhone: myApplication['Campaign']['Vendor']['phone'],
+      vendorAvatar: myApplication['Campaign']['Vendor']['avatar'],
+      status: myApplication['status'],
+    );
+  }
 }

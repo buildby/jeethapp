@@ -12,6 +12,8 @@ import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/cached_image_widget.dart';
+
 class RejectedWidget extends StatefulWidget {
   final MyApplicationsStatusArguments args;
   const RejectedWidget({Key? key, required this.args}) : super(key: key);
@@ -77,7 +79,7 @@ class ApprovedStateWidget extends State<RejectedWidget> {
                         height: dW * 0.15,
                       ),
                       TextWidgetPoppins(
-                        title: widget.args.vendorName,
+                        title: widget.args.myApplication.vendorName,
                         fontWeight: FontWeight.w900,
                         fontSize: 17,
                       ),
@@ -85,7 +87,7 @@ class ApprovedStateWidget extends State<RejectedWidget> {
                         height: dW * 0.015,
                       ),
                       TextWidgetPoppins(
-                        title: widget.args.myApplication.area,
+                        title: widget.args.myApplication.clientSiteName,
                         fontWeight: FontWeight.w400,
                         color: const Color(0xff8A8A8F),
                         fontSize: 15,
@@ -185,13 +187,11 @@ class ApprovedStateWidget extends State<RejectedWidget> {
               top: -48,
               right: 18,
               left: 0,
-              child: CircleAvatar(
-                radius: 50,
-                child: Image.asset(
-                  widget.args.myApplication.logo,
-                  scale: 1.3,
-                ),
-              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: CachedImageWidget(
+                    widget.args.myApplication.vendorAvatar,
+                  )),
             )
           ],
         ),

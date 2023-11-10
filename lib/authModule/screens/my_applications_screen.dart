@@ -18,6 +18,8 @@ import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
+
 class MyApplicationsScreen extends StatefulWidget {
   const MyApplicationsScreen({Key? key}) : super(key: key);
 
@@ -34,8 +36,19 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
-  fetchData() async {
+  late User user;
+
+  fetchMyApplication() async {
     setState(() => isLoading = true);
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .fetchMyApplication(
+      accessToken: user.accessToken,
+      driverId: user.driver.id,
+    );
+    if (response['result'] == 'success') {
+      // showSnackbar(response['message']);
+    }
     setState(() => isLoading = false);
   }
 
@@ -72,8 +85,8 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
-    fetchData();
+    user = Provider.of<AuthProvider>(context, listen: false).user;
+    fetchMyApplication();
   }
 
   @override
@@ -140,23 +153,34 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
                       itemCount: myApplication.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        final subtitle = myApplication[index].status;
-                        return MyApplicationContainer(
-                          title: marketplace[index].vendername,
-                          subTitle: subtitle == 'Approved!'
-                              ? 'approved'
-                              : subtitle == 'Pending!'
-                                  ? 'awaitingApproval'
-                                  : 'denied',
-                          date: formattedDate,
+                        // final subtitle = myApplication[index].status;
+                        return GestureDetector(
                           onTap: () {
                             push(
                               NamedRoute.myApplicationsStatusScreen,
                               arguments: MyApplicationsStatusArguments(
-                                  myApplication: myApplication[index],
-                                  vendorName: marketplace[index].vendername),
+                                myApplication: myApplication[index],
+                              ),
                             );
                           },
+                          child: MyApplicationContainer(
+                            application: myApplication[index],
+                            // onTap: () {
+                            // push(
+                            //   NamedRoute.myApplicationsStatusScreen,
+                            //   arguments: MyApplicationsStatusArguments(
+                            //       myApplication: myApplication[index],
+                            //       vendorName: marketplace[index].vendername),
+                            // );
+                            // },
+                            // title: marketplace[index].vendername,
+                            // subTitle: subtitle == 'Approved!'
+                            //     ? 'approved'
+                            //     : subtitle == 'Pending!'
+                            //         ? 'awaitingApproval'
+                            //         : 'denied',
+                            date: formattedDate,
+                          ),
                         );
                       }),
                   // MyApplicationContainer(

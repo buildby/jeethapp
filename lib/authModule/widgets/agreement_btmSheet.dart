@@ -6,12 +6,20 @@ import 'package:jeeth_app/authModule/widgets/agreement_widget.dart';
 import 'package:jeeth_app/authModule/widgets/submitted_widget.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
+
 class AgreementBottomSheetWidget extends StatefulWidget {
   String vendorName;
-  AgreementBottomSheetWidget({super.key, required this.vendorName});
+  final int campaignId;
+  AgreementBottomSheetWidget({
+    super.key,
+    required this.vendorName,
+    required this.campaignId,
+  });
 
   @override
   AgreementBottomSheetWidgetState createState() =>
@@ -29,9 +37,37 @@ class AgreementBottomSheetWidgetState
   fetchData() async {}
   int screenNumber = 1;
 
+  late User user;
+
+  createApplication() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final body = {
+      'campaign_id': widget.campaignId,
+      'driver_id': user.driver.id,
+    };
+
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .createMyApplication(body: body, accessToken: user.accessToken);
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (response['result'] == 'success') {
+      pop();
+    }
+    // showSnackbar(response['message']);
+  }
+
   @override
   void initState() {
     super.initState();
+
+    user = Provider.of<AuthProvider>(context, listen: false).user;
 
     fetchData();
   }
@@ -86,7 +122,7 @@ class AgreementBottomSheetWidgetState
                   screenNumber++;
                 });
               } else {
-                pop();
+                createApplication();
               }
             },
           ),

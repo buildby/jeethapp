@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/homeModule/models/my_application_model.dart';
+
+import '../../api.dart';
+import '../../http_helper.dart';
 
 class MyApplicationProvider with ChangeNotifier {
   List<MyApplication> _myApplications = [];
@@ -9,7 +11,7 @@ class MyApplicationProvider with ChangeNotifier {
     _myApplications = [
       // MyApplication(
       //   id: 1,
-      //   vendorName: Marketplace(id: 1, vendername: 'Shyam Salasar Logistic'),
+      //   // vendorName: Marketplace(id: 1, vendername: 'Shyam Salasar Logistic'),
       //   status: 'Approved!',
       //   area: 'Google - Block 1 (Mindspace_1)',
       //   fieldOfficerName: 'Md. Junaid',
@@ -42,4 +44,63 @@ class MyApplicationProvider with ChangeNotifier {
   }
 
   List<MyApplication> get myApplications => _myApplications;
+
+  createMyApplication({
+    required Map body,
+    required String accessToken,
+  }) async {
+    try {
+      final url = '${webApi['domain']}${endPoint['createMyApplication']}';
+
+      final response = await RemoteServices.httpRequest(
+        method: 'POST',
+        url: url,
+        body: body,
+        accessToken: accessToken,
+      );
+
+      if (response['result'] == 'success') {
+        _myApplications.insert(
+          0,
+          MyApplication.jsonToMyApplication(response['data']),
+        );
+        notifyListeners();
+      }
+      return response;
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Failed to create application',
+      };
+    }
+  }
+
+  fetchMyApplication({
+    required String accessToken,
+    required int driverId,
+  }) async {
+    try {
+      final url =
+          '${webApi['domain']}${endPoint['fetchMyApplication']}/$driverId';
+      final response = await RemoteServices.httpRequest(
+          method: 'GET', url: url, accessToken: accessToken);
+
+      if (response['result'] == 'success') {
+        List<MyApplication> fetchedMyApplications = [];
+
+        response['data'].forEach((myApplication) {
+          fetchedMyApplications
+              .add(MyApplication.jsonToMyApplication(myApplication));
+        });
+        _myApplications = fetchedMyApplications;
+        notifyListeners();
+      }
+      return response;
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Failed to get My applications',
+      };
+    }
+  }
 }
