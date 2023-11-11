@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
-import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
-import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
-import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
-import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
 
@@ -184,14 +178,26 @@ class ApprovedStateWidget extends State<RejectedWidget> {
               ),
             ),
             Positioned(
-              top: -48,
-              right: 18,
+              top: -50,
+              right: 0,
               left: 0,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: CachedImageWidget(
-                    widget.args.myApplication.vendorAvatar,
-                  )),
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                          width: 1.5, color: const Color(0XFF13A088))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: CachedImageWidget(
+                      widget.args.myApplication.vendorAvatar,
+                      boxFit: BoxFit.cover,
+                      width: dW * 0.25,
+                      height: dW * 0.25,
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
         ),

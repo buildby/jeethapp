@@ -1,21 +1,21 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/homeModule/models/my_application_model.dart';
 import 'package:provider/provider.dart';
 
 class MyApplicationContainer extends StatelessWidget {
   final MyApplication application;
-  String date;
+  // String date;
 
   MyApplicationContainer({
     required this.application,
-    required this.date,
+    // required this.date,
     super.key,
   });
 
@@ -51,7 +51,7 @@ class MyApplicationContainer extends StatelessWidget {
                       color: const Color(0xff242E42),
                       letterSpacing: 0.41,
                       fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),
@@ -60,7 +60,7 @@ class MyApplicationContainer extends StatelessWidget {
                 width: dW * 0.18,
               ),
               TextWidgetPoppins(
-                title: date.toString(),
+                title: DateFormat('d MMM, yyyy').format(application.createdAt),
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
                 letterSpacing: 0.41,
@@ -71,7 +71,12 @@ class MyApplicationContainer extends StatelessWidget {
             height: dW * 0.02,
           ),
           TextWidgetPoppins(
-            title: application.status,
+            title:
+                application.status == 'PENDING' || application.status == 'HOLD'
+                    ? 'Awaiting approval'
+                    : application.status == 'REJECTED'
+                        ? 'Denied'
+                        : 'Approved, Visit site location.',
             fontWeight: FontWeight.w400,
             letterSpacing: 0.41,
             fontSize: 14,

@@ -140,12 +140,22 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                   height: 70,
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle),
-                                  child: ClipRRect(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        border: Border.all(
+                                            width: 1.5, color: Colors.white)),
+                                    child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: CachedImageWidget(
-                                          user.driver.avatar,
-                                          height: 32,
-                                          width: 32)),
+                                        user.driver.avatar,
+                                        boxFit: BoxFit.cover,
+                                        width: dW * 0.2,
+                                        height: dW * 0.2,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                         ),
                         Column(
@@ -235,24 +245,25 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                           text: language['myApplications'],
                           onTap: () => push(NamedRoute.myApplicationsScreen),
                         ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'notifications',
-                        //   text: language['notifications'],
-                        //   onTap: () => push(NamedRoute.notificationsScreen),
-                        // ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'refer_friend',
-                        //   text: language['referAFriend'],
-                        //   onTap: () => push(NamedRoute.referAFriendScreen),
-                        // ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'settings',
-                        //   text: language['appSettings'],
-                        //   onTap: () => push(NamedRoute.settingsScreen),
-                        // ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'notifications',
+                          text: language['notifications'],
+                          onTap: () => push(NamedRoute.myApplicationsScreen),
+                          // push(NamedRoute.notificationsScreen),
+                        ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'refer_friend',
+                          text: language['referAFriend'],
+                          onTap: () => push(NamedRoute.referAFriendScreen),
+                        ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'settings',
+                          text: language['appSettings'],
+                          onTap: () => push(NamedRoute.settingsScreen),
+                        ),
                         buildOptionWidget(
                           context: context,
                           iconName: 'logout',

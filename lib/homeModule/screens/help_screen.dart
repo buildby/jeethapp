@@ -8,6 +8,8 @@ import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../authModule/models/user_model.dart';
+
 class HelpScreen extends StatefulWidget {
   const HelpScreen({Key? key}) : super(key: key);
 
@@ -24,6 +26,8 @@ class HelpScreenState extends State<HelpScreen> {
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
+  late User user;
+
   fetchData() async {
     setState(() => isLoading = true);
     setState(() => isLoading = false);
@@ -33,7 +37,7 @@ class HelpScreenState extends State<HelpScreen> {
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
+    user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
   }
 
@@ -169,11 +173,24 @@ class HelpScreenState extends State<HelpScreen> {
                                         SizedBox(
                                           height: dW * 0.02,
                                         ),
-                                        TextWidget(
-                                          title: language['tapToCall'],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17,
-                                          color: themeColor,
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (user.driver.vendor != null) {
+                                              launchCall(
+                                                  user.driver.vendor!.phone);
+                                            }
+                                          },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            child: TextWidget(
+                                              title: language['tapToCall'],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                              color: user.driver.vendor != null
+                                                  ? themeColor
+                                                  : grayColor.withOpacity(0.5),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

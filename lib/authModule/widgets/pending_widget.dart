@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
-import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
-import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
-import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
-
 import '../../common_widgets/cached_image_widget.dart';
 
 class PendingWidget extends StatefulWidget {
@@ -88,7 +82,7 @@ class ApprovedStateWidget extends State<PendingWidget> {
                       TextWidgetPoppins(
                         title: widget.args.myApplication.clientSiteName,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff8A8A8F),
+                        color: const Color(0xff8A8A8F),
                         fontSize: 15,
                       ),
                       SizedBox(
@@ -96,7 +90,7 @@ class ApprovedStateWidget extends State<PendingWidget> {
                       ),
                       TextWidgetPoppins(
                         title: language['decisionPending'],
-                        color: Color(0xffE4CF11),
+                        color: const Color(0xffE4CF11),
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                         letterSpacing: 0.41,
@@ -108,7 +102,7 @@ class ApprovedStateWidget extends State<PendingWidget> {
                         textAlign: TextAlign.center,
                         title: language['pendingPara'],
                         height: 1.5,
-                        color: Color(0xff8A8A8F),
+                        color: const Color(0xff8A8A8F),
                         fontWeight: FontWeight.w400,
                         letterSpacing: 0.41,
                         fontSize: 16,
@@ -142,16 +136,24 @@ class ApprovedStateWidget extends State<PendingWidget> {
               ),
             ),
             Positioned(
-              top: -48,
-              right: 18,
+              top: -50,
+              right: 0,
               left: 0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: CachedImageWidget(
-                  widget.args.myApplication.vendorAvatar,
-                  boxFit: BoxFit.cover,
-                  width: dW * 0.15,
-                  height: dW * 0.15,
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                          width: 1.5, color: const Color(0XFF13A088))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: CachedImageWidget(
+                      widget.args.myApplication.vendorAvatar,
+                      boxFit: BoxFit.cover,
+                      width: dW * 0.25,
+                      height: dW * 0.25,
+                    ),
+                  ),
                 ),
               ),
             )

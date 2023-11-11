@@ -200,14 +200,26 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                         height: 60,
                                         decoration: const BoxDecoration(
                                             shape: BoxShape.circle),
-                                        child: ClipRRect(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              border: Border.all(
+                                                  width: 1.5,
+                                                  color:
+                                                      const Color(0XFF13A088))),
+                                          child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             child: CachedImageWidget(
-                                                widget.args.marketplace
-                                                    .vendorAvatar,
-                                                height: 32,
-                                                width: 32)),
+                                              widget.args.marketplace
+                                                  .vendorAvatar,
+                                              boxFit: BoxFit.cover,
+                                              width: dW * 0.2,
+                                              height: dW * 0.2,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

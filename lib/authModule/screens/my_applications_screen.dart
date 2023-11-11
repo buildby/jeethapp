@@ -87,6 +87,8 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
 
     user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchMyApplication();
+    Provider.of<AuthProvider>(context, listen: false)
+        .driverAutoLogin(phone: user.driver.phone, refresh: true);
   }
 
   @override
@@ -111,8 +113,7 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
     final myApplication =
         Provider.of<MyApplicationProvider>(context, listen: false)
             .myApplications;
-    final marketplace =
-        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -148,41 +149,43 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
                   SizedBox(
                     height: dW * 0.06,
                   ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: myApplication.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        // final subtitle = myApplication[index].status;
-                        return GestureDetector(
-                          onTap: () {
-                            push(
-                              NamedRoute.myApplicationsStatusScreen,
-                              arguments: MyApplicationsStatusArguments(
-                                myApplication: myApplication[index],
-                              ),
-                            );
-                          },
-                          child: MyApplicationContainer(
-                            application: myApplication[index],
-                            // onTap: () {
-                            // push(
-                            //   NamedRoute.myApplicationsStatusScreen,
-                            //   arguments: MyApplicationsStatusArguments(
-                            //       myApplication: myApplication[index],
-                            //       vendorName: marketplace[index].vendername),
-                            // );
-                            // },
-                            // title: marketplace[index].vendername,
-                            // subTitle: subtitle == 'Approved!'
-                            //     ? 'approved'
-                            //     : subtitle == 'Pending!'
-                            //         ? 'awaitingApproval'
-                            //         : 'denied',
-                            date: formattedDate,
-                          ),
-                        );
-                      }),
+                  Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: myApplication.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, i) {
+                          // final subtitle = myApplication[i].status;
+                          return GestureDetector(
+                            onTap: () {
+                              push(
+                                NamedRoute.myApplicationsStatusScreen,
+                                arguments: MyApplicationsStatusArguments(
+                                  myApplication: myApplication[i],
+                                ),
+                              );
+                            },
+                            child: MyApplicationContainer(
+                              application: myApplication[i],
+                              // onTap: () {
+                              // push(
+                              //   NamedRoute.myApplicationsStatusScreen,
+                              //   arguments: MyApplicationsStatusArguments(
+                              //       myApplication: myApplication[i],
+                              //       vendorName: marketplace[i].vendername),
+                              // );
+                              // },
+                              // title: marketplace[i].vendername,
+                              // subTitle: subtitle == 'Approved!'
+                              //     ? 'approved'
+                              //     : subtitle == 'Pending!'
+                              //         ? 'awaitingApproval'
+                              //         : 'denied',
+                              // date: formattedDate,
+                            ),
+                          );
+                        }),
+                  ),
                   // MyApplicationContainer(
                   //     title: 'Shyam Salasar Logist.',
                   //     subTitle: 'awaitingApproval',

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jeeth_app/authModule/models/driver_model.dart';
+import 'package:jeeth_app/authModule/models/vendor_model.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -165,15 +166,19 @@ class AuthProvider with ChangeNotifier {
         "decisionPending": "Decision Pending!",
         "applicationDenied": "Application Denied!",
         "pendingPara":
-            "Your application has been\nreceived by the vendor, and it is\nunder verification process.\nPlease check back later.",
+            "Your application has been\nreceived and it is\nunder verification process.\nPlease check back later.",
         "backHome": "Back Home",
         "rejectedPara":
-            "Your application has been\ncarefully reviewed by the vendor\nbut unfortunately it is rejected for\nthe following reasons.",
+            "Your application has been\ncarefully reviewed\nbut unfortunately it is rejected for\nthe following reasons.",
         "incorrectDocuments": "Incorrect Documents, ",
         "kindlyReupload": "Kindly re-upload the pending documents and reapply.",
         "takeMeToProfile": "Take me to Profile",
         "fieldOfficer": "Field Officer",
         "navigateToLocation": "Navigate to location",
+        "goToApplications": "Go to applications",
+        "pending": "Pending!",
+        "rejected": "Rejected!",
+        "aproved": "Approved!",
       };
 
   late User user;
@@ -430,7 +435,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future driverAutoLogin({required String phone}) async {
+  Future driverAutoLogin({required String phone, bool refresh = false}) async {
     // String? fcmToken = await FirebaseMessaging.instance.getToken();
     // if (fcmToken != null && fcmToken != '') {
     //   query += '&fcmToken=$fcmToken';
@@ -446,13 +451,15 @@ class AuthProvider with ChangeNotifier {
         user = User.jsonToUser(response['data']['user'],
             accessToken: response['token']);
 
-        await storage.ready;
-        await storage.setItem(
-            'accessToken',
-            json.encode({
-              "token": user.accessToken,
-              "phone": user.phone,
-            }));
+        if (!refresh) {
+          await storage.ready;
+          await storage.setItem(
+              'accessToken',
+              json.encode({
+                "token": user.accessToken,
+                "phone": user.phone,
+              }));
+        }
       }
       notifyListeners();
       return response;
@@ -515,8 +522,12 @@ class AuthProvider with ChangeNotifier {
       );
       if (response['result'] == 'success') {
         final earnings = user.driver.earnings;
+        final vendor = user.driver.vendor;
+        final status = user.driver.status;
         user.driver = Driver.jsonToDriver(response['data']);
         user.driver.earnings = earnings;
+        user.driver.vendor = vendor;
+        user.driver.status = status;
       }
 
       notifyListeners();

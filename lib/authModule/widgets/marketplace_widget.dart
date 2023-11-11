@@ -71,20 +71,21 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: CachedImageWidget(
-                  widget.marketplace.clientSite.avatar,
-                  boxFit: BoxFit.cover,
-                  width: dW * 0.12,
-                  height: dW * 0.12,
-                  scale: 1.8,
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border:
+                        Border.all(width: 1.5, color: const Color(0XFF13A088))),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: CachedImageWidget(
+                    widget.marketplace.clientSite.avatar,
+                    boxFit: BoxFit.cover,
+                    width: dW * 0.15,
+                    height: dW * 0.15,
+                  ),
                 ),
               ),
-              // Image.asset(
-              //   'assets/images/google.png',
-              //   scale: 1.8,
-              // ),
             ],
           ),
           // SizedBox(
@@ -159,7 +160,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   Row(
                     children: [
                       TextWidgetRoboto(
-                        title: 'Sedan: ',
+                        title: 'Sedan:',
                         fontWeight: FontWeight.w300,
                         fontSize: tS * 12,
                       ),
@@ -176,7 +177,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   Row(
                     children: [
                       TextWidgetRoboto(
-                        title: 'SUV: ',
+                        title: 'SUV:',
                         fontWeight: FontWeight.w300,
                         fontSize: tS * 12,
                       ),
@@ -193,7 +194,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   Row(
                     children: [
                       TextWidgetRoboto(
-                        title: 'Mini: ',
+                        title: 'Mini:',
                         fontWeight: FontWeight.w300,
                         fontSize: tS * 12,
                       ),

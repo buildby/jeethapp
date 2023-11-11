@@ -53,14 +53,19 @@ class MyApplicationsStatusScreenState
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
-    final myApplication =
-        Provider.of<MyApplicationProvider>(context, listen: false)
-            .myApplications;
+    // final myApplication =
+    //     Provider.of<MyApplicationProvider>(context, listen: false)
+    //         .myApplications;
 
     return Scaffold(
       backgroundColor: themeColor,
       appBar: CustomAppBar(
-        title: widget.args.myApplication.status,
+        title: widget.args.myApplication.status == 'PENDING' ||
+                widget.args.myApplication.status == 'HOLD'
+            ? language['pending']
+            : widget.args.myApplication.status == 'REJECTED'
+                ? language['rejected']
+                : language['aproved'],
         fontFamily: 'Poppins',
         fontWeight: FontWeight.w900,
         dW: dW,

@@ -8,17 +8,20 @@ class MyApplication {
   String vendorPhone;
   String vendorAvatar;
   String status;
+  final DateTime createdAt;
 
-  MyApplication(
-      {required this.id,
-      required this.campaignId,
-      required this.campaignName,
-      required this.clientSiteName,
-      required this.vendorId,
-      required this.vendorName,
-      required this.vendorPhone,
-      required this.vendorAvatar,
-      required this.status});
+  MyApplication({
+    required this.id,
+    required this.campaignId,
+    required this.campaignName,
+    required this.clientSiteName,
+    required this.vendorId,
+    required this.vendorName,
+    required this.vendorPhone,
+    required this.vendorAvatar,
+    required this.status,
+    required this.createdAt,
+  });
 
   static MyApplication jsonToMyApplication(Map myApplication) {
     return MyApplication(
@@ -31,6 +34,9 @@ class MyApplication {
       vendorPhone: myApplication['Campaign']['Vendor']['phone'],
       vendorAvatar: myApplication['Campaign']['Vendor']['avatar'],
       status: myApplication['status'],
+      createdAt: myApplication['created_At'] != null
+          ? DateTime.parse(myApplication['created_At']).toLocal()
+          : DateTime.now(),
     );
   }
 }
