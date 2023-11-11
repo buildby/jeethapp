@@ -74,6 +74,7 @@ class ClientSite {
       venderId: clientSite['vender_id'] ?? 0,
       businessModel: clientSite['BusinessModel']);
 
+// Slab
   final a = [
     {
       'id': 1,
@@ -91,4 +92,71 @@ class ClientSite {
       'clientsite_id': 1
     }
   ];
+
+  // KM
+  final b = [
+    {
+      "suv": {"CNG": 18, "Petrol/Diesel": 20}
+    }
+  ];
+
+  // Package fiex km
+  final c = {
+    "fixed_km": {
+      "range": 5000,
+      "vehicle_type": {
+        "suv": {
+          "CNG": {"rate": 4000, "km_rate": 30},
+          "Petrol/Diesel": {"rate": 5000, "km_rate": 20}
+        },
+        "sedan": {
+          "CNG": {"rate": 4000, "km_rate": 30},
+          "Petrol/Diesel": {"rate": 5000, "km_rate": 20}
+        }
+      }
+    }
+  };
+
+  final g = [
+    {
+      'fuelType': 'CNG',
+      'vehicleType': 'suv',
+      'fixedRate': 4000,
+      'extra_km_rate': 30,
+      'extra_hr_rate': 20
+    },
+    {
+      'fuelType': 'Petrol/Diesel',
+      'vehicleType': 'suv',
+      'fixedRate': 5000,
+      'extra_km_rate': 20,
+      'extra_hr_rate': 10
+    },
+    {
+      'fuelType': 'CNG',
+      'vehicleType': 'sedan',
+      'fixedRate': 4000,
+      'extra_km_rate': 30,
+      'extra_hr_rate': 20
+    },
+    {
+      'fuelType': 'Petrol/Diesel',
+      'vehicleType': 'sedan',
+      'fixedRate': 5000,
+      'extra_km_rate': 20,
+      'extra_hr_rate': 10
+    }
+  ];
+
+// Pckage fixed trips
+  final d = {
+    "fixed_trip": {
+      "suv": {
+        "Petrol/Diesel": {"2": 2000, "4": 4000}
+      },
+      "sedan": {
+        "CNG": {"2": 3000, "4": 5000}
+      }
+    }
+  };
 }

@@ -283,10 +283,10 @@ class BottomNavBarState extends State<BottomNavBar> {
             ),
           ),
           actions: [
-            // Container(
-            //   margin: EdgeInsets.only(right: dW * 0.03),
-            //   child: const Icon(Icons.notifications),
-            // ),
+            Container(
+              margin: EdgeInsets.only(right: dW * 0.03),
+              child: const Icon(Icons.notifications),
+            ),
           ],
         ),
         body: isLoading

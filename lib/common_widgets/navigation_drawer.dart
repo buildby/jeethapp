@@ -235,24 +235,24 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                           text: language['myApplications'],
                           onTap: () => push(NamedRoute.myApplicationsScreen),
                         ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'notifications',
-                        //   text: language['notifications'],
-                        //   onTap: () => push(NamedRoute.notificationsScreen),
-                        // ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'refer_friend',
-                        //   text: language['referAFriend'],
-                        //   onTap: () => push(NamedRoute.referAFriendScreen),
-                        // ),
-                        // buildOptionWidget(
-                        //   context: context,
-                        //   iconName: 'settings',
-                        //   text: language['appSettings'],
-                        //   onTap: () => push(NamedRoute.settingsScreen),
-                        // ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'notifications',
+                          text: language['notifications'],
+                          onTap: () => push(NamedRoute.notificationsScreen),
+                        ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'refer_friend',
+                          text: language['referAFriend'],
+                          onTap: () => push(NamedRoute.referAFriendScreen),
+                        ),
+                        buildOptionWidget(
+                          context: context,
+                          iconName: 'settings',
+                          text: language['appSettings'],
+                          onTap: () => push(NamedRoute.settingsScreen),
+                        ),
                         buildOptionWidget(
                           context: context,
                           iconName: 'logout',
