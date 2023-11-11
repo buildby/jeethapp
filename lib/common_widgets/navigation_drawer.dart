@@ -140,12 +140,22 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                   height: 70,
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle),
-                                  child: ClipRRect(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        border: Border.all(
+                                            width: 1.5, color: Colors.white)),
+                                    child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: CachedImageWidget(
-                                          user.driver.avatar,
-                                          height: 32,
-                                          width: 32)),
+                                        user.driver.avatar,
+                                        boxFit: BoxFit.cover,
+                                        width: dW * 0.2,
+                                        height: dW * 0.2,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                         ),
                         Column(
@@ -239,7 +249,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                           context: context,
                           iconName: 'notifications',
                           text: language['notifications'],
-                          onTap: () => push(NamedRoute.notificationsScreen),
+                          onTap: () => push(NamedRoute.myApplicationsScreen),
+                          // push(NamedRoute.notificationsScreen),
                         ),
                         buildOptionWidget(
                           context: context,

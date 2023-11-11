@@ -9,6 +9,7 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReferAFriendScreen extends StatefulWidget {
   const ReferAFriendScreen({Key? key}) : super(key: key);
@@ -195,7 +196,7 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                                       TextWidgetPoppins(
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
-                                        title: 'https://tinyurl.com/bdh499rf',
+                                        title: 'https://jeeth.co.in',
                                         fontSize: 18,
                                         fontWeight: FontWeight.w400,
                                         letterSpacing: 0.41,
@@ -207,10 +208,19 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                                 SizedBox(
                                   width: dW * 0.04,
                                 ),
-                                AssetSvgIcon(
-                                  'share',
-                                  height: 20,
-                                  color: themeColor,
+                                GestureDetector(
+                                  onTap: () {
+                                    Share.share('https://jeeth.co.in',
+                                        subject: 'Jeeth');
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    child: AssetSvgIcon(
+                                      'share',
+                                      height: 20,
+                                      color: themeColor,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

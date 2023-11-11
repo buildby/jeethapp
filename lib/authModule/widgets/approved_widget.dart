@@ -237,52 +237,64 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                           ),
                         ],
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(.15),
-                                blurRadius: 30,
-                                spreadRadius: 0,
-                                offset: const Offset(0, 26))
-                          ],
-                        ),
-                        child: CustomButton(
-                          width: dW,
-                          height: dW * 0.12,
-                          onPressed: () {},
-                          radius: 10,
-                          buttonText: '',
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const AssetSvgIcon('map'),
-                              SizedBox(
-                                width: dW * 0.025,
-                              ),
-                              TextWidgetPoppins(
-                                title: language['navigateToLocation'],
-                                color: white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //           color: Colors.black.withOpacity(.15),
+                      //           blurRadius: 30,
+                      //           spreadRadius: 0,
+                      //           offset: const Offset(0, 26))
+                      //     ],
+                      //   ),
+                      //   child: CustomButton(
+                      //     width: dW,
+                      //     height: dW * 0.12,
+                      //     onPressed: () {},
+                      //     radius: 10,
+                      //     buttonText: '',
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       crossAxisAlignment: CrossAxisAlignment.end,
+                      //       children: [
+                      //         const AssetSvgIcon('map'),
+                      //         SizedBox(
+                      //           width: dW * 0.025,
+                      //         ),
+                      //         TextWidgetPoppins(
+                      //           title: language['navigateToLocation'],
+                      //           color: white,
+                      //           fontWeight: FontWeight.w600,
+                      //           fontSize: 14,
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
                 Positioned(
-                  top: -48,
-                  right: 18,
+                  top: -50,
+                  right: 0,
                   left: 0,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: CachedImageWidget(
-                        widget.args.myApplication.vendorAvatar,
-                      )),
+                  child: Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                              width: 1.5, color: const Color(0XFF13A088))),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CachedImageWidget(
+                          widget.args.myApplication.vendorAvatar,
+                          boxFit: BoxFit.cover,
+                          width: dW * 0.25,
+                          height: dW * 0.25,
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),

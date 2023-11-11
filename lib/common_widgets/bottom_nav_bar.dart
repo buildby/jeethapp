@@ -283,9 +283,15 @@ class BottomNavBarState extends State<BottomNavBar> {
             ),
           ),
           actions: [
-            Container(
-              margin: EdgeInsets.only(right: dW * 0.03),
-              child: const Icon(Icons.notifications),
+            GestureDetector(
+              onTap: () {
+                push(NamedRoute.myApplicationsScreen);
+              },
+              child: Container(
+                color: Colors.transparent,
+                margin: EdgeInsets.only(right: dW * 0.03),
+                child: const Icon(Icons.notifications),
+              ),
             ),
           ],
         ),

@@ -12,6 +12,9 @@ import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
+import '../../authModule/models/user_model.dart';
+import '../../common_widgets/cached_image_widget.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -28,6 +31,8 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
+  late User user;
+
   fetchData() async {
     setState(() => isLoading = true);
     setState(() => isLoading = false);
@@ -42,7 +47,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
+    user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
   }
 
@@ -136,28 +141,39 @@ class SettingsScreenState extends State<SettingsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 80,
-                                  height: 80,
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Image.asset(
-                                    'assets/images/avatar.png',
-                                    fit: BoxFit.cover,
+                                  padding: EdgeInsets.only(
+                                      left: dW * 0.03,
+                                      top: dW * 0.02,
+                                      bottom: dW * 0.04),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        border: Border.all(
+                                            width: 1.5,
+                                            color: const Color(0XFF13A088))),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: CachedImageWidget(
+                                        user.driver.avatar,
+                                        boxFit: BoxFit.cover,
+                                        width: dW * 0.2,
+                                        height: dW * 0.2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: dW * 0.03,
+                                  width: dW * 0.05,
                                 ),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const TextWidgetPoppins(
-                                        title: 'Darshan Tada',
-                                        color: Color(0xff242E42),
+                                      TextWidgetPoppins(
+                                        title: user.driver.name,
+                                        color: const Color(0xff242E42),
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -165,7 +181,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                                         height: dW * 0.02,
                                       ),
                                       TextWidgetPoppins(
-                                        title: language['active'],
+                                        title: user.driver.status,
                                         color: const Color(0xff8A8A8F),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -196,8 +212,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showSnackbar('Coming soon!!', themeColor);
+                                },
                                 child: Container(
+                                  color: Colors.transparent,
                                   padding: EdgeInsets.only(
                                       top: dW * 0.05, bottom: dW * 0.015),
                                   child: Row(
@@ -223,8 +242,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                                 color: Color(0xffEFEFF4),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showSnackbar('Coming soon!!', themeColor);
+                                },
                                 child: Container(
+                                  color: Colors.transparent,
                                   padding: EdgeInsets.only(
                                       top: dW * 0.025, bottom: dW * 0.015),
                                   child: Row(
@@ -250,8 +272,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                                 color: Color(0xffEFEFF4),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showSnackbar('Coming soon!!', themeColor);
+                                },
                                 child: Container(
+                                  color: Colors.transparent,
                                   padding: EdgeInsets.only(
                                       top: dW * 0.025, bottom: dW * 0.015),
                                   child: Row(
@@ -277,8 +302,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                                 color: Color(0xffEFEFF4),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showSnackbar('Coming soon!!', themeColor);
+                                },
                                 child: Container(
+                                  color: Colors.transparent,
                                   padding: EdgeInsets.only(
                                       top: dW * 0.025, bottom: dW * 0.04),
                                   child: Row(
@@ -331,7 +359,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                         title: language['logout'],
                         fontWeight: FontWeight.w400,
                         fontSize: 17,
-                        color: const Color(0xffC8C7CC),
+                        color: Colors.black,
                       ),
                     ),
                   ),

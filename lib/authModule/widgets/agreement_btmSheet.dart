@@ -5,11 +5,13 @@ import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/agreement_widget.dart';
 import 'package:jeeth_app/authModule/widgets/submitted_widget.dart';
 import 'package:jeeth_app/common_functions.dart';
+import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
+import '../../navigation/routes.dart';
 import '../models/user_model.dart';
 
 class AgreementBottomSheetWidget extends StatefulWidget {
@@ -57,9 +59,9 @@ class AgreementBottomSheetWidgetState
       isLoading = false;
     });
 
-    if (response['result'] == 'success') {
-      pop();
-    }
+    screenNumber++;
+
+    if (response['result'] == 'success') {}
     // showSnackbar(response['message']);
   }
 
@@ -109,23 +111,28 @@ class AgreementBottomSheetWidgetState
                   offset: const Offset(0, 26))
             ],
           ),
-          child: CustomButton(
-            width: dW,
-            height: dW * 0.15,
-            elevation: 9,
-            radius: 21,
-            buttonText:
-                screenNumber == 1 ? language['iAgree'] : language['save'],
-            onPressed: () {
-              if (screenNumber == 1) {
-                setState(() {
-                  screenNumber++;
-                });
-              } else {
-                createApplication();
-              }
-            },
-          ),
+          child: isLoading
+              ? const CircularLoader()
+              : CustomButton(
+                  width: dW,
+                  height: dW * 0.15,
+                  elevation: 9,
+                  radius: 21,
+                  buttonText: screenNumber == 1
+                      ? language['iAgree']
+                      : language['goToApplications'],
+                  onPressed: () {
+                    if (screenNumber == 1) {
+                      setState(() {
+                        createApplication();
+                      });
+                    } else {
+                      pop();
+                      pop();
+                      push(NamedRoute.myApplicationsScreen);
+                    }
+                  },
+                ),
         ),
       ],
     );

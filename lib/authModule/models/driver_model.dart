@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
+import 'package:jeeth_app/authModule/models/vendor_model.dart';
 import 'package:jeeth_app/common_functions.dart';
 
 class Driver {
@@ -25,6 +25,9 @@ class Driver {
   String fcmToken;
   bool isActive;
   Earnings earnings;
+  int? vendorId;
+  String status;
+  Vendor? vendor;
 
   Driver({
     required this.id,
@@ -48,6 +51,9 @@ class Driver {
     this.fcmToken = '',
     this.isActive = false,
     required this.earnings,
+    this.vendorId,
+    required this.status,
+    this.vendor,
   });
 
   static Driver jsonToDriver(Map driver) {
@@ -69,7 +75,8 @@ class Driver {
       id: driver['id'],
       name: driver['name'] ?? '',
       address: driver['address'] ?? '',
-
+      vendorId: driver['vendor_id'],
+      status: driver['status'] ?? '',
       phone: driver['phone'],
       bankName: driver['bankName'] ?? '',
       accNumber: driver['accNumber'] ?? '',
@@ -84,6 +91,9 @@ class Driver {
       ownerAddress: driver['ownerAddress'] ?? '',
       ownerPhoneNumber: driver['ownerPhoneNumber'] ?? '',
       vehicleImage: driver['vehicleImage'] ?? '',
+      vendor: driver['Vendor'] != null
+          ? Vendor.jsonToVendor(driver['Vendor'])
+          : null,
       vehicle: Vehicle(
         vehicleModel: driver['vehicleModel'] ?? '',
         vehicleType: driver['vehicleType'] ?? '',

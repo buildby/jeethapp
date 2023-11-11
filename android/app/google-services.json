@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914979658890",
+    "project_id": "jeeth-e2db7",
+    "storage_bucket": "jeeth-e2db7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914979658890:android:0ca8df41cb6bb5845ce173",
+        "android_client_info": {
+          "package_name": "com.jeeth.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSNLMwRgfEecrR26-VmrbnOeS-Ydb6t6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

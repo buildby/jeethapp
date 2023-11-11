@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class Marketplace {
   final int id;
   String vendername;
@@ -33,6 +35,7 @@ class Marketplace {
         companyName: marketplace['companyName'] ?? '',
         vendorAvatar: marketplace['Vendor']['avatar'] ?? '',
         rating: marketplace['rating'] ?? 0,
+        // rating: 4,
         totalSedan: marketplace['totalSedan'] ?? 0,
         totalSuv: marketplace['totalSuv'] ?? 0,
         avgFare: marketplace['avgFare'] ?? 0,

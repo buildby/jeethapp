@@ -594,6 +594,15 @@ class DriverDetailsBottomSheetWidgetState
                           focusNode: accFocus,
                           obscureText: true,
                           maxLines: 1,
+                          validator: (val) {
+                            if (val!.length < 5) {
+                              return 'Please enter valid account number';
+                            }
+                          },
+                          inputFormatter: [
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                          ],
+                          maxLength: 17,
                           label: language['accNumber'],
                           hintText: language['accNumber']),
                       SizedBox(
@@ -603,6 +612,10 @@ class DriverDetailsBottomSheetWidgetState
                           controller: confirmAccNumberController,
                           focusNode: confirmAccFocus,
                           validator: validateConfirmAccNumber,
+                          inputFormatter: [
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                          ],
+                          maxLength: 17,
                           // obscureText: true,
                           maxLines: 1,
                           label: language['confimrAccNumber'],

@@ -41,7 +41,7 @@ dependencies:
   firebase_dynamic_links: ^5.3.6
   # barcode_scan: ^3.0.0
   barcode_widget: ^2.0.4
-  share_plus: 
+  share_plus: ^7.2.1 
   animated_size_and_fade: ^3.0.1
   app_settings:
   file_picker: 

@@ -204,15 +204,27 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                           height: 60,
                                           decoration: const BoxDecoration(
                                               shape: BoxShape.circle),
-                                          child: ClipRRect(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                border: Border.all(
+                                                    width: 1.5,
+                                                    color: const Color(
+                                                        0XFF13A088))),
+                                            child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(100),
                                               child: CachedImageWidget(
-                                                  widget.args.marketplace
-                                                      .vendorAvatar,
-                                                  height: 32,
-                                                  width: 32)),
-                                        ),
+                                                widget.args.marketplace
+                                                    .vendorAvatar,
+                                                boxFit: BoxFit.cover,
+                                                width: dW * 0.2,
+                                                height: dW * 0.2,
+                                              ),
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                     SizedBox(
@@ -335,6 +347,89 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              // TextWidget(
+                                              //   title:
+                                              //       '${language['company']} : ',
+                                              //   fontWeight: FontWeight.w300,
+                                              //   color: const Color(0xff242E42),
+                                              // ),
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                child: CachedImageWidget(
+                                                  widget.args.marketplace
+                                                      .clientSite.avatar,
+                                                  boxFit: BoxFit.cover,
+                                                  width: dW * 0.05,
+                                                  height: dW * 0.05,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: dW * 0.015,
+                                              ),
+                                              Container(
+                                                width: dW * 0.23,
+                                                child: TextWidget(
+                                                  color:
+                                                      const Color(0xff242E42),
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  title: widget.args.marketplace
+                                                      .clientSite.name,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: dW * 0.07,
+                                      ),
+                                      // Column(
+                                      //   children: [
+                                      //     Row(
+                                      //       children: [
+                                      //         const TextWidget(
+                                      //           title: 'Mindspace : ',
+                                      //           fontWeight: FontWeight.w300,
+                                      //           color: Color(0xff242E42),
+                                      //         ),
+                                      //         SizedBox(
+                                      //           width: dW * 0.16,
+                                      //           child: TextWidget(
+                                      //             color: Color(0xff242E42),
+                                      //             title: widget.args.marketplace
+                                      //                 .clientSite.location,
+                                      //             fontWeight: FontWeight.w400,
+                                      //             textOverflow:
+                                      //                 TextOverflow.ellipsis,
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: dW * 0.01,
+                                ),
+                                const Divider(
+                                  color: Color(0xffF4F4F4),
+                                  thickness: 1,
+                                ),
                                 SizedBox(
                                   height: dW * 0.01,
                                 ),
@@ -552,30 +647,31 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                     )
                                 ]),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: dW * 0.15,
-                                right: dW * 0.15,
-                                bottom: dW * 0.2,
-                                top: dW * 0.02),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.12),
-                                    blurRadius: 30,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, 26))
-                              ],
+                          if (user.driver.vendor == null)
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: dW * 0.15,
+                                  right: dW * 0.15,
+                                  bottom: dW * 0.2,
+                                  top: dW * 0.02),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(.12),
+                                      blurRadius: 30,
+                                      spreadRadius: 0,
+                                      offset: const Offset(0, 26))
+                                ],
+                              ),
+                              child: CustomButton(
+                                width: dW,
+                                height: dW * 0.15,
+                                elevation: 12,
+                                radius: 21,
+                                buttonText: language['applyNow'],
+                                onPressed: agreementBottomSheet,
+                              ),
                             ),
-                            child: CustomButton(
-                              width: dW,
-                              height: dW * 0.15,
-                              elevation: 12,
-                              radius: 21,
-                              buttonText: language['applyNow'],
-                              onPressed: agreementBottomSheet,
-                            ),
-                          ),
                           SizedBox(height: dH * 0.1),
                         ],
                       ),
