@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,7 +13,6 @@ import 'colors.dart';
 import 'common_widgets/asset_svg_icon.dart';
 import 'common_widgets/text_widget.dart';
 import 'main.dart';
-import 'navigation/navigators.dart';
 
 String networkDummy =
     'https://media.istockphoto.com/vectors/default-avatar-photo-placeholder-icon-grey-profile-picture-business-vector-id1327592449?k=20&m=1327592449&s=612x612&w=0&h=6yFQPGaxmMLgoEKibnVSRIEnnBgelAeIAf8FqpLBNww=';
@@ -34,50 +34,50 @@ hideKeyBoard() => FocusScope.of(bContext).requestFocus(FocusNode());
 
 double horizontalPaddingFactor = 0.06;
 
-// navigateTo(LatLng coords) async {
-//   var uri;
-//   if (Platform.isIOS) {
-//     uri = Uri.parse(
-//         'comgooglemaps://?saddr=&daddr=${coords.latitude},${coords.longitude}&directionsmode=driving');
-//   } else {
-//     uri = Uri.parse(
-//         "google.navigation:q=${coords.latitude},${coords.longitude}&mode=d");
-//   }
-//   // if (await canLaunch(uri.toString())) {
-//   await launch(uri.toString());
-//   // } else {
-//   //   throw 'Could not launch ${uri.toString()}';
-//   // }
-// }
+navigateTo(LatLng coords) async {
+  var uri;
+  if (Platform.isIOS) {
+    uri = Uri.parse(
+        'comgooglemaps://?saddr=&daddr=${coords.latitude},${coords.longitude}&directionsmode=driving');
+  } else {
+    uri = Uri.parse(
+        "google.navigation:q=${coords.latitude},${coords.longitude}&mode=d");
+  }
+  // if (await canLaunch(uri.toString())) {
+  await launch(uri.toString());
+  // } else {
+  //   throw 'Could not launch ${uri.toString()}';
+  // }
+}
 
-// handlePermissionsFunction() async {
-//   try {
-//     Map<Permission, PermissionStatus> statuses = {};
-//     if (Platform.isIOS) {
-//       statuses =
-//           await [Permission.location, Permission.locationAlways].request();
+handlePermissionsFunction() async {
+  try {
+    Map<Permission, PermissionStatus> statuses = {};
+    if (Platform.isIOS) {
+      statuses =
+          await [Permission.location, Permission.locationAlways].request();
 
-//       if (statuses.containsValue(PermissionStatus.permanentlyDenied) ||
-//           statuses.containsValue(PermissionStatus.denied)) {
-//         // showSnackbar('Please enable location', Colors.red);
-//         return false;
-//       } else
-//         return true;
-//     } else {
-//       statuses = await [Permission.location].request();
+      if (statuses.containsValue(PermissionStatus.permanentlyDenied) ||
+          statuses.containsValue(PermissionStatus.denied)) {
+        // showSnackbar('Please enable location', Colors.red);
+        return false;
+      } else
+        return true;
+    } else {
+      statuses = await [Permission.location].request();
 
-//       if ((statuses[Permission.location] == PermissionStatus.denied) ||
-//           (statuses[Permission.location] ==
-//               PermissionStatus.permanentlyDenied)) {
-//         // showSnackbar('Please enable location', Colors.red);
-//         return false;
-//       } else
-//         return true;
-//     }
-//   } catch (e) {
-//     return false;
-//   }
-// }
+      if ((statuses[Permission.location] == PermissionStatus.denied) ||
+          (statuses[Permission.location] ==
+              PermissionStatus.permanentlyDenied)) {
+        // showSnackbar('Please enable location', Colors.red);
+        return false;
+      } else
+        return true;
+    }
+  } catch (e) {
+    return false;
+  }
+}
 
 String convertToTime(num num) {
   String toReturn = '';
@@ -392,3 +392,15 @@ void launchWhatsApp({required String phoneNumber}) async {
 }
 
 const bouncing = BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+
+Widget get comingSoonText => Padding(
+      padding: EdgeInsets.only(left: _mediaQuery.size.width * 0.04),
+      child: Text(
+        'Coming soon!',
+        style: TextStyle(
+          color: Colors.yellow.shade800,
+          fontWeight: FontWeight.w500,
+          fontSize: _tS * 15.5,
+        ),
+      ),
+    );

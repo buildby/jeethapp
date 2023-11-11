@@ -31,6 +31,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final TextAlign textAlign;
   final double labelFS;
   final double hintFS;
+  final double inputFS;
+  final double letterSpacing;
+  final bool obscureText;
   final FontWeight labelFontWeight;
   final FontWeight hintFontWeight;
 
@@ -45,9 +48,10 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final String? counterText;
   final String? initValue;
   final double? hPadding;
+  InputDecoration? decoration = InputDecoration();
   final AutovalidateMode? autovalidateMode;
 
-  const CustomTextFieldWithLabel({
+  CustomTextFieldWithLabel({
     super.key,
     required this.label,
     this.autovalidateMode,
@@ -68,6 +72,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.validator,
     this.inputAction = TextInputAction.done,
     this.enabled = true,
+    this.obscureText = false,
     this.widget,
     this.suffixIcon,
     this.suffixIconConstraints,
@@ -77,6 +82,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.labelFS = 14,
     this.hintFS = 16,
+    this.inputFS = 16,
+    this.letterSpacing = 0.3,
+    this.decoration,
     this.optional = false,
     this.labelColor = blackColor3,
     this.borderColor,
@@ -130,6 +138,8 @@ class CustomTextFieldWithLabel extends StatelessWidget {
         TextFormField(
           controller: controller,
           initialValue: initValue,
+          obscureText: obscureText,
+          obscuringCharacter: '●',
           focusNode: focusNode,
           onTap: onTap != null ? () => onTap!() : null,
           inputFormatters: inputFormatter,
@@ -138,35 +148,36 @@ class CustomTextFieldWithLabel extends StatelessWidget {
           enabled: enabled,
           textAlign: textAlign,
           style: Theme.of(context).textTheme.headline2!.copyWith(
-                fontSize: tS * 16,
-                letterSpacing: .3,
-                color: textColor,
-              ),
+              fontSize: tS * inputFS,
+              letterSpacing: letterSpacing,
+              color: textColor,
+              fontFamily: 'Blinker'),
           cursorColor: themeColor,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(
-              fontSize: tS * hintFS,
-              letterSpacing: .3,
-              fontWeight: hintFontWeight,
-              color: hintColor,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: dW * 0.045,
-              // vertical: dW * 0.04,
-            ),
-            border: textFormBorder(context),
-            focusedBorder: textFormBorder(context),
-            enabledBorder: textFormBorder(context),
-            errorBorder: textFormBorder(context),
-            disabledBorder: textFormBorder(context),
-            focusedErrorBorder: textFormBorder(context),
-            counterText: counterText,
-            suffixIcon: suffixIcon,
-            suffixIconConstraints: suffixIconConstraints,
-            prefixIcon: prefixIcon,
-            prefixIconConstraints: prefixIconConstraints,
-          ),
+          decoration: decoration ??
+              InputDecoration(
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  fontSize: tS * hintFS,
+                  letterSpacing: 0.3,
+                  fontWeight: hintFontWeight,
+                  color: hintColor,
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: dW * 0.045,
+                  // vertical: dW * 0.04,
+                ),
+                border: textFormBorder(context),
+                focusedBorder: textFormBorder(context),
+                enabledBorder: textFormBorder(context),
+                errorBorder: textFormBorder(context),
+                disabledBorder: textFormBorder(context),
+                focusedErrorBorder: textFormBorder(context),
+                counterText: counterText,
+                suffixIcon: suffixIcon,
+                suffixIconConstraints: suffixIconConstraints,
+                prefixIcon: prefixIcon,
+                prefixIconConstraints: prefixIconConstraints,
+              ),
           minLines: minLines,
           maxLength: maxLength,
           maxLines: maxLines,

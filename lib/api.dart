@@ -1,56 +1,71 @@
-// var webApi = {'domain': 'https://api.iteeha.co'}; //PROD
-var webApi = {'domain': 'http://43.205.30.95:3060'}; //DEV PROD
-// var webApi = {'domain': 'http://192.168.1.33:3060'}; // Atharv Home
-// var webApi = {'domain': 'http://192.168.0.5:3060'}; // Atharv Work
-// var webApi = {'domain': 'http://172.20.10.5:3060'}; // Atharv Hotspot
-// var webApi = {'domain': 'http://192.168.227.72:3060'}; // Salman
-// var webApi = {'domain': 'http://192.168.1.6:3060'}; // Darshan wifi
-// var webApi = {'domain': 'http://192.168.95.161:3060'}; // Darshan hotspot2
-// var webApi = {'domain': 'http://192.168.41.161:3060'}; // Darshan hotspot
+// var webApi = {'domain': 'https://api.jeeth.co.in'}; //PROD
+// var webApi = {'domain': 'http://43.205.30.95:3000'}; //DEV PROD
+var webApi = {'domain': 'http://192.168.1.35:3000'}; // Atharv Home
+// var webApi = {'domain': 'http://172.20.10.5:3000'}; // Atharv Hotspot
+// var webApi = {'domain': 'http://192.168.90.72:3000'}; // Salman
+// var webApi = {'domain': 'http://192.168.1.2:3000'}; // Darshan wifi
+// var webApi = {'domain': 'http://192.168.2.161:3000'}; // Darshan hotspot
 
 var endPoint = {
   // App Config
-  'searchLocationFromGoogle': '/api/appConfig/searchLocationFromGoogle',
-  'fetchCommonAppConfig': '/api/appConfig/fetchCommonAppConfig',
-  'getAppConfigs': '/api/appConfig/getAppConfigs',
+  'searchLocationFromGoogle': '/appConfig/searchLocationFromGoogle',
+  'fetchCommonAppConfig': '/appConfig/fetchCommonAppConfig',
+  'fetchVehicleConfigs': '/appConfig/fetchVehicleConfigs',
+  'createVehicleConfigs': '/appConfig/createVehicleConfigs',
 
   // Banner
-  'fetchBanners': '/api/banner/fetchBanners',
+  'fetchBanners': '/banner/fetchBanners',
 
   // Authentication
-  'sendOTPtoUser': '/api/auth/sendOTPtoUser',
-  'verifyOTPofUser': '/api/auth/verifyOTPofUser',
-  'resendOTPtoUser': '/api/auth/resendOTPtoUser',
-  'login': '/api/user/login',
-  'register': '/api/user/register',
-  'editProfile': '/api/user/editProfile',
-  'deleteFCMToken': '/api/user/deleteFCMToken',
-  'updateAddress': '/api/user/updateAddress',
-  'deleteAccount': '/api/user/deleteAccount',
-  'refreshUser': '/api/user/refreshUser',
+  'sendOTPtoUser': '/auth/send-otp',
+  'verifyOTPofUser': '/auth/verify-otp',
+  'resendOTPtoUser': '/auth/resend-otp',
+  'login': '/user/login',
+  'driverAutoLogin': '/auth/driverAutoLogin',
+  'register': '/user/register',
+  'deleteFCMToken': '/user/deleteFCMToken',
+  'updateAddress': '/user/updateAddress',
+  'deleteAccount': '/user/deleteAccount',
+  'refreshUser': '/user/refreshUser',
+
+  //Documents
+  'getAwsSignedUrl': '/aws/getSignedUrl',
+  'updateDriverDocument': '/document/updateDriverDocument',
+  'getDriverDocuments': '/document/getDriverDocuments',
+
+  //Driver
+  'editDriverProfile': '/driver/editDriverProfile',
+  'refreshUserEarnings': '/driver/refreshUserEarnings',
 
   // Notifications
-  'fetchNotifications': '/api/notification/fetchNotifications',
-  'updateViewState': '/api/notification/updateViewState',
+  'fetchNotifications': '/notification/fetchNotifications',
+  'updateViewState': '/notification/updateViewState',
 
   // Cafe
-  'fetchCafe': '/api/cafe/fetchCafe',
-  'fetchSingleCafeById': '/api/cafe/fetchSingleCafeById',
+  'fetchCafe': '/cafe/fetchCafe',
+  'fetchSingleCafeById': '/cafe/fetchSingleCafeById',
 
   // Like Unlike
-  'likeUnlike': '/api/like/likeUnlike',
+  'likeUnlike': '/like/likeUnlike',
 
   // LoyaltyLevel
-  'fetchLoyaltyLevels': '/api/loyalty/fetchLoyaltyLevels',
+  'fetchLoyaltyLevels': '/loyalty/fetchLoyaltyLevels',
 
   // Offers
-  'fetchOffers': '/api/offers/fetchOffers',
+  'fetchOffers': '/offers/fetchOffers',
 
   // Transaction
-  'fetchTransactions': '/api/transaction/fetchTransactions',
-  'walletRecharge': '/api/transaction/walletRecharge',
+  'fetchTransactions': '/transaction/fetchTransactions',
+  'walletRecharge': '/transaction/walletRecharge',
 
   // More Screen
-  'fetchFaqs': '/api/faq/fetchFaqs',
-  'fetchFaqTopics': '/api/faqTopic/fetchFaqTopics',
+  'fetchFaqs': '/faq/fetchFaqs',
+  'fetchFaqTopics': '/faqTopic/fetchFaqTopics',
+
+  // Market place
+  'fetchAllCampaignsApp': '/campaign/fetchAllCampaignsApp',
+
+  // My Application
+  'createMyApplication': '/driverApplication',
+  'fetchMyApplication': '/driverApplication',
 };

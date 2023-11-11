@@ -71,9 +71,9 @@ class CustomButton extends StatelessWidget {
                       buttonText,
                       style: buttonTextSyle ??
                           Theme.of(context).textTheme.headline1!.copyWith(
-                                fontSize: tS * 18,
-                                color: Colors.white,
-                              ),
+                              fontSize: tS * 18,
+                              color: Colors.white,
+                              fontFamily: 'Blinker'),
                     ),
                   ),
         ),

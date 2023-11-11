@@ -6,19 +6,19 @@ import 'storage_manager.dart';
 class ThemeNotifier with ChangeNotifier {
 //
   final lightTheme = ThemeData(
-    primaryColor: const Color(0xFF0197FC),
+    primaryColor: const Color(0xFF13A088),
     brightness: Brightness.light,
     fontFamily: 'Inter',
-    backgroundColor: Colors.white,
+    backgroundColor: const Color(0xFF15A5B7),
     scaffoldBackgroundColor: Colors.white,
     dividerColor: Colors.white54,
     disabledColor: Colors.purple[300],
     textTheme: const TextTheme(
-      headline1: TextStyle(fontWeight: FontWeight.w600),
-      headline2: TextStyle(fontWeight: FontWeight.w500),
-      headline3: TextStyle(fontWeight: FontWeight.w400),
-      headline4: TextStyle(fontFamily: 'Inria Serif', fontWeight: FontWeight.w400)
-    ),
+        headline1: TextStyle(fontWeight: FontWeight.w600),
+        headline2: TextStyle(fontWeight: FontWeight.w500),
+        headline3: TextStyle(fontWeight: FontWeight.w400),
+        headline4:
+            TextStyle(fontFamily: 'Inria Serif', fontWeight: FontWeight.w400)),
   );
 
   final darkTheme = ThemeData(

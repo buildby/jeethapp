@@ -1,17 +1,19 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/document_provider.dart';
+import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
+import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
+import 'package:jeeth_app/authModule/screens/splash_screen.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
-import 'auth_module/providers/auth_provider.dart';
 import 'navigation/navigation_service.dart';
-import 'navigation/navigators.dart';
 import 'theme_manager.dart';
 
-final LocalStorage storage = LocalStorage('re_household');
+final LocalStorage storage = LocalStorage('jeeth_app');
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -23,7 +25,7 @@ awaitStorageReady() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
   return runApp(const MyApp());
@@ -53,6 +55,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => MarketplaceProvider()),
+        ChangeNotifierProvider(create: (_) => VehicleDetailProvider()),
+        ChangeNotifierProvider(create: (_) => MyApplicationProvider()),
+        ChangeNotifierProvider(create: (_) => DocumentProvider()),
       ],
       child: Consumer<ThemeNotifier>(
         builder: (context, theme, _) => MaterialApp(
@@ -63,7 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 child: child!,
               );
             },
-            title: 'Recyclink',
+            title: 'Jeeth',
             theme: theme.getTheme(),
             debugShowCheckedModeBanner: false,
             initialRoute: '/',

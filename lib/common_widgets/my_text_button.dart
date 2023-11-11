@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-import '../auth_module/providers/auth_provider.dart';
 import '../colors.dart';
 import '../common_functions.dart';
 

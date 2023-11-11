@@ -7,6 +7,7 @@ class TextWidget extends StatelessWidget {
   final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
+  final double height;
 
   final double letterSpacing;
   final int? maxLines;
@@ -18,7 +19,8 @@ class TextWidget extends StatelessWidget {
     super.key,
     required this.title,
     this.color,
-    this.fontSize = 14,
+    this.fontSize = 15,
+    this.height = 1,
     this.fontWeight = FontWeight.normal,
     this.letterSpacing = 0.25,
     this.maxLines,
@@ -34,12 +36,13 @@ class TextWidget extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.headline3!.copyWith(
-            fontSize: tS * fontSize,
-            color: color ?? getThemeColor(context),
-            fontWeight: fontWeight,
-            letterSpacing: letterSpacing,
-            decoration: textDecoration,
-          ),
+          fontSize: tS * fontSize,
+          color: color ?? getThemeColor(context),
+          fontFamily: 'Blinker',
+          fontWeight: fontWeight,
+          letterSpacing: letterSpacing,
+          decoration: textDecoration,
+          height: height),
       maxLines: maxLines,
       overflow: textOverflow,
       textAlign: textAlign,

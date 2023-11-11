@@ -39,10 +39,10 @@ class CustomDialog extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272559)),
+              style: TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.w600, color: themeColor
+                  // color: Color(0xff272559),
+                  ),
             ),
             SizedBox(height: dW * .03),
             Container(
@@ -69,14 +69,16 @@ class CustomDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: dW * 0.04, vertical: dW * 0.03),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1, color: const Color(0xff272559)),
+                        border: Border.all(width: 1, color: themeColor
+                            // color: const Color(0xff272559),
+                            ),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         yesText,
                         style: TextStyle(
-                            color: const Color(0xff272559),
+                            // color: const Color(0xff272559),
+                            color: themeColor,
                             fontSize: tS * 14,
                             fontWeight: FontWeight.w500),
                       ),
@@ -94,7 +96,8 @@ class CustomDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: dW * 0.04, vertical: dW * 0.03),
                       decoration: BoxDecoration(
-                        color: const Color(0xff272559),
+                        // color: const Color(0xff272559),
+                        color: themeColor,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
