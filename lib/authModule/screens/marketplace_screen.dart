@@ -125,10 +125,11 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                 ],
                 floating: true,
                 backgroundColor: themeColor,
+                centerTitle: false,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: EdgeInsets.only(
-                    left: dW * 0.05,
+                    left: dW * (iOSCondition(dH) ? 0 : 0.05),
                     bottom: dW * 0.05,
                   ),
                   title: AnimatedSwitcher(
@@ -249,19 +250,34 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                             ),
                           ],
                         ),
-                        child: ListView.builder(
-                          itemCount: marketplace.length,
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => incompleteProfBottomSheet(),
-                            child: MarketplaceWidget(
-                              loggedIn: false,
-                              key: ValueKey(marketplace[index].id),
-                              marketplace: marketplace[index],
-                            ),
-                          ),
-                        ),
+                        child: marketplace.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: marketplace.length,
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () => incompleteProfBottomSheet(),
+                                  child: MarketplaceWidget(
+                                    loggedIn: false,
+                                    key: ValueKey(marketplace[index].id),
+                                    marketplace: marketplace[index],
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: dW * 0.3),
+                                  child: Text(
+                                    'No Jobs available',
+                                    style: TextStyle(
+                                      fontSize: tS * 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                   ],

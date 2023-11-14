@@ -9,6 +9,7 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_functions.dart';
 import '../../common_widgets/cached_image_widget.dart';
 
 class MarketplaceWidget extends StatefulWidget {
@@ -81,8 +82,8 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   child: CachedImageWidget(
                     widget.marketplace.clientSite.avatar,
                     boxFit: BoxFit.cover,
-                    width: dW * 0.14,
-                    height: dW * 0.14,
+                    width: dW * 0.13,
+                    height: dW * 0.13,
                   ),
                 ),
               ),
@@ -232,12 +233,18 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                       height: dW * 0.02,
                     ),
                     widget.loggedIn
-                        ? TextWidgetRoboto(
-                            title:
-                                'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
-                            color: const Color(0xff13A088),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
+                        ? SizedBox(
+                            width: dW * 0.15,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: TextWidgetRoboto(
+                                title:
+                                    'Rs. ${convertAmountString(widget.marketplace.avgFare.toDouble())}*',
+                                color: const Color(0xff13A088),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           )
                         : ImageFiltered(
                             imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -246,12 +253,18 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                                 sigmaX: 5,
                                 sigmaY: 5,
                               ),
-                              child: TextWidgetRoboto(
-                                title:
-                                    'Rs. ${widget.marketplace.avgFare.toStringAsFixed(0)}*',
-                                color: const Color(0xff13A088),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
+                              child: SizedBox(
+                                width: dW * 0.15,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: TextWidgetRoboto(
+                                    title:
+                                        'Rs. ${convertAmountString(widget.marketplace.avgFare.toDouble())}*',
+                                    color: const Color(0xff13A088),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ),
                             )),
                   ],
