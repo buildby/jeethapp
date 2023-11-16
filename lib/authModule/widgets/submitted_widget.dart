@@ -38,72 +38,80 @@ class SubmittedWidgetState extends State<SubmittedWidget> {
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
-    // final userId = Provider.of<AuthProvider>(context).user.id;
+    final user = Provider.of<AuthProvider>(context).user;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Divider(
-          indent: dW * 0.27,
-          endIndent: dW * 0.27,
-          color: Colors.black,
-          thickness: 5,
-        ),
-        SizedBox(
-          height: dW * 0.02,
-        ),
-        Image.asset(
-          'assets/images/tickmark.png',
-          scale: 3.5,
-        ),
-        SizedBox(
-          height: dW * 0.03,
-        ),
-        TextWidget(
-          title: language['profileHasSubmitted'],
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
-        ),
-        SizedBox(
-          height: dW * 0.04,
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: [
-              const TextSpan(
-                text:
-                    'Hey User, your profile has been successfully shared with ',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Blinker',
-                  fontSize: 15,
-                  color: Color(0xff555555),
-                ),
-              ),
-              TextSpan(
-                text: widget.vendorName,
-                style: const TextStyle(
-                  fontFamily: 'Blinker',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Color(0xff555555),
-                ),
-              ),
-              const TextSpan(
-                text:
-                    ' for further approval and inspection. You will be notified shortly, Thanks.',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Blinker',
-                  fontSize: 15,
-                  color: Color(0xff555555),
-                ),
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: dW * 0.04,
           ),
-        ),
-      ],
+          Divider(
+            indent: dW * 0.27,
+            endIndent: dW * 0.27,
+            color: Colors.black,
+            thickness: 5,
+          ),
+          SizedBox(
+            height: dW * 0.02,
+          ),
+          Image.asset(
+            'assets/images/tickmark.png',
+            scale: 3.5,
+          ),
+          SizedBox(
+            height: dW * 0.03,
+          ),
+          TextWidget(
+            title: language['profileHasSubmitted'],
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+          ),
+          SizedBox(
+            height: dW * 0.04,
+          ),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text:
+                      'Hey ${user.driver.name}, your profile has been successfully shared with ',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Blinker',
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  ),
+                ),
+                TextSpan(
+                  text: widget.vendorName,
+                  style: const TextStyle(
+                    fontFamily: 'Blinker',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  ),
+                ),
+                const TextSpan(
+                  text:
+                      ' for further approval and inspection. You will be notified shortly, Thanks.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Blinker',
+                    fontSize: 15,
+                    color: Color(0xff555555),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: dW * 0.04,
+          ),
+        ],
+      ),
     );
   }
 }

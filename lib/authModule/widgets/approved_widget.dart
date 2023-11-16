@@ -72,206 +72,230 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                       top: dW * 0.055),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10), color: white),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: dW * 0.15,
-                          ),
-                          TextWidgetPoppins(
-                            title: widget.args.myApplication.vendorName,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 17,
-                          ),
-                          SizedBox(
-                            height: dW * 0.015,
-                          ),
-                          TextWidgetPoppins(
-                            title: widget.args.myApplication.clientSiteName,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff8A8A8F),
-                            fontSize: 15,
-                          ),
-                          SizedBox(
-                            height: dW * 0.1,
-                          ),
-                          TextWidgetPoppins(
-                            title: language['inductionPending'],
-                            color: themeColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            letterSpacing: 0.41,
-                          ),
-                          SizedBox(
-                            height: dW * 0.02,
-                          ),
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              style:
-                                  DefaultTextStyle.of(context).style.copyWith(
-                                        fontFamily: 'Poppins',
-                                        color: const Color(0xff8A8A8F),
-                                      ),
-                              children: const <TextSpan>[
-                                TextSpan(
-                                  text: 'Your application has been\n',
-                                  style: TextStyle(
-                                      letterSpacing: 0.41,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                TextSpan(
-                                  text: 'approved',
-                                  style: TextStyle(
-                                      letterSpacing: 0.41,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                TextSpan(
-                                  text:
-                                      ' for inspection by vendor you have applied for, Please visit\nthe below site location along with\nall the documents submitted.',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      letterSpacing: 0.41,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: dW * 0.15,
                             ),
-                          ),
-                          Container(
-                            width: dW,
-                            margin: EdgeInsets.only(
-                                top: dW * 0.15, bottom: dW * 0.02),
-                            padding: EdgeInsets.only(
-                                left: dW * 0.05,
-                                right: dW * 0.03,
-                                bottom: dW * 0.03,
-                                top: dW * 0.03),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffEFEFF4).withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                width: 1,
-                                color: const Color(0xffEFEFF4),
+                            TextWidgetPoppins(
+                              title: widget.args.myApplication.vendorName,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 17,
+                            ),
+                            SizedBox(
+                              height: dW * 0.015,
+                            ),
+                            TextWidgetPoppins(
+                              title: widget.args.myApplication.clientSiteName,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff8A8A8F),
+                              fontSize: 15,
+                            ),
+                            SizedBox(
+                              height: dW * 0.1,
+                            ),
+                            TextWidgetPoppins(
+                              title: language['inductionPending'],
+                              color: themeColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              letterSpacing: 0.41,
+                            ),
+                            SizedBox(
+                              height: dW * 0.02,
+                            ),
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style:
+                                    DefaultTextStyle.of(context).style.copyWith(
+                                          fontFamily: 'Poppins',
+                                          color: const Color(0xff8A8A8F),
+                                        ),
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                    text: 'Your application has been\n',
+                                    style: TextStyle(
+                                        letterSpacing: 0.41,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  TextSpan(
+                                    text: 'approved',
+                                    style: TextStyle(
+                                        letterSpacing: 0.41,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        ' for inspection by vendor you have applied for, Please visit\nthe below site location along with\nall the documents submitted.',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        letterSpacing: 0.41,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                const AssetSvgIcon('profile_icon'),
-                                SizedBox(
-                                  width: dW * 0.05,
+                            Container(
+                              width: dW,
+                              margin: EdgeInsets.only(
+                                  top: dW * 0.15, bottom: dW * 0.02),
+                              padding: EdgeInsets.only(
+                                  left: dW * 0.05,
+                                  right: dW * 0.03,
+                                  bottom: dW * 0.03,
+                                  top: dW * 0.03),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffEFEFF4).withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  width: 1,
+                                  color: const Color(0xffEFEFF4),
                                 ),
-                                TextWidgetPoppins(
-                                  title: widget.args.myApplication.vendorName,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Row(
+                                  children: [
+                                    const AssetSvgIcon('profile_icon'),
+                                    SizedBox(
+                                      width: dW * 0.05,
+                                    ),
+                                    TextWidgetPoppins(
+                                      title:
+                                          widget.args.myApplication.vendorName,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                    const TextWidgetPoppins(
+                                      title: ' - ',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                    TextWidgetPoppins(
+                                      title: language['fieldOfficer'],
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    )
+                                  ],
                                 ),
-                                const TextWidgetPoppins(
-                                  title: ' - ',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                                TextWidgetPoppins(
-                                  title: language['fieldOfficer'],
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: dW,
-                            padding: EdgeInsets.only(
-                                left: dW * 0.05,
-                                right: dW * 0.03,
-                                bottom: dW * 0.03,
-                                top: dW * 0.03),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffEFEFF4).withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                width: 1,
-                                color: const Color(0xffEFEFF4),
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.phone),
-                                SizedBox(
-                                  width: dW * 0.04,
+                            Container(
+                              width: dW,
+                              padding: EdgeInsets.only(
+                                  left: dW * 0.05,
+                                  right: dW * 0.03,
+                                  bottom: dW * 0.03,
+                                  top: dW * 0.03),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffEFEFF4).withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  width: 1,
+                                  color: const Color(0xffEFEFF4),
                                 ),
-                                // Expanded(
-                                //   child: Column(
-                                //     crossAxisAlignment:
-                                //         CrossAxisAlignment.start,
-                                //     children: [
-                                //       Wrap(
-                                //         children: [
-                                //           ...widget.args.myApplication
-                                //               .fieldOfficerNumbers
-                                //               .map(
-                                //             (number) => TextWidgetPoppins(
-                                //               title: number ==
-                                //                       widget
-                                //                           .args
-                                //                           .myApplication
-                                //                           .fieldOfficerNumbers
-                                //                           .last
-                                //                   ? number
-                                //                   : '$number,',
-                                //               fontWeight: FontWeight.w600,
-                                //               fontSize: 14,
-                                //             ),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                              ],
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.phone),
+                                  SizedBox(
+                                    width: dW * 0.06,
+                                  ),
+                                  // Expanded(
+                                  //   child: Column(
+                                  //     crossAxisAlignment:
+                                  //         CrossAxisAlignment.start,
+                                  //     children: [
+                                  //       Wrap(
+                                  //         children: [
+                                  //           ...widget.args.myApplication
+                                  //               .fieldOfficerNumbers
+                                  //               .map(
+                                  //             (number) => TextWidgetPoppins(
+                                  //               title: number ==
+                                  //                       widget
+                                  //                           .args
+                                  //                           .myApplication
+                                  //                           .fieldOfficerNumbers
+                                  //                           .last
+                                  //                   ? number
+                                  //                   : '$number,',
+                                  //               fontWeight: FontWeight.w600,
+                                  //               fontSize: 14,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Wrap(
+                                          children: [
+                                            TextWidgetPoppins(
+                                              title: widget.args.myApplication
+                                                  .vendorPhone,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     boxShadow: [
-                      //       BoxShadow(
-                      //           color: Colors.black.withOpacity(.15),
-                      //           blurRadius: 30,
-                      //           spreadRadius: 0,
-                      //           offset: const Offset(0, 26))
-                      //     ],
-                      //   ),
-                      //   child: CustomButton(
-                      //     width: dW,
-                      //     height: dW * 0.12,
-                      //     onPressed: () {},
-                      //     radius: 10,
-                      //     buttonText: '',
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.end,
-                      //       children: [
-                      //         const AssetSvgIcon('map'),
-                      //         SizedBox(
-                      //           width: dW * 0.025,
-                      //         ),
-                      //         TextWidgetPoppins(
-                      //           title: language['navigateToLocation'],
-                      //           color: white,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 14,
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
+                          ],
+                        ),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     boxShadow: [
+                        //       BoxShadow(
+                        //           color: Colors.black.withOpacity(.15),
+                        //           blurRadius: 30,
+                        //           spreadRadius: 0,
+                        //           offset: const Offset(0, 26))
+                        //     ],
+                        //   ),
+                        //   child: CustomButton(
+                        //     width: dW,
+                        //     height: dW * 0.12,
+                        //     onPressed: () {},
+                        //     radius: 10,
+                        //     buttonText: '',
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       crossAxisAlignment: CrossAxisAlignment.end,
+                        //       children: [
+                        //         const AssetSvgIcon('map'),
+                        //         SizedBox(
+                        //           width: dW * 0.025,
+                        //         ),
+                        //         TextWidgetPoppins(
+                        //           title: language['navigateToLocation'],
+                        //           color: white,
+                        //           fontWeight: FontWeight.w600,
+                        //           fontSize: 14,
+                        //         )
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
                 Positioned(

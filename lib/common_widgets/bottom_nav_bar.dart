@@ -285,7 +285,7 @@ class BottomNavBarState extends State<BottomNavBar> {
           actions: [
             GestureDetector(
               onTap: () {
-                push(NamedRoute.myApplicationsScreen);
+                push(NamedRoute.notificationsScreen);
               },
               child: Container(
                 color: Colors.transparent,

@@ -702,19 +702,19 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: dW * 0.03),
+                    margin: EdgeInsets.only(top: dW * 0.03),
                     padding: EdgeInsets.symmetric(
                         horizontal: dW * 0.04, vertical: dW * 0.05),
                     decoration: BoxDecoration(
                       color: white,
                       borderRadius: BorderRadius.circular(10),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //       color: Colors.black.withOpacity(.1),
-                      //       blurRadius: 10,
-                      //       spreadRadius: 0,
-                      //       offset: const Offset(0, -5))
-                      // ],
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(.1),
+                            blurRadius: 10,
+                            spreadRadius: 0,
+                            offset: const Offset(0, -5))
+                      ],
                     ),
                     child: Column(
                       children: [
@@ -733,6 +733,26 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                               '${double.parse(vehicleDocPercentage.toStringAsFixed(1)).truncate().toString()}%',
                           onTap: () => vehicleDocumentsBottomSheet(),
                         ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: dW * 0.04,
+                    ),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(.1),
+                            blurRadius: 10,
+                            spreadRadius: 0,
+                            offset: const Offset(0, -5))
+                      ],
+                    ),
+                    child: Column(
+                      children: [
                         GestureDetector(
                           onTap: () {
                             // setState(() {
@@ -862,35 +882,38 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
                             : const SizedBox(),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
           ),
           validateTab2
               ? const SizedBox()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: dW * 0.01),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: dW * 0.02, vertical: dW * 0.01),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: const Color(0xffBFBFBF)),
-                      child: const AssetSvgIcon(
-                        'exclaimation',
-                        height: 10,
+              : Container(
+                  margin: EdgeInsets.only(top: dW * 0.04),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: dW * 0.01),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: dW * 0.02, vertical: dW * 0.01),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: const Color(0xffBFBFBF)),
+                        child: const AssetSvgIcon(
+                          'exclaimation',
+                          height: 10,
+                        ),
                       ),
-                    ),
-                    TextWidget(
-                      title: language['profileIncomplete'],
-                      color: const Color(0xff242E42),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                    ),
-                  ],
+                      TextWidget(
+                        title: language['profileIncomplete'],
+                        color: const Color(0xff242E42),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ],
+                  ),
                 ),
           Container(
             margin: EdgeInsets.only(

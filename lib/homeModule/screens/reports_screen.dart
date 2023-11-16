@@ -96,206 +96,212 @@ class ReportsScreenState extends State<ReportsScreen>
                 child: Column(
                   children: [
                     Expanded(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: dW * 0.04,
-                          ),
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                top: -2,
-                                left: 30,
-                                right: 30,
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    top: dW * 0.07,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: dW * 0.04,
+                            ),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  top: -2,
+                                  left: 30,
+                                  right: 30,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      top: dW * 0.07,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    height: dW * 0.2,
                                   ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: dW * 0.06,
+                                      vertical: dW * 0.05),
+                                  margin: EdgeInsets.only(top: dW * 0.1),
                                   decoration: BoxDecoration(
                                     color: white,
                                     borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 0,
+                                        blurRadius: 20,
+                                        offset: const Offset(0, -5),
+                                      ),
+                                    ],
                                   ),
-                                  height: dW * 0.2,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: dW * 0.06, vertical: dW * 0.05),
-                                margin: EdgeInsets.only(top: dW * 0.1),
-                                decoration: BoxDecoration(
-                                  color: white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 0,
-                                      blurRadius: 20,
-                                      offset: const Offset(0, -5),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          alignment: Alignment.center,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: user.driver.avatar.isEmpty
-                                              ? Image.asset(
-                                                  'assets/images/profile.jpeg',
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            alignment: Alignment.center,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: user.driver.avatar.isEmpty
+                                                ? Image.asset(
+                                                    'assets/images/profile.jpeg',
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            shape: BoxShape
+                                                                .circle),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      100),
+                                                          border: Border.all(
+                                                              width: 1.5,
+                                                              color: const Color(
+                                                                  0XFF13A088))),
+                                                      child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(100),
-                                                        border: Border.all(
-                                                            width: 1.5,
-                                                            color: const Color(
-                                                                0XFF13A088))),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100),
-                                                      child: CachedImageWidget(
-                                                        user.driver.avatar,
-                                                        boxFit: BoxFit.cover,
-                                                        width: dW * 0.2,
-                                                        height: dW * 0.2,
+                                                        child:
+                                                            CachedImageWidget(
+                                                          user.driver.avatar,
+                                                          boxFit: BoxFit.cover,
+                                                          width: dW * 0.2,
+                                                          height: dW * 0.2,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.04,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: dW * 0.01,
-                                        ),
-                                        TextWidget(
-                                          title:
-                                              language['yourWeeklyPerformance'],
-                                          color: const Color(0xff242E42),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
-                                        SizedBox(
-                                          height: dW * 0.025,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            const TextWidget(
-                                              title: 'OTA : ',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 18,
-                                            ),
-                                            const TextWidget(
-                                              // title: '81${'%'}',
-                                              title: ' --',
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xffEAC02A),
-                                              fontSize: 18,
-                                            ),
-                                            SizedBox(
-                                              width: dW * 0.04,
-                                            ),
-                                            const TextWidget(
-                                              title: 'OTD : ',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 18,
-                                            ),
-                                            const TextWidget(
-                                              // title: '91${'%'}',
-                                              title: ' --',
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff78B84C),
-                                              fontSize: 18,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: dW * 0.04,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: dW * 0.01,
+                                          ),
+                                          TextWidget(
+                                            title: language[
+                                                'yourWeeklyPerformance'],
+                                            color: const Color(0xff242E42),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                          SizedBox(
+                                            height: dW * 0.025,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              const TextWidget(
+                                                title: 'OTA : ',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 18,
+                                              ),
+                                              const TextWidget(
+                                                // title: '81${'%'}',
+                                                title: ' --',
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xffEAC02A),
+                                                fontSize: 18,
+                                              ),
+                                              SizedBox(
+                                                width: dW * 0.04,
+                                              ),
+                                              const TextWidget(
+                                                title: 'OTD : ',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 18,
+                                              ),
+                                              const TextWidget(
+                                                // title: '91${'%'}',
+                                                title: ' --',
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff78B84C),
+                                                fontSize: 18,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: dW * 0.03, bottom: dW * 0.05),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: dW * 0.04, vertical: dW * 0.05),
+                              decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(.1),
+                                      blurRadius: 10,
+                                      spreadRadius: 0,
+                                      offset: const Offset(0, -5))
+                                ],
                               ),
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: dW * 0.03, bottom: dW * 0.05),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: dW * 0.04, vertical: dW * 0.05),
-                            decoration: BoxDecoration(
-                              color: white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 10,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, -5))
-                              ],
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => showSnackbar(
+                                        'Coming soon!!', themeColor),
+                                    child: CustomContainer(
+                                      name: language['MISReport'],
+                                      axisAlignment: MainAxisAlignment.start,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: dW * 0.03,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => showSnackbar(
+                                        'Coming soon!!', themeColor),
+                                    child: CustomContainer(
+                                      name: language['performanceReport'],
+                                      axisAlignment: MainAxisAlignment.start,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: dW * 0.03,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => showSnackbar(
+                                        'Coming soon!!', themeColor),
+                                    child: CustomContainer(
+                                      name: language['earningsReport'],
+                                      axisAlignment: MainAxisAlignment.start,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () =>
-                                      showSnackbar('Coming soon!!', themeColor),
-                                  child: CustomContainer(
-                                    name: language['MISReport'],
-                                    axisAlignment: MainAxisAlignment.start,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                GestureDetector(
-                                  onTap: () =>
-                                      showSnackbar('Coming soon!!', themeColor),
-                                  child: CustomContainer(
-                                    name: language['performanceReport'],
-                                    axisAlignment: MainAxisAlignment.start,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                GestureDetector(
-                                  onTap: () =>
-                                      showSnackbar('Coming soon!!', themeColor),
-                                  child: CustomContainer(
-                                    name: language['earningsReport'],
-                                    axisAlignment: MainAxisAlignment.start,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Container(

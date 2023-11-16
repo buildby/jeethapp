@@ -109,42 +109,42 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
             isScrolled = innerBoxIsScrolled;
 
             return [
-              SliverAppBar(
-                leadingWidth: 0,
-                elevation: 0,
-                actions: [
-                  Padding(
-                    padding: EdgeInsets.only(right: dW * 0.06),
-                    child: GestureDetector(
-                      onTap: () => infoBottomSheet(),
-                      child: const Center(
-                        child: AssetSvgIcon('info'),
-                      ),
-                    ),
-                  ),
-                ],
-                floating: true,
-                backgroundColor: themeColor,
-                centerTitle: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: EdgeInsets.only(
-                    left: dW * (iOSCondition(dH) ? 0 : 0.05),
-                    bottom: dW * 0.05,
-                  ),
-                  title: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: isScrolled
-                        ? TextWidget(
-                            title: language['marketplace'],
-                            fontWeight: FontWeight.w600,
-                            fontSize: 22,
-                            color: white,
-                          )
-                        : const SizedBox(),
-                  ),
-                ),
-              ),
+              // SliverAppBar(
+              //   leadingWidth: 0,
+              //   elevation: 0,
+              //   actions: [
+              //     Padding(
+              //       padding: EdgeInsets.only(right: dW * 0.06),
+              //       child: GestureDetector(
+              //         onTap: () => infoBottomSheet(),
+              //         child: const Center(
+              //           child: AssetSvgIcon('info'),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              //   floating: true,
+              //   backgroundColor: themeColor,
+              //   centerTitle: false,
+              //   pinned: true,
+              //   flexibleSpace: FlexibleSpaceBar(
+              //     titlePadding: EdgeInsets.only(
+              //       left: dW * (iOSCondition(dH) ? 0 : 0.05),
+              //       bottom: dW * 0.05,
+              //     ),
+              //     title: AnimatedSwitcher(
+              //       duration: const Duration(milliseconds: 300),
+              //       child: isScrolled
+              //           ? TextWidget(
+              //               title: language['marketplace'],
+              //               fontWeight: FontWeight.w600,
+              //               fontSize: 22,
+              //               color: white,
+              //             )
+              //           : const SizedBox(),
+              //     ),
+              //   ),
+              // ),
             ];
           },
           body: iOSCondition(dH) ? screenBody() : SafeArea(child: screenBody()),
@@ -183,55 +183,79 @@ class MarketPlaceScreenState extends State<MarketPlaceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (!isScrolled)
-                      Container(
-                        padding: EdgeInsets.only(
-                          right: dW * 0.01,
-                          bottom: dW * 0.03,
-                        ),
-                        height: dW * 0.3,
-                        width: dW,
-                        color: themeColor,
-                        child: AnimatedOpacity(
-                          opacity: !isScrolled ? 1.0 : 0.0,
-                          duration: const Duration(milliseconds: 300),
-                          child: TextWidget(
-                            textAlign: TextAlign.end,
-                            title: language['go'],
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black.withOpacity(0.06),
-                            fontSize: 119,
-                          ),
+                    // if (!isScrolled)
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: dW * 0.07,
+                        right: dW * 0.01,
+                        // bottom: dW * 0.03,
+                      ),
+                      height: dW * 0.38,
+                      width: dW,
+                      color: themeColor,
+                      child: AnimatedOpacity(
+                        opacity: !isScrolled ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 300),
+                        child: TextWidget(
+                          textAlign: TextAlign.end,
+                          title: language['go'],
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black.withOpacity(0.06),
+                          fontSize: 119,
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
               Positioned(
                 left: 0,
                 right: 0,
-                top: 20,
+                top: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                      margin: EdgeInsets.only(bottom: dW * 0.17),
                       padding:
-                          EdgeInsets.only(left: dW * 0.05, bottom: dW * 0.04),
-                      child: AnimatedOpacity(
-                          opacity: !isScrolled ? 1.0 : 1.0,
-                          duration: const Duration(milliseconds: 300),
-                          child:
-                              //  !isScrolled
-                              //     ?
-                              TextWidget(
+                          EdgeInsets.only(left: dW * 0.05, right: dW * 0.06),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextWidget(
                             title: language['marketplace'],
                             fontWeight: FontWeight.w600,
-                            fontSize: 38,
+                            fontSize: 22,
                             color: white,
-                          )
-                          // : SizedBox(),
                           ),
+                          GestureDetector(
+                            onTap: () => infoBottomSheet(),
+                            child: const Center(
+                              child: AssetSvgIcon('info'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    // Container(
+                    //   padding:
+                    //       EdgeInsets.only(left: dW * 0.05, bottom: dW * 0.04),
+                    //   child: AnimatedOpacity(
+                    //       opacity: !isScrolled ? 1.0 : 1.0,
+                    //       duration: const Duration(milliseconds: 300),
+                    //       child:
+                    //           //  !isScrolled
+                    //           //     ?
+                    //           TextWidget(
+                    //         title: language['marketplace'],
+                    //         fontWeight: FontWeight.w600,
+                    //         fontSize: 38,
+                    //         color: white,
+                    //       )
+                    //       // : SizedBox(),
+                    //       ),
+                    // ),
+
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                       child: Container(

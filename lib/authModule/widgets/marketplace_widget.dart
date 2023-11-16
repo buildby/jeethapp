@@ -3,10 +3,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_functions.dart';
@@ -15,7 +17,9 @@ import '../../common_widgets/cached_image_widget.dart';
 class MarketplaceWidget extends StatefulWidget {
   final Marketplace marketplace;
   bool loggedIn;
-  MarketplaceWidget({Key? key, required this.marketplace, this.loggedIn = true})
+  final User? user;
+  MarketplaceWidget(
+      {Key? key, required this.marketplace, this.user, this.loggedIn = true})
       : super(key: key);
 
   @override
@@ -28,9 +32,25 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
   double tS = 0.0;
   Map language = {};
   bool isLoading = false;
+  bool alreadyApplied = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
 
   Map vehicle = {};
+
+  isAlreadyAppliedApplication() async {
+    setState(() => isLoading = true);
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .isAlreadyAppliedApplication(
+                accessToken: widget.user!.accessToken,
+                driverId: widget.user!.driver.id,
+                campaignId: widget.marketplace.id);
+
+    if (response['result'] == 'success' && response['data'] != null) {
+      alreadyApplied = true;
+    }
+    setState(() => isLoading = false);
+  }
 
   getVehicleCount(Map slots, String vehicleType) {
     num totalVehicleCount = 0;
@@ -48,6 +68,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
     super.initState();
 
     vehicle = widget.marketplace.data;
+    isAlreadyAppliedApplication();
   }
 
   @override
@@ -208,6 +229,14 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                   ),
                 ],
               ),
+              if (alreadyApplied)
+                Container(
+                  margin: EdgeInsets.only(top: dW * 0.03),
+                  child: TextWidgetRoboto(
+                    title: language['alreadyApplied'],
+                    color: themeColor,
+                  ),
+                ),
             ],
           ),
           Column(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
@@ -6,6 +8,8 @@ import 'package:jeeth_app/authModule/widgets/marketplace_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
+import 'package:jeeth_app/common_widgets/text_widget2.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -38,6 +42,20 @@ class HomeScreenState extends State<HomeScreen> {
 
   List<Marketplace> marketplaces = [];
 
+  fetchMyApplication() async {
+    setState(() => isLoading = true);
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .fetchMyApplication(
+      accessToken: user.accessToken,
+      driverId: user.driver.id,
+    );
+    if (response['result'] == 'success') {
+      // showSnackbar(response['message']);
+    }
+    setState(() => isLoading = false);
+  }
+
   fetchMarketPlace() async {
     setState(() => isLoading = true);
 
@@ -58,6 +76,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchMarketPlace();
+    fetchMyApplication();
   }
 
   @override
@@ -99,6 +118,27 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   screenBody() {
+    final myApplication =
+        Provider.of<MyApplicationProvider>(context, listen: false)
+            .myApplications;
+    marketplaces =
+        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+
+    bool isApproved =
+        myApplication.any((application) => application.status == 'APPROVED');
+
+    String approvedVendorName = '';
+
+    if (isApproved) {
+      final approvedMarketplace =
+          marketplaces.firstWhere((marketplace) => myApplication.any(
+                (application) =>
+                    application.status == 'APPROVED' &&
+                    application.campaignId == marketplace.id,
+              ));
+
+      approvedVendorName = approvedMarketplace.vendername;
+    }
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -127,7 +167,7 @@ class HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                       child: Container(
-                        height: dH * 0.8,
+                        height: dH * 0.72,
                         padding: EdgeInsets.only(
                             top: dW * 0.06, left: dW * 0.02, right: dW * 0.02),
                         decoration: BoxDecoration(
@@ -142,20 +182,44 @@ class HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        child: ListView.builder(
-                          itemCount: marketplaces.length,
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              widget.onIndexChanged(0);
-                              push(NamedRoute.exploreDealScreen,
-                                  arguments: ExploreDealScreenArguments(
-                                      marketplace: marketplaces[index]));
-                            },
-                            child: MarketplaceWidget(
-                              key: ValueKey(marketplaces[index].id),
-                              marketplace: marketplaces[index],
+                        child: ImageFiltered(
+                          imageFilter: isApproved
+                              ? ImageFilter.blur(sigmaX: 8, sigmaY: 8)
+                              : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                          child: BackdropFilter(
+                            filter: isApproved
+                                ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
+                                : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                            child: RefreshIndicator(
+                              onRefresh: () async {
+                                await fetchMarketPlace();
+                              },
+                              child: ListView.builder(
+                                  itemCount: marketplaces.length,
+                                  physics: isApproved
+                                      ? const NeverScrollableScrollPhysics()
+                                      : const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: isApproved
+                                          ? () {}
+                                          : () {
+                                              widget.onIndexChanged(0);
+                                              push(NamedRoute.exploreDealScreen,
+                                                  arguments:
+                                                      ExploreDealScreenArguments(
+                                                          marketplace:
+                                                              marketplaces[
+                                                                  index]));
+                                            },
+                                      child: MarketplaceWidget(
+                                        key: ValueKey(marketplaces[index].id),
+                                        marketplace: marketplaces[index],
+                                        user: user,
+                                      ),
+                                    );
+                                  }),
                             ),
                           ),
                         ),
@@ -163,7 +227,24 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-              )
+              ),
+              if (isApproved)
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: dW * 0.04, vertical: dW * 0.01),
+                    margin: EdgeInsets.symmetric(horizontal: dW * 0.04),
+                    // color: Colors.black,
+                    child: TextWidgetRoboto(
+                      title:
+                          'Dear ${user.driver.name}, your application is already approved by $approvedVendorName.',
+                      fontSize: 20,
+                      color: Colors.black,
+                      height: 1.1,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
             ],
           );
   }

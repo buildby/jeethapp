@@ -103,6 +103,8 @@ class AuthProvider with ChangeNotifier {
         "loginSlots": "Login Slots",
         "logoutSlots": "Logout Slots",
         "applyNow": "Apply Now",
+        "alreadyApplied": "Already applied",
+        "youAlreadyApplied": "You already applied",
         "profileWillSubmitted": "Your Profile will be submitted",
         "profileHasSubmitted": "Your Profile has been submitted",
         "agreementSubtitle":

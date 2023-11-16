@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
-import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/widgets/myApplication_container.dart';
-import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
-import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
-import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
-import 'package:jeeth_app/homeModule/widgets/notification_widget.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -108,106 +103,112 @@ class MyApplicationsScreenState extends State<MyApplicationsScreen> {
   }
 
   screenBody() {
-    DateTime currentDate = DateTime.now();
-    String formattedDate = formatDate(currentDate);
+    // DateTime currentDate = DateTime.now();
+    // String formattedDate = formatDate(currentDate);
     final myApplication =
         Provider.of<MyApplicationProvider>(context, listen: false)
             .myApplications;
 
-    return isLoading
-        ? const Center(child: CircularLoader())
-        : Stack(
-            clipBehavior: Clip.none,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          color: white.withOpacity(0.96),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                color: white.withOpacity(0.96),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      height: dW * 0.25,
-                      color: themeColor,
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: dW * 0.02,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: dW * 0.05, right: dW * 0.04),
-                    child: TextWidgetPoppins(
-                      title: language['myApplications'],
-                      fontSize: 34,
-                      fontWeight: FontWeight.w700,
-                      color: white,
-                    ),
-                  ),
-                  SizedBox(
-                    height: dW * 0.06,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: myApplication.length,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, i) {
-                          // final subtitle = myApplication[i].status;
-                          return GestureDetector(
-                            onTap: () {
-                              push(
-                                NamedRoute.myApplicationsStatusScreen,
-                                arguments: MyApplicationsStatusArguments(
-                                  myApplication: myApplication[i],
-                                ),
-                              );
-                            },
-                            child: MyApplicationContainer(
-                              application: myApplication[i],
-                              // onTap: () {
-                              // push(
-                              //   NamedRoute.myApplicationsStatusScreen,
-                              //   arguments: MyApplicationsStatusArguments(
-                              //       myApplication: myApplication[i],
-                              //       vendorName: marketplace[i].vendername),
-                              // );
-                              // },
-                              // title: marketplace[i].vendername,
-                              // subTitle: subtitle == 'Approved!'
-                              //     ? 'approved'
-                              //     : subtitle == 'Pending!'
-                              //         ? 'awaitingApproval'
-                              //         : 'denied',
-                              // date: formattedDate,
-                            ),
-                          );
-                        }),
-                  ),
-                  // MyApplicationContainer(
-                  //     title: 'Shyam Salasar Logist.',
-                  //     subTitle: 'awaitingApproval',
-                  //     onTap: () {
-                  //       push(NamedRoute.myApplicationsStatusScreen,
-                  //           arguments: MyApplicationsStatusArguments(
-                  //               status: myApplication.first.status));
-                  //     },
-                  //     date: formattedDate),
-                  // MyApplicationContainer(
-                  //     title: '4 Wheel Travels',
-                  //     onTap: () {},
-                  //     subTitle: 'denied',
-                  //     date: formattedDate),
-                  // MyApplicationContainer(
-                  //     title: 'Shyam Salasar Logist.',
-                  //     onTap: () {},
-                  //     subTitle: 'approved',
-                  //     date: formattedDate),
-                ],
+                height: dW * 0.25,
+                color: themeColor,
               ),
             ],
-          );
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: dW * 0.02,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: dW * 0.05, right: dW * 0.04),
+              child: TextWidgetPoppins(
+                title: language['myApplications'],
+                fontSize: 34,
+                fontWeight: FontWeight.w700,
+                color: white,
+              ),
+            ),
+            SizedBox(
+              height: dW * 0.06,
+            ),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularLoader())
+                  : RefreshIndicator(
+                      color: themeColor,
+                      onRefresh: () async {
+                        await fetchMyApplication();
+                      },
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: myApplication.length,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            // final subtitle = myApplication[i].status;
+                            return GestureDetector(
+                              onTap: () {
+                                push(
+                                  NamedRoute.myApplicationsStatusScreen,
+                                  arguments: MyApplicationsStatusArguments(
+                                    myApplication: myApplication[i],
+                                  ),
+                                );
+                              },
+                              child: MyApplicationContainer(
+                                application: myApplication[i],
+                                // onTap: () {
+                                // push(
+                                //   NamedRoute.myApplicationsStatusScreen,
+                                //   arguments: MyApplicationsStatusArguments(
+                                //       myApplication: myApplication[i],
+                                //       vendorName: marketplace[i].vendername),
+                                // );
+                                // },
+                                // title: marketplace[i].vendername,
+                                // subTitle: subtitle == 'Approved!'
+                                //     ? 'approved'
+                                //     : subtitle == 'Pending!'
+                                //         ? 'awaitingApproval'
+                                //         : 'denied',
+                                // date: formattedDate,
+                              ),
+                            );
+                          }),
+                    ),
+            ),
+            // MyApplicationContainer(
+            //     title: 'Shyam Salasar Logist.',
+            //     subTitle: 'awaitingApproval',
+            //     onTap: () {
+            //       push(NamedRoute.myApplicationsStatusScreen,
+            //           arguments: MyApplicationsStatusArguments(
+            //               status: myApplication.first.status));
+            //     },
+            //     date: formattedDate),
+            // MyApplicationContainer(
+            //     title: '4 Wheel Travels',
+            //     onTap: () {},
+            //     subTitle: 'denied',
+            //     date: formattedDate),
+            // MyApplicationContainer(
+            //     title: 'Shyam Salasar Logist.',
+            //     onTap: () {},
+            //     subTitle: 'approved',
+            //     date: formattedDate),
+          ],
+        ),
+      ],
+    );
   }
 }

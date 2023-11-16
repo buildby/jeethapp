@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/colors.dart';
@@ -8,6 +11,7 @@ import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/notification_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -24,13 +28,15 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
-  //  late User user;
+  late User user;
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  String approvedVendorName = '';
 
   fetchData() async {
     setState(() => isLoading = true);
+    fetchMyApplication();
     setState(() => isLoading = false);
   }
 
@@ -39,11 +45,25 @@ class NotificationsScreenState extends State<NotificationsScreen> {
     pushAndRemoveUntil(NamedRoute.mobileNumberScreen);
   }
 
+  fetchMyApplication() async {
+    setState(() => isLoading = true);
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .fetchMyApplication(
+      accessToken: user.accessToken,
+      driverId: user.driver.id,
+    );
+    if (response['result'] == 'success') {
+      // showSnackbar(response['message']);
+    }
+    setState(() => isLoading = false);
+  }
+
   @override
   void initState() {
     super.initState();
 
-    // user = Provider.of<AuthProvider>(context, listen: false).user;
+    user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
   }
 
@@ -64,6 +84,41 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   screenBody() {
+    final myApplications =
+        Provider.of<MyApplicationProvider>(context, listen: false)
+            .myApplications;
+    final marketplaces =
+        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+    List<NotificationWidget> getNotificationWidgets() {
+      return myApplications
+          .where((application) =>
+              application.status == 'APPROVED' ||
+              application.status == 'DENIED')
+          .map((application) {
+        return NotificationWidget(
+          icon: application.status == 'APPROVED' ? 'tick' : 'cross',
+          title: 'Your Application is approved by $approvedVendorName',
+          subTitle: application.status == 'APPROVED'
+              ? DateFormat('d MMM, yyyy').format(application.createdAt)
+              : 'Application Denied by $approvedVendorName',
+        );
+      }).toList();
+    }
+
+    bool isApproved =
+        myApplications.any((application) => application.status == 'APPROVED');
+
+    if (isApproved) {
+      final approvedMarketplace =
+          marketplaces.firstWhere((marketplace) => myApplications.any(
+                (application) =>
+                    application.status == 'APPROVED' &&
+                    application.campaignId == marketplace.id,
+              ));
+
+      approvedVendorName = approvedMarketplace.vendername;
+    }
+
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -120,19 +175,20 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                   SizedBox(
                     height: dW * 0.06,
                   ),
-                  NotificationWidget(
-                      icon: 'tick',
-                      title: 'Business',
-                      subTitle:
-                          'Your application has been approve Your application has been approve..'),
-                  NotificationWidget(
-                      icon: 'cross',
-                      title: 'Business',
-                      subTitle: 'Application Denied, find the details..'),
-                  NotificationWidget(
-                      icon: 'wallet',
-                      title: 'Wallet',
-                      subTitle: 'Earnings ready to withdraw!! Click..'),
+                  ...getNotificationWidgets(),
+                  // NotificationWidget(
+                  //     icon: 'tick',
+                  //     title: 'Business',
+                  //     subTitle:
+                  //         'Your application has been approve Your application has been approve..'),
+                  // NotificationWidget(
+                  //     icon: 'cross',
+                  //     title: 'Business',
+                  //     subTitle: 'Application Denied, find the details..'),
+                  // NotificationWidget(
+                  //     icon: 'wallet',
+                  //     title: 'Wallet',
+                  //     subTitle: 'Earnings ready to withdraw!! Click..'),
                 ],
               ),
             ],

@@ -58,6 +58,7 @@ class NotificationWidget extends StatelessWidget {
                   title: title,
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
+                  height: 1.2,
                   color: const Color(0xff242E42),
                 ),
                 SizedBox(

@@ -7,6 +7,7 @@ class TextWidgetRoboto extends StatelessWidget {
   final Color? color;
   final double fontSize;
   final FontWeight fontWeight;
+  final double height;
 
   final double letterSpacing;
   final int? maxLines;
@@ -19,6 +20,7 @@ class TextWidgetRoboto extends StatelessWidget {
     required this.title,
     this.color,
     this.fontSize = 13,
+    this.height = 1,
     this.fontWeight = FontWeight.normal,
     this.letterSpacing = 0.25,
     this.maxLines,
@@ -40,7 +42,7 @@ class TextWidgetRoboto extends StatelessWidget {
           fontWeight: fontWeight,
           letterSpacing: letterSpacing,
           decoration: textDecoration,
-          height: 1),
+          height: height),
       maxLines: maxLines,
       overflow: textOverflow,
       textAlign: textAlign,

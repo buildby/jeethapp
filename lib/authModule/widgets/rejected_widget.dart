@@ -65,120 +65,123 @@ class ApprovedStateWidget extends State<RejectedWidget> {
                   top: dW * 0.055),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: white),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: dW * 0.15,
-                      ),
-                      TextWidgetPoppins(
-                        title: widget.args.myApplication.vendorName,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 17,
-                      ),
-                      SizedBox(
-                        height: dW * 0.015,
-                      ),
-                      TextWidgetPoppins(
-                        title: widget.args.myApplication.clientSiteName,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff8A8A8F),
-                        fontSize: 15,
-                      ),
-                      SizedBox(
-                        height: dW * 0.1,
-                      ),
-                      TextWidgetPoppins(
-                        title: language['applicationDenied'],
-                        color: const Color(0xffC51010),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        letterSpacing: 0.41,
-                      ),
-                      SizedBox(
-                        height: dW * 0.02,
-                      ),
-                      TextWidgetPoppins(
-                        textAlign: TextAlign.center,
-                        title: language['rejectedPara'],
-                        height: 1.5,
-                        color: const Color(0xff8A8A8F),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.41,
-                        fontSize: 16,
-                      ),
-                      Container(
-                        width: dW,
-                        margin: EdgeInsets.only(top: dW * 0.2),
-                        padding: EdgeInsets.only(
-                            left: dW * 0.05,
-                            right: dW * 0.03,
-                            bottom: dW * 0.045,
-                            top: dW * 0.02),
-                        decoration: BoxDecoration(
-                          color: const Color(0xffEFEFF4).withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            width: 1,
-                            color: const Color(0xffEFEFF4),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: dW * 0.15,
+                        ),
+                        TextWidgetPoppins(
+                          title: widget.args.myApplication.vendorName,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 17,
+                        ),
+                        SizedBox(
+                          height: dW * 0.015,
+                        ),
+                        TextWidgetPoppins(
+                          title: widget.args.myApplication.clientSiteName,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff8A8A8F),
+                          fontSize: 15,
+                        ),
+                        SizedBox(
+                          height: dW * 0.1,
+                        ),
+                        TextWidgetPoppins(
+                          title: language['applicationDenied'],
+                          color: const Color(0xffC51010),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          letterSpacing: 0.41,
+                        ),
+                        SizedBox(
+                          height: dW * 0.02,
+                        ),
+                        TextWidgetPoppins(
+                          textAlign: TextAlign.center,
+                          title: language['rejectedPara'],
+                          height: 1.5,
+                          color: const Color(0xff8A8A8F),
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.41,
+                          fontSize: 16,
+                        ),
+                        Container(
+                          width: dW,
+                          margin: EdgeInsets.only(top: dW * 0.2),
+                          padding: EdgeInsets.only(
+                              left: dW * 0.05,
+                              right: dW * 0.03,
+                              bottom: dW * 0.045,
+                              top: dW * 0.02),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffEFEFF4).withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              width: 1,
+                              color: const Color(0xffEFEFF4),
+                            ),
+                          ),
+                          child: Wrap(
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: language['incorrectDocuments'],
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    TextSpan(
+                                      text: language['kindlyReupload'],
+                                      style: const TextStyle(
+                                          letterSpacing: 0.29,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        child: Wrap(
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                style:
-                                    DefaultTextStyle.of(context).style.copyWith(
-                                          fontFamily: 'Poppins',
-                                          color: Colors.black,
-                                        ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: language['incorrectDocuments'],
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  TextSpan(
-                                    text: language['kindlyReupload'],
-                                    style: const TextStyle(
-                                        letterSpacing: 0.29,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(.15),
-                            blurRadius: 30,
-                            spreadRadius: 0,
-                            offset: const Offset(0, 26))
                       ],
                     ),
-                    child: CustomButton(
-                      width: dW,
-                      height: dW * 0.12,
-                      onPressed: () {
-                        push(NamedRoute.profileDocumentsScreen);
-                      },
-                      radius: 10,
-                      buttonText: language['takeMeToProfile'],
+                    Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(.15),
+                              blurRadius: 30,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 26))
+                        ],
+                      ),
+                      child: CustomButton(
+                        width: dW,
+                        height: dW * 0.12,
+                        onPressed: () {
+                          push(NamedRoute.profileDocumentsScreen);
+                        },
+                        radius: 10,
+                        buttonText: language['takeMeToProfile'],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Positioned(

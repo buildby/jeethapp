@@ -75,6 +75,25 @@ class MyApplicationProvider with ChangeNotifier {
     }
   }
 
+  isAlreadyAppliedApplication(
+      {required String accessToken,
+      required int driverId,
+      required int campaignId}) async {
+    try {
+      final url =
+          '${webApi['domain']}${endPoint['isAlreadyAppliedApplication']}/$driverId/$campaignId';
+      final response = await RemoteServices.httpRequest(
+          method: 'GET', url: url, accessToken: accessToken);
+
+      return response;
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Failed to get My applications',
+      };
+    }
+  }
+
   fetchMyApplication({
     required String accessToken,
     required int driverId,

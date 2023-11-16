@@ -3,6 +3,7 @@ import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
+import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -26,6 +27,11 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
   bool isLoading = false;
   fetchData() async {}
 
+  logout() async {
+    Provider.of<AuthProvider>(context, listen: false).logout();
+    pushAndRemoveUntil(NamedRoute.mobileNumberScreen);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,31 +52,33 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
           horizontal: dW * horizontalPaddingFactor),
       child: Column(
         children: [
+          Divider(
+            indent: dW * 0.27,
+            endIndent: dW * 0.27,
+            color: Colors.black,
+            thickness: 5,
+          ),
           Expanded(
-            child: Column(
-              children: [
-                Divider(
-                  indent: dW * 0.27,
-                  endIndent: dW * 0.27,
-                  color: Colors.black,
-                  thickness: 5,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: dW * 0.08, bottom: dW * 0.08),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: dW * 0.06, vertical: dW * 0.03),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF4B617),
-                    borderRadius: BorderRadius.circular(50),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: dW * 0.08, bottom: dW * 0.08),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: dW * 0.06, vertical: dW * 0.03),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF4B617),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const AssetSvgIcon('exclaimation'),
                   ),
-                  child: const AssetSvgIcon('exclaimation'),
-                ),
-                const TextWidget(
-                  title: 'Info',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                ),
-              ],
+                  const TextWidget(
+                    title: 'Info',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
+                ],
+              ),
             ),
           ),
           Container(
@@ -84,6 +92,31 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
               onPressed: () => pop(),
             ),
           ),
+          GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => CustomDialog(
+                title: language['logout'],
+                subTitle: language['wantToLogout'],
+                noText: language['no'],
+                yesText: language['yes'],
+                noFunction: () {
+                  pop();
+                },
+                yesFunction: () {
+                  logout();
+                },
+              ),
+            ),
+            child: const TextWidget(
+              title: 'Logout',
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
+            ),
+          ),
+          SizedBox(
+            height: dW * 0.1,
+          )
         ],
       ),
     );

@@ -277,9 +277,13 @@ class VehicleDetailsBottomSheetWidgetState
 
     return Container(
       height: numberFocus.hasFocus ? dH * 0.95 : dW * 1.4,
-      padding: EdgeInsets.symmetric(
-          vertical: dW * horizontalPaddingFactor,
-          horizontal: dW * horizontalPaddingFactor),
+      padding: EdgeInsets.only(
+        top: dW * horizontalPaddingFactor,
+        bottom: (dW * horizontalPaddingFactor) +
+            MediaQuery.of(context).viewInsets.bottom,
+        left: dW * horizontalPaddingFactor,
+        right: dW * horizontalPaddingFactor,
+      ),
       child: Column(
         children: [
           Divider(
@@ -527,21 +531,22 @@ class VehicleDetailsBottomSheetWidgetState
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: dW * 0.05,
-              left: dW * 0.1,
-              right: dW * 0.1,
+          if (MediaQuery.of(context).viewInsets.bottom < 20)
+            Container(
+              margin: EdgeInsets.only(
+                top: dW * 0.05,
+                left: dW * 0.1,
+                right: dW * 0.1,
+              ),
+              child: CustomButton(
+                isLoading: isLoading,
+                width: dW,
+                height: dW * 0.15,
+                radius: 21,
+                buttonText: language['save'],
+                onPressed: editProfile,
+              ),
             ),
-            child: CustomButton(
-              isLoading: isLoading,
-              width: dW,
-              height: dW * 0.15,
-              radius: 21,
-              buttonText: language['save'],
-              onPressed: editProfile,
-            ),
-          ),
         ],
       ),
     );

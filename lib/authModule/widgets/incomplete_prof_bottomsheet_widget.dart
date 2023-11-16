@@ -47,41 +47,46 @@ class IncompleteProfBottomSheetWidgetState
           vertical: dW * 0.04, horizontal: dW * horizontalPaddingFactor),
       child: Column(
         children: [
+          Divider(
+            indent: dW * 0.27,
+            endIndent: dW * 0.27,
+            color: Colors.black,
+            thickness: 5,
+          ),
           Expanded(
-            child: Column(
-              children: [
-                Divider(
-                  indent: dW * 0.27,
-                  endIndent: dW * 0.27,
-                  color: Colors.black,
-                  thickness: 5,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: dW * 0.08, bottom: dW * 0.08),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: dW * 0.06, vertical: dW * 0.03),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF4B617),
-                    borderRadius: BorderRadius.circular(50),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: dW * 0.08, bottom: dW * 0.08),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: dW * 0.06, vertical: dW * 0.03),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF4B617),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const AssetSvgIcon('exclaimation'),
                   ),
-                  child: const AssetSvgIcon('exclaimation'),
-                ),
-                TextWidget(
-                  title: language['incompleteProfile'],
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                ),
-                SizedBox(
-                  height: dW * 0.04,
-                ),
-                TextWidget(
-                  textAlign: TextAlign.center,
-                  title: language['inCompleteProfBtmStSubtitle'],
-                  fontWeight: FontWeight.w400,
-                  height: 1.2,
-                  fontSize: 17,
-                ),
-              ],
+                  TextWidget(
+                    title: language['incompleteProfile'],
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
+                  SizedBox(
+                    height: dW * 0.04,
+                  ),
+                  TextWidget(
+                    textAlign: TextAlign.center,
+                    title: language['inCompleteProfBtmStSubtitle'],
+                    fontWeight: FontWeight.w400,
+                    height: 1.2,
+                    fontSize: 17,
+                  ),
+                  SizedBox(
+                    height: dW * 0.04,
+                  )
+                ],
+              ),
             ),
           ),
           Container(

@@ -9,7 +9,11 @@ import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget2.dart';
+import 'package:jeeth_app/homeModule/models/my_application_model.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
+import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
@@ -36,6 +40,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
 
   late Map businessModel;
   //  late User user;
+  bool alreadyApplied = false;
   String imgPath = '';
   String ownerImg = '';
   bool isDriverSlide = true;
@@ -45,6 +50,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
   num vehicleDocPercentage = 0;
   num ownerDocPercentage = 0;
   num driverDetailsPercentage = 0;
+  List<MyApplication> myApplication = [];
 
   Map language = {};
   bool showOwnerDetails = true;
@@ -83,8 +89,24 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
     );
   }
 
+  isAlreadyAppliedApplication() async {
+    setState(() => isLoading = true);
+    final response =
+        await Provider.of<MyApplicationProvider>(context, listen: false)
+            .isAlreadyAppliedApplication(
+                accessToken: user.accessToken,
+                driverId: user.driver.id,
+                campaignId: widget.args.marketplace.id);
+
+    if (response['result'] == 'success' && response['data'] != null) {
+      alreadyApplied = true;
+    }
+    setState(() => isLoading = false);
+  }
+
   fetchData() async {
     setState(() => isLoading = true);
+    await isAlreadyAppliedApplication();
     setState(() => isLoading = false);
   }
 
@@ -99,9 +121,10 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
     super.initState();
 
     user = Provider.of<AuthProvider>(context, listen: false).user;
-    // fetchData();
+
     slots = widget.args.marketplace.data;
     businessModel = widget.args.marketplace.clientSite.businessModel.last;
+    fetchData();
   }
 
   @override
@@ -117,9 +140,14 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
         title: language['exploreDeal'],
         dW: dW,
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: dW * 0.04),
-            child: const Icon(Icons.notifications),
+          GestureDetector(
+            onTap: () {
+              push(NamedRoute.notificationsScreen);
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: dW * 0.04),
+              child: const Icon(Icons.notifications),
+            ),
           ),
         ],
       ),
@@ -273,10 +301,10 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                                                   .rating >=
                                                               4
                                                           ? const Color
-                                                                  .fromARGB(
+                                                              .fromARGB(
                                                               255, 14, 187, 124)
                                                           : const Color
-                                                                  .fromARGB(255,
+                                                              .fromARGB(255,
                                                               214, 159, 20),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -668,8 +696,16 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                                 height: dW * 0.15,
                                 elevation: 12,
                                 radius: 21,
-                                buttonText: language['applyNow'],
-                                onPressed: agreementBottomSheet,
+                                buttonColor:
+                                    alreadyApplied ? Colors.grey : themeColor,
+                                buttonText: alreadyApplied
+                                    ? language['alreadyApplied']
+                                    : language['applyNow'],
+                                onPressed: alreadyApplied
+                                    ? () => showSnackbar(
+                                        language['youAlreadyApplied'],
+                                        themeColor)
+                                    : agreementBottomSheet,
                               ),
                             ),
                           SizedBox(height: dH * 0.1),

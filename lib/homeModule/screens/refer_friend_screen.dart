@@ -70,100 +70,103 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                 Column(
                   children: [
                     Expanded(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: dW * 0.07,
-                                top: dW * 0.06,
-                                right: dW * 0.12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => pop(),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: white,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: TextWidgetPoppins(
-                                    textAlign: TextAlign.center,
-                                    title: language['referAFriend'],
-                                    letterSpacing: 0.46,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 19,
-                                    color: white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: dW * 0.22,
-                          ),
-                          Image.asset('assets/images/refer_friend_reward.png'),
-                          SizedBox(
-                            height: dW * 0.04,
-                          ),
-                          TextWidgetPoppins(
-                            title: language['referAndEarn'],
-                            fontWeight: FontWeight.w700,
-                            fontSize: 30,
-                            color: white,
-                            letterSpacing: 0.36,
-                          ),
-                          SizedBox(
-                            height: dW * 0.02,
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: dW * 0.06),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: const TextSpan(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: dW * 0.07,
+                                  top: dW * 0.06,
+                                  right: dW * 0.12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  TextSpan(
-                                    text:
-                                        'Invite your friends to download the ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                      letterSpacing: 0.41,
-                                      color: Colors
-                                          .white, // Color can be customized as needed
+                                  GestureDetector(
+                                    onTap: () => pop(),
+                                    child: const Icon(
+                                      Icons.arrow_back_ios,
+                                      color: white,
                                     ),
                                   ),
-                                  TextSpan(
-                                    text: 'JEETH',
-                                    style: TextStyle(
-                                      fontFamily: 'Blinker',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      letterSpacing: 0.41,
-                                      color: Colors
-                                          .white, // Color can be customized as needed
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        ' mobile app and earn rewards for every referral.',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'Poppins',
-                                      letterSpacing: 0.41,
-                                      fontSize: 18,
-                                      color: Colors
-                                          .white, // Color can be customized as needed
+                                  Expanded(
+                                    child: TextWidgetPoppins(
+                                      textAlign: TextAlign.center,
+                                      title: language['referAFriend'],
+                                      letterSpacing: 0.46,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 19,
+                                      color: white,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              height: dH * 0.07,
+                            ),
+                            Image.asset(
+                                'assets/images/refer_friend_reward.png'),
+                            // SizedBox(
+                            //   height: dH * 0.02,
+                            // ),
+                            TextWidgetPoppins(
+                              title: language['referAndEarn'],
+                              fontWeight: FontWeight.w700,
+                              fontSize: 30,
+                              color: white,
+                              letterSpacing: 0.36,
+                            ),
+                            SizedBox(
+                              height: dW * 0.02,
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: dW * 0.06),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          'Invite your friends to download the ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                        letterSpacing: 0.41,
+                                        color: Colors
+                                            .white, // Color can be customized as needed
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: 'JEETH',
+                                      style: TextStyle(
+                                        fontFamily: 'Blinker',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18,
+                                        letterSpacing: 0.41,
+                                        color: Colors
+                                            .white, // Color can be customized as needed
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          ' mobile app and earn rewards for every referral.',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                        letterSpacing: 0.41,
+                                        fontSize: 18,
+                                        color: Colors
+                                            .white, // Color can be customized as needed
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Container(

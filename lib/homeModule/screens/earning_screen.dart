@@ -63,7 +63,10 @@ class EarningsScreenState extends State<EarningsScreen> {
               break;
           }
 
-          return Text(text);
+          return TextWidget(
+            title: text,
+            fontSize: 13,
+          );
         },
       );
 
@@ -229,334 +232,350 @@ class EarningsScreenState extends State<EarningsScreen> {
                   child: Container(
                     height: dH - (dH * 0.25),
                     padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                top: -2,
-                                left: 30,
-                                right: 30,
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    top: dW * 0.07,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  height: dW * 0.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned(
+                              top: -2,
+                              left: 30,
+                              right: 30,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: dW * 0.07,
                                 ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: dW * 0.06, vertical: dW * 0.05),
-                                margin: EdgeInsets.only(top: dW * 0.1),
                                 decoration: BoxDecoration(
                                   color: white,
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 0,
-                                      blurRadius: 20,
-                                      offset: const Offset(0, -5),
-                                    ),
-                                  ],
                                 ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          alignment: Alignment.center,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: user.driver.avatar.isEmpty
-                                              ? Image.asset(
-                                                  'assets/images/profile.jpeg',
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
-                                                        border: Border.all(
-                                                            width: 1.5,
-                                                            color: const Color(
-                                                                0XFF13A088))),
-                                                    child: ClipRRect(
+                                height: dW * 0.2,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: dW * 0.06, vertical: dW * 0.05),
+                              margin: EdgeInsets.only(top: dW * 0.1),
+                              decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.circular(12),
+                                border:
+                                    Border.all(width: 0.1, color: themeColor),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 0,
+                                    blurRadius: 20,
+                                    offset: const Offset(0, -5),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: user.driver.avatar.isEmpty
+                                            ? Image.asset(
+                                                'assets/images/profile.jpeg',
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Container(
+                                                width: 50,
+                                                height: 50,
+                                                decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               100),
-                                                      child: CachedImageWidget(
-                                                        user.driver.avatar,
-                                                        boxFit: BoxFit.cover,
-                                                        width: dW * 0.2,
-                                                        height: dW * 0.2,
-                                                      ),
+                                                      border: Border.all(
+                                                          width: 1.5,
+                                                          color: const Color(
+                                                              0XFF13A088))),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                    child: CachedImageWidget(
+                                                      user.driver.avatar,
+                                                      boxFit: BoxFit.cover,
+                                                      width: dW * 0.2,
+                                                      height: dW * 0.2,
                                                     ),
                                                   ),
                                                 ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.04,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: dW * 0.01,
-                                        ),
-                                        Row(
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: dW * 0.04,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: dW * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          TextWidget(
+                                            title: language['accruedEarnings'],
+                                            color: const Color(0xff242E42),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: dW * 0.01),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: dW * 0.012,
+                                                vertical: dW * 0.005),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: const Color(0xffCFCFCF)),
+                                            child: const TextWidget(
+                                              title: '!',
+                                              color: white,
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.025,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          const AssetSvgIcon(
+                                            'coin',
+                                          ),
+                                          SizedBox(width: dW * 0.015),
+                                          ShaderMask(
+                                            shaderCallback: (Rect bounds) {
+                                              return const LinearGradient(
+                                                colors: [
+                                                  Color(0xFFDD992B),
+                                                  Color(0xFFFFC850),
+                                                  Color(0xFFDD992B),
+                                                ],
+                                                stops: [0.0, 0.5, 1.0],
+                                              ).createShader(bounds);
+                                            },
+                                            child: TextWidgetRoboto(
+                                              title: convertAmountString(user
+                                                  .driver.earnings.accrued
+                                                  .toDouble()),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(
+                        //   height: dW * 0.01,
+                        // ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: dW,
+                                  margin: EdgeInsets.only(
+                                      top: dW * 0.03, bottom: dW * 0.03),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: dW * 0.04,
+                                      vertical: dW * 0.05),
+                                  decoration: BoxDecoration(
+                                      color: white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          width: 0.1, color: themeColor)
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //       color: Colors.black.withOpacity(.1),
+                                      //       blurRadius: 20,
+                                      //       spreadRadius: 0,
+                                      //       offset: const Offset(0, -5))
+                                      // ],
+                                      ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CustomContainer(
+                                        name: language['currentMonthEarnings'],
+                                        widgets: Row(
                                           children: [
-                                            TextWidget(
+                                            TextWidgetRoboto(
                                               title:
-                                                  language['accruedEarnings'],
-                                              color: const Color(0xff242E42),
-                                              fontWeight: FontWeight.w600,
+                                                  'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
+                                              color: const Color(0xff78B84C),
+                                              fontWeight: FontWeight.w700,
                                               fontSize: 16,
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  left: dW * 0.01),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: dW * 0.012,
-                                                  vertical: dW * 0.005),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  color:
-                                                      const Color(0xffCFCFCF)),
-                                              child: const TextWidget(
-                                                title: '!',
-                                                color: white,
-                                                fontSize: 8,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            )
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: dW * 0.025,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.025,
+                                      ),
+                                      CustomContainer(
+                                        name: language['eligibleToWithdraw'],
+                                        widgets: Row(
                                           children: [
-                                            const AssetSvgIcon(
-                                              'coin',
-                                            ),
-                                            SizedBox(width: dW * 0.015),
-                                            ShaderMask(
-                                              shaderCallback: (Rect bounds) {
-                                                return const LinearGradient(
-                                                  colors: [
-                                                    Color(0xFFDD992B),
-                                                    Color(0xFFFFC850),
-                                                    Color(0xFFDD992B),
-                                                  ],
-                                                  stops: [0.0, 0.5, 1.0],
-                                                ).createShader(bounds);
-                                              },
-                                              child: TextWidgetRoboto(
-                                                title: convertAmountString(user
-                                                    .driver.earnings.accrued
-                                                    .toDouble()),
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: white,
-                                              ),
+                                            TextWidgetRoboto(
+                                              title:
+                                                  'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: dW,
-                            margin: EdgeInsets.only(
-                                top: dW * 0.03, bottom: dW * 0.03),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: dW * 0.04, vertical: dW * 0.05),
-                            decoration: BoxDecoration(
-                              color: white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 20,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, -5))
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomContainer(
-                                  name: language['currentMonthEarnings'],
-                                  widgets: Row(
-                                    children: [
-                                      TextWidgetRoboto(
-                                        title:
-                                            'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
-                                        color: const Color(0xff78B84C),
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
                                       ),
                                     ],
                                   ),
-                                ),
-                                SizedBox(
-                                  height: dW * 0.025,
-                                ),
-                                CustomContainer(
-                                  name: language['eligibleToWithdraw'],
-                                  widgets: Row(
-                                    children: [
-                                      TextWidgetRoboto(
-                                        title:
-                                            'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: dW,
-                            padding: EdgeInsets.symmetric(vertical: dW * 0.02),
-                            decoration: BoxDecoration(
-                              color: white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 20,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, -5))
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: dW * 0.01,
-                                ),
-                                TextWidgetRoboto(
-                                  title: language['earningsLastWeek'],
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w400,
                                 ),
                                 Container(
-                                  height: dW * 0.51,
-                                  margin: EdgeInsets.only(top: dW * 0.02),
-                                  child: BarChart(
-                                    BarChartData(
-                                      alignment: BarChartAlignment.spaceAround,
+                                  width: dW,
+                                  padding:
+                                      EdgeInsets.symmetric(vertical: dW * 0.02),
+                                  decoration: BoxDecoration(
+                                      color: white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          width: 0.1, color: themeColor)
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //       color: Colors.black.withOpacity(.1),
+                                      //       blurRadius: 20,
+                                      //       spreadRadius: 0,
+                                      //       offset: const Offset(0, -5))
+                                      // ],
+                                      ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: dW * 0.01,
+                                      ),
+                                      TextWidgetRoboto(
+                                        title: language['earningsLastWeek'],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      Container(
+                                        height: dW * 0.51,
+                                        margin: EdgeInsets.only(top: dW * 0.02),
+                                        child: BarChart(
+                                          BarChartData(
+                                            alignment:
+                                                BarChartAlignment.spaceAround,
 
-                                      maxY: 3000,
-                                      // groupsSpace: 5,
-                                      borderData: FlBorderData(
-                                        show: true,
-                                        border: const Border(
-                                            left: BorderSide(
-                                              width: 1,
-                                              color: Color(0xffC8C8C8),
+                                            maxY: 3000,
+                                            // groupsSpace: 5,
+                                            borderData: FlBorderData(
+                                              show: true,
+                                              border: const Border(
+                                                  left: BorderSide(
+                                                    width: 1,
+                                                    color: Color(0xffC8C8C8),
+                                                  ),
+                                                  bottom: BorderSide(
+                                                    width: 1,
+                                                    color: Color(0xffC8C8C8),
+                                                  )),
                                             ),
-                                            bottom: BorderSide(
-                                              width: 1,
-                                              color: Color(0xffC8C8C8),
-                                            )),
-                                      ),
-                                      gridData: FlGridData(
-                                        show: false,
-                                      ),
-                                      titlesData: FlTitlesData(
-                                        topTitles: AxisTitles(
-                                            sideTitles:
-                                                SideTitles(showTitles: false)),
-                                        rightTitles: AxisTitles(
-                                            sideTitles:
-                                                SideTitles(showTitles: false)),
-                                        bottomTitles: AxisTitles(
-                                          // axisNameSize: 10,
-                                          sideTitles: _bottomTitles,
-                                        ),
+                                            gridData: FlGridData(
+                                              show: false,
+                                            ),
+                                            titlesData: FlTitlesData(
+                                              topTitles: AxisTitles(
+                                                  sideTitles: SideTitles(
+                                                      showTitles: false)),
+                                              rightTitles: AxisTitles(
+                                                  sideTitles: SideTitles(
+                                                      showTitles: false)),
+                                              bottomTitles: AxisTitles(
+                                                // axisNameSize: 10,
+                                                sideTitles: _bottomTitles,
+                                              ),
 
-                                        // leftTitles: AxisTitles(
-                                        //   drawBelowEverything: true,
-                                        //   axisNameSize: 16,
-                                        // ),
+                                              // leftTitles: AxisTitles(
+                                              //   drawBelowEverything: true,
+                                              //   axisNameSize: 16,
+                                              // ),
+                                            ),
+                                            barGroups: barChartData.map((data) {
+                                              return data.copyWith(
+                                                barRods: data.barRods
+                                                    .map((rod) => rod.copyWith(
+                                                          borderRadius:
+                                                              BorderRadius.zero,
+                                                        ))
+                                                    .toList(),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
                                       ),
-                                      barGroups: barChartData.map((data) {
-                                        return data.copyWith(
-                                          barRods: data.barRods
-                                              .map((rod) => rod.copyWith(
-                                                    borderRadius:
-                                                        BorderRadius.zero,
-                                                  ))
-                                              .toList(),
-                                        );
-                                      }).toList(),
-                                    ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      left: dW * 0.12,
+                                      right: dW * 0.12,
+                                      bottom: dW * 0.1,
+                                      top: dW * 0.05),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(.15),
+                                          blurRadius: 30,
+                                          spreadRadius: 0,
+                                          offset: const Offset(0, 26))
+                                    ],
+                                  ),
+                                  child: CustomButton(
+                                    width: dW,
+                                    height: dW * 0.15,
+                                    elevation: 9,
+                                    radius: 21,
+                                    buttonText: language['withdrawAmount'],
+                                    onPressed: () {
+                                      showSnackbar('Coming soon!!', themeColor);
+                                    },
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: dW * 0.12,
-                                right: dW * 0.12,
-                                bottom: dW * 0.1,
-                                top: dW * 0.05),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.15),
-                                    blurRadius: 30,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, 26))
-                              ],
-                            ),
-                            child: CustomButton(
-                              width: dW,
-                              height: dW * 0.15,
-                              elevation: 9,
-                              radius: 21,
-                              buttonText: language['withdrawAmount'],
-                              onPressed: () {
-                                showSnackbar('Coming soon!!', themeColor);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
