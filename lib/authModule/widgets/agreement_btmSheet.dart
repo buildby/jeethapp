@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/vendor_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/widgets/agreement_widget.dart';
 import 'package:jeeth_app/authModule/widgets/submitted_widget.dart';
@@ -16,10 +17,12 @@ import '../models/user_model.dart';
 
 class AgreementBottomSheetWidget extends StatefulWidget {
   String vendorName;
+  // Vendor vendor;
   final int campaignId;
   AgreementBottomSheetWidget({
     super.key,
     required this.vendorName,
+    // required this.vendor,
     required this.campaignId,
   });
 
@@ -49,6 +52,7 @@ class AgreementBottomSheetWidgetState
     final body = {
       'campaign_id': widget.campaignId,
       'driver_id': user.driver.id,
+      // 'Vendor': widget.vendor,
     };
 
     final response =

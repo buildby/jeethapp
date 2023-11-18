@@ -34,8 +34,8 @@ class MyApplication {
       vendorPhone: myApplication['Campaign']['Vendor']['phone'],
       vendorAvatar: myApplication['Campaign']['Vendor']['avatar'],
       status: myApplication['status'],
-      createdAt: myApplication['created_At'] != null
-          ? DateTime.parse(myApplication['created_At']).toLocal()
+      createdAt: myApplication['created_at'] != null
+          ? DateTime.parse(myApplication['created_at']).toLocal()
           : DateTime.now(),
     );
   }

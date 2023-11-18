@@ -33,7 +33,6 @@ class HomeScreenState extends State<HomeScreen> {
   double dH = 0.0;
   double dW = 0.0;
   double tS = 0.0;
-  //  late User user;
   Map language = {};
   TextTheme get textTheme => Theme.of(context).textTheme;
 
@@ -70,13 +69,23 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() => isLoading = false);
   }
 
+  myInit() async {
+    setState(() {
+      isLoading = true;
+    });
+    await fetchMarketPlace();
+    await fetchMyApplication();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     user = Provider.of<AuthProvider>(context, listen: false).user;
-    fetchMarketPlace();
-    fetchMyApplication();
+    myInit();
   }
 
   @override
@@ -167,7 +176,11 @@ class HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                       child: Container(
-                        height: dH * 0.72,
+                        // height: dH * 0.72,
+                        height: dH -
+                            kBottomNavigationBarHeight -
+                            kToolbarHeight -
+                            dW * 0.2,
                         padding: EdgeInsets.only(
                             top: dW * 0.06, left: dW * 0.02, right: dW * 0.02),
                         decoration: BoxDecoration(

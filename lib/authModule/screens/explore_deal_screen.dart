@@ -84,6 +84,7 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
       context: context,
       builder: (context) => AgreementBottomSheetWidget(
         vendorName: widget.args.marketplace.vendername,
+        // vendor: user.driver.vendor!,
         campaignId: widget.args.marketplace.id,
       ),
     );
@@ -184,533 +185,565 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
                   height: dH - 10,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                top: -2,
-                                left: 30,
-                                right: 30,
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    top: dW * 0.07,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  height: dW * 0.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned(
+                              top: -2,
+                              left: 30,
+                              right: 30,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: dW * 0.07,
                                 ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: dW * 0.06, vertical: dW * 0.05),
-                                margin: EdgeInsets.only(top: dW * 0.1),
                                 decoration: BoxDecoration(
                                   color: white,
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 0,
-                                      blurRadius: 20,
-                                      offset: const Offset(0, -5),
-                                    ),
-                                  ],
                                 ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          height: 60,
-                                          decoration: const BoxDecoration(
-                                              shape: BoxShape.circle),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                border: Border.all(
-                                                    width: 1.5,
-                                                    color: const Color(
-                                                        0XFF13A088))),
-                                            child: ClipRRect(
+                                height: dW * 0.2,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: dW * 0.06, vertical: dW * 0.05),
+                              margin: EdgeInsets.only(top: dW * 0.1),
+                              decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.circular(12),
+                                border:
+                                    Border.all(width: 0.1, color: themeColor),
+                                // boxShadow: [
+                                //   BoxShadow(
+                                //     color: Colors.black.withOpacity(0.1),
+                                //     spreadRadius: 0,
+                                //     blurRadius: 20,
+                                //     offset: const Offset(0, -5),
+                                //   ),
+                                // ],
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        child: Container(
+                                          decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(100),
-                                              child: CachedImageWidget(
-                                                widget.args.marketplace
-                                                    .vendorAvatar,
-                                                boxFit: BoxFit.cover,
-                                                width: dW * 0.2,
-                                                height: dW * 0.2,
-                                              ),
+                                              border: Border.all(
+                                                  width: 1.5,
+                                                  color:
+                                                      const Color(0XFF13A088))),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: CachedImageWidget(
+                                              widget.args.marketplace
+                                                  .vendorAvatar,
+                                              boxFit: BoxFit.cover,
+                                              width: dW * 0.2,
+                                              height: dW * 0.2,
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: dW * 0.04,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: dW * 0.01,
                                         ),
-                                        TextWidget(
-                                          title: widget
-                                              .args.marketplace.vendername,
-                                          color: const Color(0xff242E42),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17,
-                                        ),
-                                        SizedBox(
-                                          height: dW * 0.03,
-                                        ),
-                                        Row(
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: dW * 0.04,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: dW * 0.01,
+                                      ),
+                                      TextWidget(
+                                        title:
+                                            widget.args.marketplace.vendername,
+                                        color: const Color(0xff242E42),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17,
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.03,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                right: dW * 0.05),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: dW * 0.01,
+                                                vertical: dW * 0.008),
+                                            decoration: BoxDecoration(
+                                                color: widget.args.marketplace
+                                                            .rating >=
+                                                        4
+                                                    ? const Color(0xff0CD78E)
+                                                    : const Color((0xffF4B617)),
+                                                borderRadius:
+                                                    BorderRadius.circular(2)),
+                                            child: Row(children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: widget
+                                                                .args
+                                                                .marketplace
+                                                                .rating >=
+                                                            4
+                                                        ? const Color.fromARGB(
+                                                            255, 14, 187, 124)
+                                                        : const Color.fromARGB(
+                                                            255, 214, 159, 20),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25)),
+                                                padding:
+                                                    const EdgeInsets.all(1),
+                                                child: const Icon(
+                                                  Icons.star,
+                                                  color: white,
+                                                  size: 10,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: dW * 0.008,
+                                              ),
+                                              TextWidgetRoboto(
+                                                title: widget
+                                                    .args.marketplace.rating
+                                                    .toStringAsFixed(1),
+                                                color: white,
+                                                fontSize: 12,
+                                              )
+                                            ]),
+                                          ),
+                                          // Row(
+                                          //   children: const [
+                                          //     TextWidgetRoboto(
+                                          //       title: 'Vintage :~ ',
+                                          //       fontWeight: FontWeight.w300,
+                                          //       fontSize: 12,
+                                          //     ),
+                                          //     TextWidgetRoboto(
+                                          //       title: '40 Years',
+                                          //       fontWeight: FontWeight.w400,
+                                          //       fontSize: 12,
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: dW,
+                                  margin: EdgeInsets.only(
+                                      top: dW * 0.03, bottom: dW * 0.03),
+                                  padding: EdgeInsets.only(
+                                      left: dW * 0.04,
+                                      right: dW * 0.04,
+                                      top: dW * 0.03,
+                                      bottom: dW * 0.02),
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        width: 0.1, color: themeColor),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color: Colors.black.withOpacity(.1),
+                                    //       blurRadius: 20,
+                                    //       spreadRadius: 0,
+                                    //       offset: const Offset(0, -5))
+                                    // ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  right: dW * 0.05),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: dW * 0.01,
-                                                  vertical: dW * 0.008),
-                                              decoration: BoxDecoration(
-                                                  color: widget.args.marketplace
-                                                              .rating >=
-                                                          4
-                                                      ? const Color(0xff0CD78E)
-                                                      : const Color(
-                                                          (0xffF4B617)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(2)),
-                                              child: Row(children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      color: widget
-                                                                  .args
-                                                                  .marketplace
-                                                                  .rating >=
-                                                              4
-                                                          ? const Color
-                                                              .fromARGB(
-                                                              255, 14, 187, 124)
-                                                          : const Color
-                                                              .fromARGB(255,
-                                                              214, 159, 20),
+                                            Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    // TextWidget(
+                                                    //   title:
+                                                    //       '${language['company']} : ',
+                                                    //   fontWeight: FontWeight.w300,
+                                                    //   color: const Color(0xff242E42),
+                                                    // ),
+                                                    ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              25)),
-                                                  padding:
-                                                      const EdgeInsets.all(1),
-                                                  child: const Icon(
-                                                    Icons.star,
-                                                    color: white,
-                                                    size: 10,
-                                                  ),
+                                                              100),
+                                                      child: CachedImageWidget(
+                                                        widget.args.marketplace
+                                                            .clientSite.avatar,
+                                                        boxFit: BoxFit.cover,
+                                                        width: dW * 0.05,
+                                                        height: dW * 0.05,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: dW * 0.015,
+                                                    ),
+                                                    Container(
+                                                      width: dW * 0.23,
+                                                      child: TextWidget(
+                                                        color: const Color(
+                                                            0xff242E42),
+                                                        textOverflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                        title: widget
+                                                            .args
+                                                            .marketplace
+                                                            .clientSite
+                                                            .name,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                SizedBox(
-                                                  width: dW * 0.008,
-                                                ),
-                                                TextWidgetRoboto(
-                                                  title: widget
-                                                      .args.marketplace.rating
-                                                      .toStringAsFixed(1),
-                                                  color: white,
-                                                  fontSize: 12,
-                                                )
-                                              ]),
+                                              ],
                                             ),
-                                            // Row(
-                                            //   children: const [
-                                            //     TextWidgetRoboto(
-                                            //       title: 'Vintage :~ ',
-                                            //       fontWeight: FontWeight.w300,
-                                            //       fontSize: 12,
-                                            //     ),
-                                            //     TextWidgetRoboto(
-                                            //       title: '40 Years',
-                                            //       fontWeight: FontWeight.w400,
-                                            //       fontSize: 12,
+                                            SizedBox(
+                                              width: dW * 0.07,
+                                            ),
+                                            // Column(
+                                            //   children: [
+                                            //     Row(
+                                            //       children: [
+                                            //         const TextWidget(
+                                            //           title: 'Mindspace : ',
+                                            //           fontWeight: FontWeight.w300,
+                                            //           color: Color(0xff242E42),
+                                            //         ),
+                                            //         SizedBox(
+                                            //           width: dW * 0.16,
+                                            //           child: TextWidget(
+                                            //             color: Color(0xff242E42),
+                                            //             title: widget.args.marketplace
+                                            //                 .clientSite.location,
+                                            //             fontWeight: FontWeight.w400,
+                                            //             textOverflow:
+                                            //                 TextOverflow.ellipsis,
+                                            //           ),
+                                            //         ),
+                                            //       ],
                                             //     ),
                                             //   ],
                                             // ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: dW,
-                            margin: EdgeInsets.only(
-                                top: dW * 0.03, bottom: dW * 0.03),
-                            padding: EdgeInsets.only(
-                                left: dW * 0.04,
-                                right: dW * 0.04,
-                                top: dW * 0.03,
-                                bottom: dW * 0.02),
-                            decoration: BoxDecoration(
-                              color: white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 20,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, -5))
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.01,
+                                      ),
+                                      const Divider(
+                                        color: Color(0xffF4F4F4),
+                                        thickness: 1,
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.01,
+                                      ),
+                                      TextWidget(
+                                        title: language['loginSlots'],
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: const Color(0xff242E42),
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.03,
+                                      ),
+                                      Wrap(
                                         children: [
-                                          Row(
-                                            children: [
-                                              // TextWidget(
-                                              //   title:
-                                              //       '${language['company']} : ',
-                                              //   fontWeight: FontWeight.w300,
-                                              //   color: const Color(0xff242E42),
-                                              // ),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: CachedImageWidget(
-                                                  widget.args.marketplace
-                                                      .clientSite.avatar,
-                                                  boxFit: BoxFit.cover,
-                                                  width: dW * 0.05,
-                                                  height: dW * 0.05,
+                                          ...getSlots(slots['loginSlot'])
+                                              .map(
+                                                (time) => Container(
+                                                  margin: EdgeInsets.only(
+                                                    right:
+                                                        //  i == 5 ? 0 :
+                                                        dW * 0.025,
+                                                    bottom: dW * 0.03,
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                    left: dW * 0.02,
+                                                    right: dW * 0.015,
+                                                    top: dW * 0.01,
+                                                    bottom: dW * 0.01,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        // ((i == 3) || (i == 5))
+                                                        //     ? const Color(0xffD5FBE0)
+                                                        //     :
+                                                        const Color(0xffFCF4CB),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2),
+                                                  ),
+                                                  child: TextWidgetRoboto(
+                                                    title: time,
+                                                    color:
+                                                        const Color(0xff505050),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                width: dW * 0.015,
-                                              ),
-                                              Container(
-                                                width: dW * 0.23,
-                                                child: TextWidget(
-                                                  color:
-                                                      const Color(0xff242E42),
-                                                  textOverflow:
-                                                      TextOverflow.ellipsis,
-                                                  title: widget.args.marketplace
-                                                      .clientSite.name,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                              )
+                                              .toList()
                                         ],
                                       ),
                                       SizedBox(
-                                        width: dW * 0.07,
+                                        height: dW * 0.04,
                                       ),
-                                      // Column(
-                                      //   children: [
-                                      //     Row(
-                                      //       children: [
-                                      //         const TextWidget(
-                                      //           title: 'Mindspace : ',
-                                      //           fontWeight: FontWeight.w300,
-                                      //           color: Color(0xff242E42),
-                                      //         ),
-                                      //         SizedBox(
-                                      //           width: dW * 0.16,
-                                      //           child: TextWidget(
-                                      //             color: Color(0xff242E42),
-                                      //             title: widget.args.marketplace
-                                      //                 .clientSite.location,
-                                      //             fontWeight: FontWeight.w400,
-                                      //             textOverflow:
-                                      //                 TextOverflow.ellipsis,
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //   ],
-                                      // ),
+                                      TextWidget(
+                                        title: language['logoutSlots'],
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: const Color(0xff242E42),
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.03,
+                                      ),
+                                      Wrap(
+                                        children: [
+                                          ...getSlots(slots['logoutSlot'])
+                                              .map(
+                                                (time) => Container(
+                                                  margin: EdgeInsets.only(
+                                                    right:
+                                                        //  i == 5 ? 0 :
+                                                        dW * 0.025,
+                                                    bottom: dW * 0.03,
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                    left: dW * 0.02,
+                                                    right: dW * 0.015,
+                                                    top: dW * 0.01,
+                                                    bottom: dW * 0.01,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        // ((i == 3) || (i == 5))
+                                                        //     ? const Color(0xffD5FBE0)
+                                                        //     :
+                                                        const Color(0xffFCF4CB),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2),
+                                                  ),
+                                                  child: TextWidgetRoboto(
+                                                    title: time,
+                                                    color:
+                                                        const Color(0xff505050),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              )
+                                              .toList()
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: dW * 0.01,
-                                ),
-                                const Divider(
-                                  color: Color(0xffF4F4F4),
-                                  thickness: 1,
-                                ),
-                                SizedBox(
-                                  height: dW * 0.01,
-                                ),
-                                TextWidget(
-                                  title: language['loginSlots'],
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: const Color(0xff242E42),
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                Wrap(
-                                  children: [
-                                    ...getSlots(slots['loginSlot'])
-                                        .map(
-                                          (time) => Container(
-                                            margin: EdgeInsets.only(
-                                              right:
-                                                  //  i == 5 ? 0 :
-                                                  dW * 0.025,
-                                              bottom: dW * 0.03,
-                                            ),
-                                            padding: EdgeInsets.only(
-                                              left: dW * 0.02,
-                                              right: dW * 0.015,
-                                              top: dW * 0.01,
-                                              bottom: dW * 0.01,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  // ((i == 3) || (i == 5))
-                                                  //     ? const Color(0xffD5FBE0)
-                                                  //     :
-                                                  const Color(0xffFCF4CB),
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                            ),
-                                            child: TextWidgetRoboto(
-                                              title: time,
-                                              color: const Color(0xff505050),
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        )
-                                        .toList()
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: dW * 0.04,
-                                ),
-                                TextWidget(
-                                  title: language['logoutSlots'],
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: const Color(0xff242E42),
-                                ),
-                                SizedBox(
-                                  height: dW * 0.03,
-                                ),
-                                Wrap(
-                                  children: [
-                                    ...getSlots(slots['logoutSlot'])
-                                        .map(
-                                          (time) => Container(
-                                            margin: EdgeInsets.only(
-                                              right:
-                                                  //  i == 5 ? 0 :
-                                                  dW * 0.025,
-                                              bottom: dW * 0.03,
-                                            ),
-                                            padding: EdgeInsets.only(
-                                              left: dW * 0.02,
-                                              right: dW * 0.015,
-                                              top: dW * 0.01,
-                                              bottom: dW * 0.01,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  // ((i == 3) || (i == 5))
-                                                  //     ? const Color(0xffD5FBE0)
-                                                  //     :
-                                                  const Color(0xffFCF4CB),
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                            ),
-                                            child: TextWidgetRoboto(
-                                              title: time,
-                                              color: const Color(0xff505050),
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        )
-                                        .toList()
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          // if (businessModel['type'] == 'SLAB')
-                          Container(
-                            width: dW,
-                            margin: EdgeInsets.only(bottom: dW * 0.03),
-                            padding: EdgeInsets.only(
-                                left: dW * 0.04,
-                                right: dW * 0.04,
-                                top: dW * 0.03,
-                                bottom: dW * 0.02),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xffF4F4F4), width: 1),
-                              color: white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(.1),
-                                    blurRadius: 20,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, -5))
-                              ],
-                            ),
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
+                                // if (businessModel['type'] == 'SLAB')
+                                Container(
+                                  width: dW,
+                                  margin: EdgeInsets.only(bottom: dW * 0.03),
+                                  padding: EdgeInsets.only(
+                                      left: dW * 0.04,
+                                      right: dW * 0.04,
+                                      top: dW * 0.03,
+                                      bottom: dW * 0.02),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 0.1, color: themeColor),
+                                    color: white,
+                                    borderRadius: BorderRadius.circular(10),
+
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color: Colors.black.withOpacity(.1),
+                                    //       blurRadius: 20,
+                                    //       spreadRadius: 0,
+                                    //       offset: const Offset(0, -5))
+                                    // ],
+                                  ),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
-                                                const TextWidget(
-                                                  title: 'Business model : ',
-                                                  fontWeight: FontWeight.w300,
-                                                ),
-                                                TextWidget(
-                                                  title: businessModel['type'] +
-                                                      ' ' +
-                                                      (businessModel['type'] ==
-                                                              'PACKAGE'
-                                                          ? (businessModel[
-                                                                      'modeldata']
-                                                                  as Map)
-                                                              .keys
-                                                              .toList()[0]
-                                                              .toUpperCase()
-                                                          : ''),
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      const TextWidget(
+                                                        title:
+                                                            'Business model : ',
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                      ),
+                                                      TextWidget(
+                                                        title: businessModel[
+                                                                'type'] +
+                                                            ' ' +
+                                                            (businessModel[
+                                                                        'type'] ==
+                                                                    'PACKAGE'
+                                                                ? (businessModel[
+                                                                            'modeldata']
+                                                                        as Map)
+                                                                    .keys
+                                                                    .toList()[0]
+                                                                    .toUpperCase()
+                                                                : ''),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
+                                            const TextWidget(
+                                              title: 'Net Fare',
+                                              color: Color(0xff767676),
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                            // SizedBox(
+                                            //   width: dW * 0.08,
+                                            // ),
                                           ],
                                         ),
-                                      ),
-                                      const TextWidget(
-                                        title: 'Net Fare',
-                                        color: Color(0xff767676),
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                      // SizedBox(
-                                      //   width: dW * 0.08,
-                                      // ),
-                                    ],
+                                        SizedBox(
+                                          height: dW * 0.01,
+                                        ),
+                                        const Divider(
+                                          color: Color(0xffF4F4F4),
+                                          thickness: 1,
+                                        ),
+                                        SizedBox(height: dW * 0.01),
+                                        if (businessModel['type'] == 'SLAB')
+                                          ...List.generate(
+                                              businessModel['modeldata'].length,
+                                              (i) {
+                                            return BusinessModelRow(
+                                                i: i,
+                                                data:
+                                                    (businessModel['modeldata']
+                                                        as List)[i]);
+                                          }),
+                                        if (businessModel['type'] == 'KM_FARE')
+                                          KMFareWidgetRows(
+                                              data: businessModel['modeldata']),
+                                        if (businessModel['type'] ==
+                                                'PACKAGE' &&
+                                            (businessModel['modeldata'] as Map)
+                                                    .keys
+                                                    .toList()[0] ==
+                                                'fixed_trip')
+                                          TripPackageWidgetRows(
+                                              data:
+                                                  //  {
+                                                  //   "suv": {
+                                                  //     "Petrol/Diesel": {"2": 2000, "4": 4000}
+                                                  //   },
+                                                  //   "sedan": {
+                                                  //     "EV": {"2": 2000, "4": 4000},
+                                                  //     "CNG": {"2": 3000, "4": 5000},
+                                                  //     "Petrol/Diesel": {"2": 2000, "4": 4000}
+                                                  //   }
+                                                  // }
+                                                  businessModel['modeldata']
+                                                      ['fixed_trip']),
+                                        if (businessModel['type'] ==
+                                                'PACKAGE' &&
+                                            (businessModel['modeldata'] as Map)
+                                                    .keys
+                                                    .toList()[0] ==
+                                                'fixed_km')
+                                          FixedKMPackageWidgetRows(
+                                            data: businessModel['modeldata']
+                                                ['fixed_km'],
+                                          )
+                                      ]),
+                                ),
+                                if (user.driver.vendor == null)
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: dW * 0.15,
+                                        right: dW * 0.15,
+                                        bottom: dW * 0.2,
+                                        top: dW * 0.02),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(.12),
+                                            blurRadius: 30,
+                                            spreadRadius: 0,
+                                            offset: const Offset(0, 26))
+                                      ],
+                                    ),
+                                    child: CustomButton(
+                                      width: dW,
+                                      height: dW * 0.15,
+                                      elevation: 12,
+                                      radius: 21,
+                                      buttonColor: alreadyApplied
+                                          ? Colors.grey
+                                          : themeColor,
+                                      buttonText: alreadyApplied
+                                          ? language['alreadyApplied']
+                                          : language['applyNow'],
+                                      onPressed: alreadyApplied
+                                          ? () => showSnackbar(
+                                              language['youAlreadyApplied'],
+                                              themeColor)
+                                          : agreementBottomSheet,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: dW * 0.01,
-                                  ),
-                                  const Divider(
-                                    color: Color(0xffF4F4F4),
-                                    thickness: 1,
-                                  ),
-                                  SizedBox(height: dW * 0.01),
-                                  if (businessModel['type'] == 'SLAB')
-                                    ...List.generate(
-                                        businessModel['modeldata'].length, (i) {
-                                      return BusinessModelRow(
-                                          i: i,
-                                          data: (businessModel['modeldata']
-                                              as List)[i]);
-                                    }),
-                                  if (businessModel['type'] == 'KM_FARE')
-                                    KMFareWidgetRows(
-                                        data: businessModel['modeldata']),
-                                  if (businessModel['type'] == 'PACKAGE' &&
-                                      (businessModel['modeldata'] as Map)
-                                              .keys
-                                              .toList()[0] ==
-                                          'fixed_trip')
-                                    TripPackageWidgetRows(
-                                        data:
-                                            //  {
-                                            //   "suv": {
-                                            //     "Petrol/Diesel": {"2": 2000, "4": 4000}
-                                            //   },
-                                            //   "sedan": {
-                                            //     "EV": {"2": 2000, "4": 4000},
-                                            //     "CNG": {"2": 3000, "4": 5000},
-                                            //     "Petrol/Diesel": {"2": 2000, "4": 4000}
-                                            //   }
-                                            // }
-                                            businessModel['modeldata']
-                                                ['fixed_trip']),
-                                  if (businessModel['type'] == 'PACKAGE' &&
-                                      (businessModel['modeldata'] as Map)
-                                              .keys
-                                              .toList()[0] ==
-                                          'fixed_km')
-                                    FixedKMPackageWidgetRows(
-                                      data: businessModel['modeldata']
-                                          ['fixed_km'],
-                                    )
-                                ]),
-                          ),
-                          if (user.driver.vendor == null)
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: dW * 0.15,
-                                  right: dW * 0.15,
-                                  bottom: dW * 0.2,
-                                  top: dW * 0.02),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(.12),
-                                      blurRadius: 30,
-                                      spreadRadius: 0,
-                                      offset: const Offset(0, 26))
-                                ],
-                              ),
-                              child: CustomButton(
-                                width: dW,
-                                height: dW * 0.15,
-                                elevation: 12,
-                                radius: 21,
-                                buttonColor:
-                                    alreadyApplied ? Colors.grey : themeColor,
-                                buttonText: alreadyApplied
-                                    ? language['alreadyApplied']
-                                    : language['applyNow'],
-                                onPressed: alreadyApplied
-                                    ? () => showSnackbar(
-                                        language['youAlreadyApplied'],
-                                        themeColor)
-                                    : agreementBottomSheet,
-                              ),
+                                SizedBox(height: dH * 0.1),
+                              ],
                             ),
-                          SizedBox(height: dH * 0.1),
-                        ],
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

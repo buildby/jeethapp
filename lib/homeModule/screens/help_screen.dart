@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
+import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
@@ -71,6 +73,15 @@ class HelpScreenState extends State<HelpScreen> {
   }
 
   screenBody() {
+    final marketplaces =
+        Provider.of<MarketplaceProvider>(context, listen: false).marketplaces;
+
+    final myApplication =
+        Provider.of<MyApplicationProvider>(context, listen: false)
+            .myApplications;
+
+    bool isApproved =
+        myApplication.any((application) => application.status == 'APPROVED');
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -93,159 +104,176 @@ class HelpScreenState extends State<HelpScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: dW * 0.04,
-                            ),
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Positioned(
-                                  top: -2,
-                                  left: 30,
-                                  right: 30,
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      top: dW * 0.07,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: white,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    height: dW * 0.2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: dW * 0.04,
+                          ),
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Positioned(
+                                top: -2,
+                                left: 30,
+                                right: 30,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: dW * 0.07,
                                   ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: dW * 0.06,
-                                      vertical: dW * 0.05),
-                                  margin: EdgeInsets.only(top: dW * 0.1),
                                   decoration: BoxDecoration(
                                     color: white,
                                     borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 0,
-                                        blurRadius: 20,
-                                        offset: const Offset(0, -5),
-                                      ),
-                                    ],
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                              width: 50,
-                                              height: 50,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: dW * 0.032),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                  color: themeColor),
-                                              child: const AssetSvgIcon(
-                                                'help',
-                                                color: white,
-                                              )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: dW * 0.04,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: dW * 0.01,
-                                          ),
-                                          TextWidget(
-                                            title: language[
-                                                'contactVendorHelpline'],
-                                            color: const Color(0xff242E42),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                          ),
-                                          SizedBox(
-                                            height: dW * 0.02,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (user.driver.vendor != null) {
-                                                launchCall(
-                                                    user.driver.vendor!.phone);
-                                              }
-                                            },
-                                            child: Container(
-                                              color: Colors.transparent,
-                                              child: TextWidget(
-                                                title: language['tapToCall'],
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17,
-                                                color:
-                                                    user.driver.vendor != null
-                                                        ? themeColor
-                                                        : grayColor
-                                                            .withOpacity(0.5),
-                                              ),
+                                  height: dW * 0.2,
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: dW * 0.06, vertical: dW * 0.05),
+                                margin: EdgeInsets.only(top: dW * 0.1),
+                                decoration: BoxDecoration(
+                                  color: white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border:
+                                      Border.all(width: 0.1, color: themeColor),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Colors.black.withOpacity(0.1),
+                                  //     spreadRadius: 0,
+                                  //     blurRadius: 20,
+                                  //     offset: const Offset(0, -5),
+                                  //   ),
+                                  // ],
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Container(
+                                            width: 50,
+                                            height: 50,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: dW * 0.032),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                color: themeColor),
+                                            child: const AssetSvgIcon(
+                                              'help',
+                                              color: white,
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: dW * 0.04,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: dW * 0.01,
+                                        ),
+                                        TextWidget(
+                                          title:
+                                              language['contactVendorHelpline'],
+                                          color: const Color(0xff242E42),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                        ),
+                                        SizedBox(
+                                          height: dW * 0.02,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // if (user.driver.vendor != null) {
+                                            //   launchCall(
+                                            //       user.driver.vendor!.phone
+
+                                            //       );
+                                            // }
+                                            if (isApproved &&
+                                                marketplaces.isNotEmpty) {
+                                              launchCall(myApplication
+                                                  .firstWhere((application) =>
+                                                      application.status ==
+                                                      'APPROVED')
+                                                  .vendorPhone);
+                                            }
+                                          },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            child: TextWidget(
+                                              title: language['tapToCall'],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                              color:
+                                                  // user.driver.vendor != null
+                                                  isApproved &&
+                                                          marketplaces
+                                                              .isNotEmpty
+                                                      ? themeColor
+                                                      : grayColor
+                                                          .withOpacity(0.5),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: dW * 0.03, bottom: dW * 0.05),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: dW * 0.04, vertical: dW * 0.05),
-                              decoration: BoxDecoration(
-                                color: white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(.1),
-                                      blurRadius: 10,
-                                      spreadRadius: 0,
-                                      offset: const Offset(0, -5))
-                                ],
                               ),
-                              child: Column(
-                                children: [
-                                  CustomContainer(
-                                      onTap: () => showSnackbar(
-                                          'Coming soon!!', themeColor),
-                                      name: language['reportAnIssue']),
-                                  SizedBox(
-                                    height: dW * 0.03,
-                                  ),
-                                  CustomContainer(
-                                      onTap: () => showSnackbar(
-                                          'Coming soon!!', themeColor),
-                                      name: language['AccountProfile']),
-                                  SizedBox(
-                                    height: dW * 0.03,
-                                  ),
-                                  CustomContainer(
-                                      onTap: () => showSnackbar(
-                                          'Coming soon!!', themeColor),
-                                      name: language['paymentsAndWithdrawals']),
-                                ],
+                            ],
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    top: dW * 0.03, bottom: dW * 0.05),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: dW * 0.04, vertical: dW * 0.05),
+                                decoration: BoxDecoration(
+                                  color: white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border:
+                                      Border.all(width: 0.1, color: themeColor),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //       color: Colors.black.withOpacity(.1),
+                                  //       blurRadius: 10,
+                                  //       spreadRadius: 0,
+                                  //       offset: const Offset(0, -5))
+                                  // ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    CustomContainer(
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
+                                        name: language['reportAnIssue']),
+                                    SizedBox(
+                                      height: dW * 0.03,
+                                    ),
+                                    CustomContainer(
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
+                                        name: language['AccountProfile']),
+                                    SizedBox(
+                                      height: dW * 0.03,
+                                    ),
+                                    CustomContainer(
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
+                                        name:
+                                            language['paymentsAndWithdrawals']),
+                                  ],
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     Container(

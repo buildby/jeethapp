@@ -33,6 +33,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
   String approvedVendorName = '';
+  String rejectedVendorName = '';
 
   fetchData() async {
     setState(() => isLoading = true);
@@ -93,15 +94,16 @@ class NotificationsScreenState extends State<NotificationsScreen> {
       return myApplications
           .where((application) =>
               application.status == 'APPROVED' ||
-              application.status == 'DENIED')
+              application.status == 'REJECTED')
           .map((application) {
         return NotificationWidget(
-          icon: application.status == 'APPROVED' ? 'tick' : 'cross',
-          title: 'Your Application is approved by $approvedVendorName',
-          subTitle: application.status == 'APPROVED'
-              ? DateFormat('d MMM, yyyy').format(application.createdAt)
-              : 'Application Denied by $approvedVendorName',
-        );
+            icon: application.status == 'APPROVED' ? 'tick' : 'cross',
+            title: application.status == 'APPROVED'
+                ? 'Your Application is approved by $approvedVendorName'
+                : 'Your Application is rejected by $rejectedVendorName',
+            subTitle: DateFormat('d MMM, yyyy')
+                .format(application.createdAt)
+                .toString());
       }).toList();
     }
 
@@ -117,6 +119,15 @@ class NotificationsScreenState extends State<NotificationsScreen> {
               ));
 
       approvedVendorName = approvedMarketplace.vendername;
+    } else if (!isApproved) {
+      final rejectedMarketplace =
+          marketplaces.firstWhere((marketplace) => myApplications.any(
+                (application) =>
+                    application.status == 'REJECTED' &&
+                    application.campaignId == marketplace.id,
+              ));
+
+      rejectedVendorName = rejectedMarketplace.vendername;
     }
 
     return isLoading
@@ -130,7 +141,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      height: dW * 0.25,
+                      height: dW * 0.23,
                       color: themeColor,
                     ),
                   ],
@@ -163,7 +174,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                               borderRadius: BorderRadius.circular(30),
                               color: Colors.black.withOpacity(0.05),
                             ),
-                            child: AssetSvgIcon(
+                            child: const AssetSvgIcon(
                               'delete',
                               height: 28,
                             ),
@@ -173,9 +184,23 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: dW * 0.06,
+                    height: dW * 0.08,
                   ),
-                  ...getNotificationWidgets(),
+                  if (getNotificationWidgets().isEmpty)
+                    const Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                              child: TextWidgetPoppins(
+                            title: 'No notifications yet...',
+                            fontWeight: FontWeight.w600,
+                          )),
+                        ],
+                      ),
+                    )
+                  else
+                    ...getNotificationWidgets(),
                   // NotificationWidget(
                   //     icon: 'tick',
                   //     title: 'Business',

@@ -3,6 +3,8 @@ import 'dart:math';
 class Marketplace {
   final int id;
   String vendername;
+  String venderPhone;
+
   String companyName;
   String vendorAvatar;
   num rating;
@@ -17,6 +19,7 @@ class Marketplace {
   Marketplace({
     required this.id,
     this.vendername = '',
+    this.venderPhone = '',
     this.companyName = '',
     this.vendorAvatar = '',
     this.rating = 0,
@@ -32,6 +35,8 @@ class Marketplace {
   static Marketplace jsonToMarketplace(Map marketplace) => Marketplace(
         id: marketplace['id'],
         vendername: marketplace['Vendor']['name'] ?? '',
+        venderPhone: marketplace['Vendor']['phone'] ?? '',
+
         companyName: marketplace['companyName'] ?? '',
         vendorAvatar: marketplace['Vendor']['avatar'] ?? '',
         rating: marketplace['rating'] ?? 0,

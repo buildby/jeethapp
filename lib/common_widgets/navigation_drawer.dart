@@ -249,8 +249,9 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                           context: context,
                           iconName: 'notifications',
                           text: language['notifications'],
-                          onTap: () => push(NamedRoute.myApplicationsScreen),
-                          // push(NamedRoute.notificationsScreen),
+                          onTap: () =>
+                              // push(NamedRoute.myApplicationsScreen),
+                              push(NamedRoute.notificationsScreen),
                         ),
                         buildOptionWidget(
                           context: context,
