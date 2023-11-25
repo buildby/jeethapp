@@ -63,84 +63,86 @@ class ApprovedStateWidget extends State<PendingWidget> {
                   top: dW * 0.055),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10), color: white),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: dW * 0.15,
-                      ),
-                      TextWidgetPoppins(
-                        title: widget.args.myApplication.vendorName,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 17,
-                      ),
-                      SizedBox(
-                        height: dW * 0.015,
-                      ),
-                      TextWidgetPoppins(
-                        title: widget.args.myApplication.clientSiteName,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff8A8A8F),
-                        fontSize: 15,
-                      ),
-                      SizedBox(
-                        height: dW * 0.1,
-                      ),
-                      TextWidgetPoppins(
-                        title: language['decisionPending'],
-                        color: const Color(0xffE4CF11),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        letterSpacing: 0.41,
-                      ),
-                      SizedBox(
-                        height: dW * 0.02,
-                      ),
-                      TextWidgetPoppins(
-                        textAlign: TextAlign.center,
-                        title: language['pendingPara'],
-                        height: 1.5,
-                        color: const Color(0xff8A8A8F),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.41,
-                        fontSize: 16,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        // left: dW * 0.12,
-                        // right: dW * 0.12,
-                        // bottom: dW * 0.1,
-                        top: dW * 0.05),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(.15),
-                            blurRadius: 30,
-                            spreadRadius: 0,
-                            offset: const Offset(0, 26))
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: dW * 0.15,
+                        ),
+                        TextWidgetPoppins(
+                          title: widget.args.myApplication.vendorName,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 17,
+                        ),
+                        SizedBox(
+                          height: dW * 0.015,
+                        ),
+                        TextWidgetPoppins(
+                          title: widget.args.myApplication.clientSiteName,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff8A8A8F),
+                          fontSize: 15,
+                        ),
+                        SizedBox(
+                          height: dW * 0.1,
+                        ),
+                        TextWidgetPoppins(
+                          title: language['decisionPending'],
+                          color: const Color(0xffE4CF11),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          letterSpacing: 0.41,
+                        ),
+                        SizedBox(
+                          height: dW * 0.02,
+                        ),
+                        TextWidgetPoppins(
+                          textAlign: TextAlign.center,
+                          title: language['pendingPara'],
+                          height: 1.5,
+                          color: const Color(0xff8A8A8F),
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.41,
+                          fontSize: 16,
+                        ),
                       ],
                     ),
-                    child: CustomButton(
-                      width: dW,
-                      height: dW * 0.12,
-                      onPressed: () {
-                        pop();
-                        pop();
-                      },
-                      radius: 10,
-                      buttonText: language['backHome'],
+                    Container(
+                      margin: EdgeInsets.only(
+                          // left: dW * 0.12,
+                          // right: dW * 0.12,
+                          // bottom: dW * 0.1,
+                          top: dW * 0.05),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(.15),
+                              blurRadius: 30,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 26))
+                        ],
+                      ),
+                      child: CustomButton(
+                        width: dW,
+                        height: dW * 0.12,
+                        onPressed: () {
+                          pop();
+                          pop();
+                        },
+                        radius: 10,
+                        buttonText: language['backHome'],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Positioned(
-              top: -50,
+              top: -45,
               right: 0,
               left: 0,
               child: Center(

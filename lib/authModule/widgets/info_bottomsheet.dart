@@ -92,28 +92,28 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
               onPressed: () => pop(),
             ),
           ),
-          GestureDetector(
-            onTap: () => showDialog(
-              context: context,
-              builder: (context) => CustomDialog(
-                title: language['logout'],
-                subTitle: language['wantToLogout'],
-                noText: language['no'],
-                yesText: language['yes'],
-                noFunction: () {
-                  pop();
-                },
-                yesFunction: () {
-                  logout();
-                },
-              ),
-            ),
-            child: const TextWidget(
-              title: 'Logout',
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () => showDialog(
+          //     context: context,
+          //     builder: (context) => CustomDialog(
+          //       title: language['logout'],
+          //       subTitle: language['wantToLogout'],
+          //       noText: language['no'],
+          //       yesText: language['yes'],
+          //       noFunction: () {
+          //         pop();
+          //       },
+          //       yesFunction: () {
+          //         logout();
+          //       },
+          //     ),
+          //   ),
+          //   child: const TextWidget(
+          //     title: 'Logout',
+          //     fontWeight: FontWeight.w600,
+          //     fontSize: 22,
+          //   ),
+          // ),
           SizedBox(
             height: dW * 0.1,
           )

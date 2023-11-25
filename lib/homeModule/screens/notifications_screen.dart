@@ -187,7 +187,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                     height: dW * 0.08,
                   ),
                   if (getNotificationWidgets().isEmpty)
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

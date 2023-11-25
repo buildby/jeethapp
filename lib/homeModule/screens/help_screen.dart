@@ -201,6 +201,9 @@ class HelpScreenState extends State<HelpScreen> {
                                                       application.status ==
                                                       'APPROVED')
                                                   .vendorPhone);
+                                            } else {
+                                              showSnackbar(
+                                                  language['notApprovedYet']);
                                             }
                                           },
                                           child: Container(

@@ -305,9 +305,12 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                              width: 1.5, color: const Color(0XFF13A088))),
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          width: 1.5,
+                          color: const Color(0XFF13A088),
+                        ),
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: CachedImageWidget(

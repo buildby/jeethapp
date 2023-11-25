@@ -86,203 +86,209 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
           border: Border(
               bottom:
                   BorderSide(width: 1, color: Colors.black.withOpacity(0.1)))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    border:
-                        Border.all(width: 1.5, color: const Color(0XFF13A088))),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: CachedImageWidget(
-                    widget.marketplace.clientSite.avatar,
-                    boxFit: BoxFit.cover,
-                    width: dW * 0.13,
-                    height: dW * 0.13,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // SizedBox(
-          //   width: dW * 0.03,
-          // ),
-          Column(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: dW * 0.01,
-              ),
-              Row(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TextWidget(
-                    title: language['vendor'],
-                    fontWeight: FontWeight.w300,
-                  ),
-                  SizedBox(
-                    width: dW * 0.31,
-                    child: TextWidget(
-                      title: widget.marketplace.vendername,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff242E42),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                        width: 1.5,
+                        color: const Color(0XFF13A088),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: CachedImageWidget(
+                        widget.marketplace.clientSite.avatar,
+                        boxFit: BoxFit.cover,
+                        width: dW * 0.12,
+                        height: dW * 0.12,
+                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: dW * 0.03,
+                width: dW * 0.03,
               ),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: dW * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      // TextWidget(
+                      //   title: language['vendor'],
+                      //   fontWeight: FontWeight.w300,
+                      // ),
+                      SizedBox(
+                        width: dW * 0.47,
+                        child: TextWidget(
+                          title: widget.marketplace.vendername,
+                          textOverflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff242E42),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: dW * 0.03,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: dW * 0.01, vertical: dW * 0.008),
+                        decoration: BoxDecoration(
+                            color: widget.marketplace.rating >= 4
+                                ? const Color(0xff0CD78E)
+                                : const Color(
+                                    (0xffF4B617),
+                                  ),
+                            borderRadius: BorderRadius.circular(2)),
+                        child: Row(children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: widget.marketplace.rating >= 4
+                                    ? const Color.fromARGB(255, 14, 187, 124)
+                                    : const Color.fromARGB(255, 214, 159, 20),
+                                borderRadius: BorderRadius.circular(25)),
+                            padding: const EdgeInsets.all(1),
+                            child: const Icon(
+                              Icons.star,
+                              color: white,
+                              size: 10,
+                            ),
+                          ),
+                          SizedBox(
+                            width: dW * 0.008,
+                          ),
+                          TextWidgetRoboto(
+                            title: widget.marketplace.rating.toString(),
+                            color: white,
+                            fontSize: 12,
+                          )
+                        ]),
+                      ),
+                      SizedBox(
+                        width: dW * 0.01,
+                      ),
+                      Row(
+                        children: [
+                          const TextWidgetRoboto(
+                            title: 'Sedan:',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 11,
+                          ),
+                          // Image.asset(
+                          //   'assets/images/sedan.jpeg',
+                          //   scale: 12,
+                          // ),
+                          TextWidgetRoboto(
+                            title:
+                                getVehicleCount(vehicle["loginSlot"], "sedan")
+                                    .toString(),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: dW * 0.015,
+                      ),
+                      Row(
+                        children: [
+                          const TextWidgetRoboto(
+                            title: 'SUV:',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 11,
+                          ),
+                          // Image.asset(
+                          //   'assets/images/suv.jpeg',
+                          //   scale: 12,
+                          // ),
+                          TextWidgetRoboto(
+                            title: getVehicleCount(vehicle["loginSlot"], "suv")
+                                .toString(),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: dW * 0.015,
+                      ),
+                      Row(
+                        children: [
+                          const TextWidgetRoboto(
+                            title: 'Mini:',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 11,
+                          ),
+                          // Image.asset(
+                          //   'assets/images/mini.jpeg',
+                          //   scale: 10,
+                          // ),
+                          TextWidgetRoboto(
+                            title: getVehicleCount(vehicle["loginSlot"], "mini")
+                                .toString(),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (alreadyApplied)
+                    Container(
+                      margin: EdgeInsets.only(top: dW * 0.03),
+                      child: TextWidgetRoboto(
+                        title: language['alreadyApplied'],
+                        color: themeColor,
+                      ),
+                    ),
+                ],
+              ),
+              if (dW <= 360)
+                SizedBox(
+                  width: dW * 0.03,
+                ),
+              Column(
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: dW * 0.01, vertical: dW * 0.008),
+                        horizontal: dW * 0.02, vertical: dW * 0.015),
+                    margin: EdgeInsets.only(top: dW * 0.01),
                     decoration: BoxDecoration(
-                        color: widget.marketplace.rating >= 4
-                            ? const Color(0xff0CD78E)
-                            : const Color(
-                                (0xffF4B617),
-                              ),
-                        borderRadius: BorderRadius.circular(2)),
-                    child: Row(children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: widget.marketplace.rating >= 4
-                                ? const Color.fromARGB(255, 14, 187, 124)
-                                : const Color.fromARGB(255, 214, 159, 20),
-                            borderRadius: BorderRadius.circular(25)),
-                        padding: const EdgeInsets.all(1),
-                        child: const Icon(
-                          Icons.star,
-                          color: white,
-                          size: 10,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: const Color(0xffD8D8D8),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const TextWidgetRoboto(
+                          title: 'Avg. Fare',
+                          fontWeight: FontWeight.w300,
                         ),
-                      ),
-                      SizedBox(
-                        width: dW * 0.008,
-                      ),
-                      TextWidgetRoboto(
-                        title: widget.marketplace.rating.toString(),
-                        color: white,
-                        fontSize: 12,
-                      )
-                    ]),
-                  ),
-                  SizedBox(
-                    width: dW * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      TextWidgetRoboto(
-                        title: 'Sedan:',
-                        fontWeight: FontWeight.w300,
-                        fontSize: tS * 12,
-                      ),
-                      TextWidgetRoboto(
-                        title: getVehicleCount(vehicle["loginSlot"], "sedan")
-                            .toString(),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: dW * 0.015,
-                  ),
-                  Row(
-                    children: [
-                      TextWidgetRoboto(
-                        title: 'SUV:',
-                        fontWeight: FontWeight.w300,
-                        fontSize: tS * 12,
-                      ),
-                      TextWidgetRoboto(
-                        title: getVehicleCount(vehicle["loginSlot"], "suv")
-                            .toString(),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: dW * 0.015,
-                  ),
-                  Row(
-                    children: [
-                      TextWidgetRoboto(
-                        title: 'Mini:',
-                        fontWeight: FontWeight.w300,
-                        fontSize: tS * 12,
-                      ),
-                      TextWidgetRoboto(
-                        title: getVehicleCount(vehicle["loginSlot"], "mini")
-                            .toString(),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              if (alreadyApplied)
-                Container(
-                  margin: EdgeInsets.only(top: dW * 0.03),
-                  child: TextWidgetRoboto(
-                    title: language['alreadyApplied'],
-                    color: themeColor,
-                  ),
-                ),
-            ],
-          ),
-          Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: dW * 0.02, vertical: dW * 0.015),
-                margin: EdgeInsets.only(top: dW * 0.01),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: const Color(0xffD8D8D8),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TextWidgetRoboto(
-                      title: 'Avg. Fare',
-                      fontWeight: FontWeight.w300,
-                    ),
-                    SizedBox(
-                      height: dW * 0.02,
-                    ),
-                    widget.loggedIn
-                        ? SizedBox(
-                            width: dW * 0.15,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: TextWidgetRoboto(
-                                title:
-                                    'Rs. ${convertAmountString(widget.marketplace.avgFare.toDouble())}*',
-                                color: const Color(0xff13A088),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          )
-                        : ImageFiltered(
-                            imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 5,
-                                sigmaY: 5,
-                              ),
-                              child: SizedBox(
+                        SizedBox(
+                          height: dW * 0.02,
+                        ),
+                        widget.loggedIn
+                            ? SizedBox(
                                 width: dW * 0.15,
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -294,14 +300,37 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ),
-                            )),
-                  ],
-                ),
+                              )
+                            : ImageFiltered(
+                                imageFilter:
+                                    ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 5,
+                                    sigmaY: 5,
+                                  ),
+                                  child: SizedBox(
+                                    width: dW * 0.15,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: TextWidgetRoboto(
+                                        title:
+                                            'Rs. ${convertAmountString(widget.marketplace.avgFare.toDouble())}*',
+                                        color: const Color(0xff13A088),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

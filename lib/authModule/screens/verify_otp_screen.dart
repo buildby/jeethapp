@@ -257,24 +257,26 @@ class VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               fontSize: 119,
                             ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget(
-                                title: language['phoneVerification'],
-                                fontWeight: FontWeight.w600,
-                                fontSize: 39,
-                                color: white,
-                              ),
-                              SizedBox(
-                                height: dW * 0.03,
-                              ),
-                              TextWidget(
-                                title: language['enterOtpHere'],
-                                fontSize: 17,
-                                color: white,
-                              ),
-                            ],
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextWidget(
+                                  title: language['phoneVerification'],
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 39,
+                                  color: white,
+                                ),
+                                SizedBox(
+                                  height: dW * 0.03,
+                                ),
+                                TextWidget(
+                                  title: language['enterOtpHere'],
+                                  fontSize: 17,
+                                  color: white,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

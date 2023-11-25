@@ -808,17 +808,22 @@ class BusinessModelRow extends StatelessWidget {
             child: Row(
               children: [
                 Container(
+                  width: 20,
+                  height: 20,
                   margin: EdgeInsets.only(right: dW * 0.025),
                   padding: EdgeInsets.symmetric(
                       horizontal: dW * 0.015, vertical: dW * 0.005),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: themeColor),
-                  child: TextWidget(
-                    title: i.toString(),
-                    color: white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: TextWidget(
+                      title: i.toString(),
+                      color: white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 TextWidgetRoboto(

@@ -147,6 +147,7 @@ class AuthProvider with ChangeNotifier {
         "paymentsAndWithdrawals": "Payments and Withdrawals",
         "callAndReport":
             "Please call and report the\ninstance to your coordinator\nin case of emergency",
+        "notApprovedYet": "You are not approved yet!!",
 
 // Settings Screen
         "active": "Active",
