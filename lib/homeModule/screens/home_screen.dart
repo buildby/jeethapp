@@ -250,7 +250,8 @@ class HomeScreenState extends State<HomeScreen> {
                     // color: Colors.black,
                     child: TextWidgetRoboto(
                       title:
-                          'Dear ${user.driver.name}, your application is already approved by $approvedVendorName.',
+                          'Hi ${user.driver.name}, you have been hired by $approvedVendorName. You cannot access the marketplace unless you exit from current company.',
+                      // 'Dear ${user.driver.name}, your application is already approved by $approvedVendorName.',
                       fontSize: 20,
                       color: Colors.black,
                       height: 1.1,

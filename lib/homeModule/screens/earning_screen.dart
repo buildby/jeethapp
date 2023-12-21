@@ -230,7 +230,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    height: dH - (dH * 0.25),
+                    height: dH - (dH * 0.23),
                     padding: EdgeInsets.symmetric(horizontal: dW * 0.04),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
