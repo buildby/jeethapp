@@ -209,7 +209,10 @@ class EarningsScreenState extends State<EarningsScreen> {
       height: dH,
       width: dW,
       child: isLoading
-          ? const Center(child: CircularLoader())
+          ? const Center(
+              child: CircularLoader(
+              color: white,
+            ))
           : Stack(
               //  clipBehavior: Clip.none,
               children: [

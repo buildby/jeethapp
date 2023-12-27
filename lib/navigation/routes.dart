@@ -27,4 +27,7 @@ class NamedRoute {
   static const String myApplicationsScreen = "/myApplicationsScreen";
   static const String myApplicationsStatusScreen =
       "/myApplicationsStatusScreen";
+
+  // Help Screen
+  static const String reportAnIssueScreen = "/reportAnIssueScreen";
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_pro/webview_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
+import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common_widgets/cached_image_widget.dart';
 
@@ -260,40 +264,59 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                             ),
                           ],
                         ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //           color: Colors.black.withOpacity(.15),
-                        //           blurRadius: 30,
-                        //           spreadRadius: 0,
-                        //           offset: const Offset(0, 26))
-                        //     ],
-                        //   ),
-                        //   child: CustomButton(
-                        //     width: dW,
-                        //     height: dW * 0.12,
-                        //     onPressed: () {},
-                        //     radius: 10,
-                        //     buttonText: '',
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       crossAxisAlignment: CrossAxisAlignment.end,
-                        //       children: [
-                        //         const AssetSvgIcon('map'),
-                        //         SizedBox(
-                        //           width: dW * 0.025,
-                        //         ),
-                        //         TextWidgetPoppins(
-                        //           title: language['navigateToLocation'],
-                        //           color: white,
-                        //           fontWeight: FontWeight.w600,
-                        //           fontSize: 14,
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
+                        Container(
+                          margin: EdgeInsets.only(top: dW * 0.085),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(.15),
+                                  blurRadius: 30,
+                                  spreadRadius: 0,
+                                  offset: const Offset(0, 26))
+                            ],
+                          ),
+                          child: CustomButton(
+                            width: dW,
+                            height: dW * 0.12,
+
+                            onPressed: () {
+                              Uri uri = Uri.parse(
+                                  widget.args.myApplication.ClientSiteLocation);
+
+                              launchUrl(uri);
+                            },
+                            // widget.args.myApplication.ClientSiteLocation,
+
+                            //  {
+                            // List<String> latLngList = widget
+                            //     .args.myApplication.ClientSiteLocation
+                            //     .split(',');
+                            // double latitude = double.parse(latLngList[0]);
+                            // double longitude = double.parse(latLngList[1]);
+                            // LatLng location = LatLng(latitude, longitude);
+
+                            // navigateTo(location);
+                            // },
+                            radius: 10,
+                            buttonText: '',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const AssetSvgIcon('map'),
+                                SizedBox(
+                                  width: dW * 0.025,
+                                ),
+                                TextWidgetPoppins(
+                                  title: language['navigateToLocation'],
+                                  color: white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
@@ -73,7 +74,8 @@ class NotificationsScreenState extends State<NotificationsScreen> {
     dH = MediaQuery.of(context).size.height;
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
-    language = Provider.of<AuthProvider>(context).selectedLanguage;
+    language =
+        Provider.of<AuthProvider>(context, listen: false).selectedLanguage;
 
     return Scaffold(
       backgroundColor: themeColor,
@@ -110,24 +112,35 @@ class NotificationsScreenState extends State<NotificationsScreen> {
     bool isApproved =
         myApplications.any((application) => application.status == 'APPROVED');
 
-    if (isApproved) {
-      final approvedMarketplace =
-          marketplaces.firstWhere((marketplace) => myApplications.any(
-                (application) =>
-                    application.status == 'APPROVED' &&
-                    application.campaignId == marketplace.id,
-              ));
+    final approvedApplications = myApplications
+        .where((application) => application.status == 'APPROVED')
+        .toList();
 
-      approvedVendorName = approvedMarketplace.vendername;
-    } else if (!isApproved) {
-      final rejectedMarketplace =
-          marketplaces.firstWhere((marketplace) => myApplications.any(
-                (application) =>
-                    application.status == 'REJECTED' &&
-                    application.campaignId == marketplace.id,
-              ));
+    final rejectedApplications = myApplications
+        .where((application) => application.status == 'REJECTED')
+        .toList();
 
-      rejectedVendorName = rejectedMarketplace.vendername;
+    if (approvedApplications.isNotEmpty || rejectedApplications.isNotEmpty) {
+      if (isApproved) {
+        final approvedMarketplace = marketplaces.firstWhere(
+          (marketplace) => myApplications.any(
+            (application) =>
+                application.status == 'APPROVED' &&
+                application.campaignId == marketplace.id,
+          ),
+        );
+
+        approvedVendorName = approvedMarketplace.vendername;
+      } else if (!isApproved) {
+        final rejectedMarketplace =
+            marketplaces.firstWhere((marketplace) => myApplications.any(
+                  (application) =>
+                      application.status == 'REJECTED' &&
+                      application.campaignId == marketplace.id,
+                ));
+
+        rejectedVendorName = rejectedMarketplace.vendername;
+      }
     }
 
     return isLoading
@@ -186,7 +199,9 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                   SizedBox(
                     height: dW * 0.08,
                   ),
-                  if (getNotificationWidgets().isEmpty)
+                  if (getNotificationWidgets().isEmpty &&
+                      approvedApplications.isEmpty &&
+                      rejectedApplications.isEmpty)
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

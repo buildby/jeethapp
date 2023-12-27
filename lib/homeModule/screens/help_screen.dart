@@ -8,7 +8,10 @@ import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
+import 'package:jeeth_app/navigation/navigators.dart';
+import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../authModule/models/user_model.dart';
 
@@ -27,6 +30,7 @@ class HelpScreenState extends State<HelpScreen> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  String whatsAppNumber = '';
 
   late User user;
 
@@ -252,25 +256,87 @@ class HelpScreenState extends State<HelpScreen> {
                                 ),
                                 child: Column(
                                   children: [
-                                    CustomContainer(
-                                        onTap: () => showSnackbar(
-                                            'Coming soon!!', themeColor),
-                                        name: language['reportAnIssue']),
-                                    SizedBox(
-                                      height: dW * 0.03,
+                                    // CustomContainer(
+                                    //     onTap: () {
+                                    //       push(NamedRoute.reportAnIssueScreen);
+                                    //     },
+                                    //     name: language['reportAnIssue']),
+                                    // SizedBox(
+                                    //   height: dW * 0.03,
+                                    // ),
+                                    // CustomContainer(
+                                    //     onTap: () => showSnackbar(
+                                    //         'Coming soon!!', themeColor),
+                                    //     name: language['AccountProfile']),
+                                    // SizedBox(
+                                    //   height: dW * 0.03,
+                                    // ),
+                                    // CustomContainer(
+                                    //     onTap: () => showSnackbar(
+                                    //         'Coming soon!!', themeColor),
+                                    //     name:
+                                    //         language['paymentsAndWithdrawals']),
+                                    GestureDetector(
+                                      onTap: () {
+                                        // if (user.driver.vendor != null) {
+                                        //   launchCall(
+                                        //       user.driver.vendor!.phone
+
+                                        //       );
+                                        // }
+                                        if (isApproved &&
+                                            marketplaces.isNotEmpty) {
+                                          openWhatsApp(myApplication
+                                              .firstWhere((application) =>
+                                                  application.status ==
+                                                  'APPROVED')
+                                              .vendorPhone);
+                                        } else {
+                                          showSnackbar(
+                                              language['notApprovedYet']);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: dW,
+                                        padding: EdgeInsets.only(
+                                            left: dW * 0.03,
+                                            right: dW * 0.03,
+                                            bottom: dW * 0.03,
+                                            top: dW * 0.03),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xffF8F8F8),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xffEFEFF4),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/whatsapp.png',
+                                              scale: 50,
+                                            ),
+                                            SizedBox(
+                                              width: dW * 0.03,
+                                            ),
+                                            if (isApproved &&
+                                                marketplaces.isNotEmpty)
+                                              TextWidget(
+                                                  title:
+                                                      '${language['chatWith']} ${myApplication.firstWhere((application) => application.status == 'APPROVED').vendorName}'),
+                                            if (!isApproved ||
+                                                marketplaces.isEmpty)
+                                              TextWidget(
+                                                title:
+                                                    language['chatWithVendor'],
+                                                color: Colors.grey,
+                                              ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    CustomContainer(
-                                        onTap: () => showSnackbar(
-                                            'Coming soon!!', themeColor),
-                                        name: language['AccountProfile']),
-                                    SizedBox(
-                                      height: dW * 0.03,
-                                    ),
-                                    CustomContainer(
-                                        onTap: () => showSnackbar(
-                                            'Coming soon!!', themeColor),
-                                        name:
-                                            language['paymentsAndWithdrawals']),
                                   ],
                                 ),
                               ),

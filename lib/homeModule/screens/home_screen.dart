@@ -149,7 +149,10 @@ class HomeScreenState extends State<HomeScreen> {
       approvedVendorName = approvedMarketplace.vendername;
     }
     return isLoading
-        ? const Center(child: CircularLoader())
+        ? const Center(
+            child: CircularLoader(
+            color: white,
+          ))
         : Stack(
             clipBehavior: Clip.none,
             children: [

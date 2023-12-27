@@ -12,6 +12,7 @@ import 'package:jeeth_app/common_widgets/bottom_nav_bar.dart';
 import 'package:jeeth_app/homeModule/screens/earning_screen.dart';
 import 'package:jeeth_app/homeModule/screens/notifications_screen.dart';
 import 'package:jeeth_app/homeModule/screens/refer_friend_screen.dart';
+import 'package:jeeth_app/homeModule/screens/report_an_issue_screen.dart';
 import 'package:jeeth_app/homeModule/screens/settings_screen.dart';
 import 'package:jeeth_app/navigation/arguments.dart';
 import '../homeModule/screens/webview_screen.dart';
@@ -71,6 +72,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case NamedRoute.webviewScreen:
       return _getPageRoute(
           WebviewScreen(args: settings.arguments as WebviewScreenArguments));
+
+    case NamedRoute.reportAnIssueScreen:
+      return _getPageRoute(const ReportAnIssueScreen());
 
     default:
       return _getPageRoute(const SplashScreen());

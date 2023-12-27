@@ -391,6 +391,16 @@ void launchWhatsApp({required String phoneNumber}) async {
   }
 }
 
+void openWhatsApp(String phoneNumber) async {
+  String url = 'https://wa.me/$phoneNumber';
+
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    print('Could not launch $url');
+  }
+}
+
 const bouncing = BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
 
 Widget get comingSoonText => Padding(

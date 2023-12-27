@@ -1,8 +1,11 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class MyApplication {
   int id;
   int campaignId;
   String campaignName;
   String clientSiteName;
+  String ClientSiteLocation;
   int vendorId;
   String vendorName;
   String vendorPhone;
@@ -15,6 +18,7 @@ class MyApplication {
     required this.campaignId,
     required this.campaignName,
     required this.clientSiteName,
+    required this.ClientSiteLocation,
     required this.vendorId,
     required this.vendorName,
     required this.vendorPhone,
@@ -29,6 +33,7 @@ class MyApplication {
       campaignId: myApplication['campaign_id'],
       campaignName: myApplication['Campaign']['name'],
       clientSiteName: myApplication['Campaign']['ClientSite']['name'],
+      ClientSiteLocation: myApplication['Campaign']['ClientSite']['location'],
       vendorId: myApplication['Campaign']['Vendor']['id'],
       vendorName: myApplication['Campaign']['Vendor']['name'],
       vendorPhone: myApplication['Campaign']['Vendor']['phone'],

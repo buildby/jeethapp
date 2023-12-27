@@ -114,6 +114,7 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
           //     fontSize: 22,
           //   ),
           // ),
+
           SizedBox(
             height: dW * 0.1,
           )

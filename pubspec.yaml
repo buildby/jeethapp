@@ -48,6 +48,7 @@ dependencies:
   fl_chart: 
   flutter_launcher_icons: ^0.13.1
   flutter_webview_pro: ^3.0.1+4
+  # font_awesome_flutter: ^10.6.0
 
   cupertino_icons: ^1.0.2
 

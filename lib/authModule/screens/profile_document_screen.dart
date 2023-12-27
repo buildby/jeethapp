@@ -1143,7 +1143,7 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   calculateDriverDocPercentage() {
     documents = Provider.of<DocumentProvider>(context, listen: false).documents;
 
-    int totalFields = 4;
+    int totalFields = 5;
 
     int selectedDocumentCount = 0;
 
@@ -1160,9 +1160,9 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
       if (documents[i].filename == 'Police Verification Certificate') {
         selectedDocumentCount++;
       }
-      // if (documents[i].filename == 'Bank Passbook/Cancelled Cheque/Statement') {
-      //   selectedDocumentCount++;
-      // }
+      if (documents[i].filename == 'Bank Passbook/Cancelled Cheque/Statement') {
+        selectedDocumentCount++;
+      }
     }
 
     return driverDocPercentage = (selectedDocumentCount / totalFields) * 100;

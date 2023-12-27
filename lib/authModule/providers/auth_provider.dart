@@ -148,6 +148,14 @@ class AuthProvider with ChangeNotifier {
         "callAndReport":
             "Please call and report the\ninstance to your coordinator\nin case of emergency",
         "notApprovedYet": "You are not approved yet!!",
+        "chooseYourIssue": "Choose your issue",
+        "describeYourIssue": "Describe your issue",
+        "uploadScreenshot": "Upload Screenshot",
+        "(Optional)": "(Optional)",
+        "submit": "Submit",
+        "chatWith": "Chat with",
+
+        "chatWithVendor": "Chat with vendor",
 
 // Settings Screen
         "active": "Active",
