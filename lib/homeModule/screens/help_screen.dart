@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
-import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
-import 'package:jeeth_app/navigation/navigators.dart';
-import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../authModule/models/user_model.dart';
 

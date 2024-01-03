@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:jeeth_app/common_widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../authModule/models/document_model.dart';
@@ -8,7 +7,6 @@ import '../../authModule/models/user_model.dart';
 import '../../authModule/providers/auth_provider.dart';
 import '../../authModule/providers/document_provider.dart';
 import '../../authModule/providers/marketplace_provider.dart';
-import '../../authModule/widgets/file_picker_widget.dart';
 import '../../colors.dart';
 import '../../common_functions.dart';
 import '../../common_widgets/asset_svg_icon.dart';
@@ -52,6 +50,7 @@ class ReportAnIssueScreenState extends State<ReportAnIssueScreen> {
     if (issueController.text.trim().split(' ').length > maxWords) {
       // Save the selected text and cursor position
       final TextSelection previousSelection = issueController.selection;
+      // ignore: unused_local_variable
       final String previousText = issueController.text;
 
       // If the word count exceeds the limit, truncate the text
@@ -77,11 +76,16 @@ class ReportAnIssueScreenState extends State<ReportAnIssueScreen> {
   }
 
   getAwsSignedUrl({required String filePath}) async {
-    final response =
-        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
-      fileName: filePath.split('/').last,
-      filePath: filePath,
-    );
+    final contentType = determineContentType(PlatformFile(
+      name: filePath.split('/').last,
+      path: filePath,
+      size: 0,
+    ));
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .getAwsSignedUrl(
+            fileName: filePath.split('/').last,
+            filePath: filePath,
+            contentType: contentType);
     if (response['result'] == 'success') {
       return response['data']['signedUrl'].split('?')[0];
     } else {
@@ -99,8 +103,8 @@ class ReportAnIssueScreenState extends State<ReportAnIssueScreen> {
         .documents
         .indexWhere((element) => element.filename == documentName);
     if (i != -1) {
-      final a =
-          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      // final a =
+      //     Provider.of<DocumentProvider>(context, listen: false).documents[i];
       docId =
           Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
     }
@@ -114,6 +118,7 @@ class ReportAnIssueScreenState extends State<ReportAnIssueScreen> {
       return;
     }
 
+    // ignore: use_build_context_synchronously
     final response = await Provider.of<DocumentProvider>(context, listen: false)
         .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
       "filename": documentName,
@@ -158,7 +163,7 @@ class ReportAnIssueScreenState extends State<ReportAnIssueScreen> {
         setState(() {
           isLoading = true;
         });
-        await selectedFile;
+        selectedFile;
         setState(() {
           isLoading = false;
         });

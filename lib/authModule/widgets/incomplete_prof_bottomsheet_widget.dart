@@ -38,6 +38,7 @@ class IncompleteProfBottomSheetWidgetState
   @override
   Widget build(BuildContext context) {
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
     // final userId = Provider.of<AuthProvider>(context).user.id;

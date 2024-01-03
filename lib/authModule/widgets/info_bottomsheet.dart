@@ -3,7 +3,6 @@ import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
-import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
@@ -42,6 +41,7 @@ class InfoBottomSheetWidgetState extends State<InfoBottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
     // final userId = Provider.of<AuthProvider>(context).user.id;

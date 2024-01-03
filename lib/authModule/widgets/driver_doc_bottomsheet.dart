@@ -4,13 +4,10 @@ import 'package:jeeth_app/authModule/models/document_model.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/document_provider.dart';
-import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
-import 'package:jeeth_app/authModule/widgets/custon_radio_button_bottomsheet.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
-import 'package:jeeth_app/common_widgets/custom_text_field.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +15,7 @@ import 'package:provider/provider.dart';
 class DriverDocBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
 
-  DriverDocBottomSheetWidget({
+  const DriverDocBottomSheetWidget({
     super.key,
     required this.onUpdatePercentage,
   });
@@ -48,8 +45,6 @@ class DriverDocBottomSheetWidgetState
   late User user;
   List<Doc> documents = [];
 
-  TextEditingController _bankDetailsController = TextEditingController();
-
   FocusNode nameFocus = FocusNode();
   // FocusNode priceFocus = FocusNode();
 
@@ -72,16 +67,60 @@ class DriverDocBottomSheetWidgetState
         : null;
   }
 
-  getAwsSignedUrl({required String filePath}) async {
-    final response =
-        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
-      fileName: filePath.split('/').last,
-      filePath: filePath,
-    );
-    if (response['result'] == 'success') {
-      return response['data']['signedUrl'].split('?')[0];
-    } else {
+  // getAwsSignedUrl({
+  //   required String filePath,
+  // }) async {
+  //   final response =
+  //       await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
+  //     fileName: filePath.split('/').last,
+  //     filePath: filePath,
+  //   );
+  //   if (response['result'] == 'success') {
+  //     return response['data']['signedUrl'].split('?')[0];
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
+  getAwsSignedUrl({
+    required String filePath,
+  }) async {
+    try {
+      final contentType = determineContentType(PlatformFile(
+        name: filePath.split('/').last,
+        path: filePath,
+        size: 0,
+      ));
+
+      final response = await Provider.of<AuthProvider>(context, listen: false)
+          .getAwsSignedUrl(
+        fileName: filePath.split('/').last,
+        filePath: filePath,
+        contentType: contentType,
+      );
+
+      if (response['result'] == 'success') {
+        return response['data']['signedUrl'].split('?')[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      // Handle errors
       return null;
+    }
+  }
+
+  String determineContentType(PlatformFile file) {
+    final extension = file.path!.split('.').last;
+
+    if (extension == 'jpg' || extension == 'jpeg') {
+      return 'image/jpeg';
+    } else if (extension == 'png') {
+      return 'image/png';
+    } else if (extension == 'pdf') {
+      return 'application/pdf';
+    } else {
+      return 'application/octet-stream';
     }
   }
 
@@ -95,8 +134,8 @@ class DriverDocBottomSheetWidgetState
         .documents
         .indexWhere((element) => element.filename == documentName);
     if (i != -1) {
-      final a =
-          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      // final a =
+      //     Provider.of<DocumentProvider>(context, listen: false).documents[i];
       docId =
           Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
     }
@@ -109,13 +148,18 @@ class DriverDocBottomSheetWidgetState
       showSnackbar('Failed to upload document');
       return;
     }
+    final contentType = determineContentType(file);
 
+    // ignore: use_build_context_synchronously
     final response = await Provider.of<DocumentProvider>(context, listen: false)
         .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
       "filename": documentName,
       "url": s3Url,
       "filePath": file.path!,
       "type": file.path!.split('.').last == 'pdf' ? 'Document' : 'Image',
+      // "content-type": file.extension,
+      // "ContentType": determineContentType(file),
+      "content-type": contentType,
     });
     if (response['result'] == 'success') {
       showSnackbar('Document added successfully', greenColor);
@@ -176,6 +220,7 @@ class DriverDocBottomSheetWidgetState
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
 
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
     documents = Provider.of<DocumentProvider>(context).documents;
@@ -217,8 +262,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.06,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Aadhaar',
                           fontSize: 14,
@@ -246,8 +291,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Pan',
                           fontSize: 14,
@@ -275,8 +320,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'License',
                           fontSize: 14,
@@ -304,8 +349,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Police Verification Certificate',
                           fontSize: 14,
@@ -335,8 +380,8 @@ class DriverDocBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title:
                               'Upload Bank Passbook/Cancelled Cheque/Statement',

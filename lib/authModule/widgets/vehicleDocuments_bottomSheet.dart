@@ -183,11 +183,17 @@ class VehicleDocumentsBottomSheetWidgetState
   }
 
   getAwsSignedUrl({required String filePath}) async {
-    final response =
-        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
-      fileName: filePath.split('/').last,
-      filePath: filePath,
-    );
+    final contentType = determineContentType(PlatformFile(
+      name: filePath.split('/').last,
+      path: filePath,
+      size: 0,
+    ));
+
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .getAwsSignedUrl(
+            fileName: filePath.split('/').last,
+            filePath: filePath,
+            contentType: contentType);
     if (response['result'] == 'success') {
       return response['data']['signedUrl'].split('?')[0];
     } else {
@@ -202,8 +208,8 @@ class VehicleDocumentsBottomSheetWidgetState
         .documents
         .indexWhere((element) => element.filename == documentName);
     if (i != -1) {
-      final a =
-          Provider.of<DocumentProvider>(context, listen: false).documents[i];
+      // final a =
+      //     Provider.of<DocumentProvider>(context, listen: false).documents[i];
       docId =
           Provider.of<DocumentProvider>(context, listen: false).documents[i].id;
     }
@@ -217,6 +223,7 @@ class VehicleDocumentsBottomSheetWidgetState
       return;
     }
 
+    // ignore: use_build_context_synchronously
     final response = await Provider.of<DocumentProvider>(context, listen: false)
         .updateDriverDocuments(doc_id: docId, driver_id: user.driver.id, body: {
       "filename": documentName,
@@ -316,8 +323,8 @@ class VehicleDocumentsBottomSheetWidgetState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload RC',
                         fontSize: 14,
@@ -344,8 +351,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Fitness',
                         fontSize: 14,
@@ -372,8 +379,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Permit',
                         fontSize: 14,
@@ -400,8 +407,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload Insurance',
                         fontSize: 14,
@@ -428,8 +435,8 @@ class VehicleDocumentsBottomSheetWidgetState
                   SizedBox(
                     height: dW * 0.04,
                   ),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       TextWidget(
                         title: 'Upload PUC',
                         fontSize: 14,

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
-import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
-import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/notification_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
@@ -202,7 +199,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                   if (getNotificationWidgets().isEmpty &&
                       approvedApplications.isEmpty &&
                       rejectedApplications.isEmpty)
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

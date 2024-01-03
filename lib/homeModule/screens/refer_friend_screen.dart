@@ -4,8 +4,6 @@ import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
-import 'package:jeeth_app/common_widgets/custom_app_bar.dart';
-import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
@@ -191,11 +189,11 @@ class ReferAFriendScreenState extends State<ReferAFriendScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Expanded(
+                                const Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       TextWidgetPoppins(
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,

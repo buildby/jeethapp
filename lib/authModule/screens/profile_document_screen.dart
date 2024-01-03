@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jeeth_app/authModule/models/document_model.dart';
@@ -1018,13 +1019,25 @@ class ProfileDocumentsScreenState extends State<ProfileDocumentsScreen>
   }
 
   getAwsSignedUrl() async {
+    final fileName =
+        isDriverSlide ? imgPath.split('/').last : ownerImg.split('/').last;
+    final filePath = isDriverSlide ? imgPath : ownerImg;
+
+    final contentType = determineContentType(PlatformFile(
+      name: fileName,
+      path: filePath,
+      size: 0,
+    ));
+
     final response =
         await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
-      fileName:
-          isDriverSlide ? imgPath.split('/').last : ownerImg.split('/').last,
-      filePath: isDriverSlide ? imgPath : ownerImg,
-      // files: {'file': selectedPhoto},
-    );
+            fileName: fileName,
+            // isDriverSlide ? imgPath.split('/').last : ownerImg.split('/').last,
+            filePath: filePath,
+            //  isDriverSlide ? imgPath : ownerImg,
+            contentType: contentType
+            // files: {'file': selectedPhoto},
+            );
     if (response['result'] == 'success') {
       final avatar = response['data']['signedUrl'].split('?')[0];
 

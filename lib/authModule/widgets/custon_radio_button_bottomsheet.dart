@@ -6,6 +6,7 @@ import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class RadioBtnBtmSheet extends StatefulWidget {
   final Function(String) updateSelectedCount;
   final String? selecteditem;
@@ -56,6 +57,7 @@ class RadioBtnBtmSheetState extends State<RadioBtnBtmSheet> {
   @override
   Widget build(BuildContext context) {
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 

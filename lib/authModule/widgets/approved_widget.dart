@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_pro/webview_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/colors.dart';
-import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
@@ -47,14 +44,15 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
   Widget build(BuildContext context) {
     dH = MediaQuery.of(context).size.height;
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
     return Stack(
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             AssetSvgIcon('approved_bg'),
           ],
         ),
@@ -301,7 +299,7 @@ class ApprovedStateWidget extends State<ApprovedWidget> {
                             buttonText: '',
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const AssetSvgIcon('map'),
                                 SizedBox(

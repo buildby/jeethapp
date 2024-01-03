@@ -290,7 +290,10 @@ class BottomNavBarState extends State<BottomNavBar> {
               child: Container(
                 color: Colors.transparent,
                 margin: EdgeInsets.only(right: dW * 0.03),
-                child: const Icon(Icons.notifications),
+                child: const Icon(
+                  Icons.notifications,
+                  color: white,
+                ),
               ),
             ),
           ],

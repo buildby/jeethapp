@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/cached_image_widget.dart';
 import 'package:jeeth_app/common_widgets/custom_dialog.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
-import 'package:jeeth_app/common_widgets/text_widget2.dart';
 import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +56,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
           crossAxisAlignment: CrossAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: dW * 0.08,
               child: AssetSvgIcon(
                 iconName,
@@ -92,6 +89,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
   Widget build(BuildContext context) {
     dH = MediaQuery.of(context).size.height;
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
@@ -101,7 +99,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
       child: Drawer(
         backgroundColor: themeColor,
         width: dW * 0.8,
-        child: Container(
+        child: SizedBox(
           height: dH,
           child: Column(
             children: [

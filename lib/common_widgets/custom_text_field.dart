@@ -1,14 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../colors.dart';
 import 'text_widget.dart';
-import '../common_functions.dart';
 
+// ignore: must_be_immutable
 class CustomTextFieldWithLabel extends StatelessWidget {
   final String label;
   final TextEditingController? controller;
@@ -48,7 +46,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final String? counterText;
   final String? initValue;
   final double? hPadding;
-  InputDecoration? decoration = InputDecoration();
+  InputDecoration? decoration = const InputDecoration();
   final AutovalidateMode? autovalidateMode;
 
   CustomTextFieldWithLabel({

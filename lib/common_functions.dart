@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -388,6 +389,21 @@ void launchWhatsApp({required String phoneNumber}) async {
     }
   } catch (e) {
     showSnackbar('Failed to open WhatsApp');
+  }
+}
+
+String determineContentType(PlatformFile file) {
+  final extension = file.path!.split('.').last;
+  print('File extension: $extension');
+
+  if (extension == 'jpg' || extension == 'jpeg') {
+    return 'image/jpeg';
+  } else if (extension == 'png') {
+    return 'image/png';
+  } else if (extension == 'pdf') {
+    return 'application/pdf';
+  } else {
+    return 'application/octet-stream';
   }
 }
 

@@ -4,12 +4,10 @@ import 'package:jeeth_app/authModule/models/document_model.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/document_provider.dart';
-import 'package:jeeth_app/authModule/widgets/custom_file_widget.dart';
 import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/custom_button.dart';
-import 'package:jeeth_app/common_widgets/custom_text_field.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:provider/provider.dart';
@@ -64,11 +62,17 @@ class OwnerDocumentsBottomSheetWidgetState
   }
 
   getAwsSignedUrl({required String filePath}) async {
-    final response =
-        await Provider.of<AuthProvider>(context, listen: false).getAwsSignedUrl(
-      fileName: filePath.split('/').last,
-      filePath: filePath,
-    );
+    final contentType = determineContentType(PlatformFile(
+      name: filePath.split('/').last,
+      path: filePath,
+      size: 0,
+    ));
+
+    final response = await Provider.of<AuthProvider>(context, listen: false)
+        .getAwsSignedUrl(
+            fileName: filePath.split('/').last,
+            filePath: filePath,
+            contentType: contentType);
     if (response['result'] == 'success') {
       return response['data']['signedUrl'].split('?')[0];
     } else {
@@ -191,8 +195,8 @@ class OwnerDocumentsBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.06,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Aadhaar',
                           fontSize: 14,
@@ -219,8 +223,8 @@ class OwnerDocumentsBottomSheetWidgetState
                     SizedBox(
                       height: dW * 0.04,
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         TextWidget(
                           title: 'Upload Lease Agreement',
                           fontSize: 14,

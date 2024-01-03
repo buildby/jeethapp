@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../colors.dart';
 import '../common_functions.dart';
 
+// ignore: must_be_immutable
 class MyTextButton extends StatelessWidget {
   //
   final String text;

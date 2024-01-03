@@ -3,10 +3,7 @@ import 'package:http/http.dart' as http;
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jeeth_app/authModule/models/driver_model.dart';
-import 'package:jeeth_app/authModule/models/vendor_model.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -570,9 +567,7 @@ class AuthProvider with ChangeNotifier {
           body: File(filePath).readAsBytesSync(),
         );
 
-        if (s3Response != null) {
-          showSnackbar(s3Response.toString());
-        }
+        showSnackbar(s3Response.toString());
       }
       notifyListeners();
       return response;
@@ -581,11 +576,74 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  // String determineContentType(String extension) {
+  //   if (extension == 'jpg' || extension == 'jpeg') {
+  //     return 'image/jpeg';
+  //   } else if (extension == 'png') {
+  //     return 'image/png';
+  //   } else {
+  //     return 'application/octet-stream';
+  //   }
+  // }
+
+  // Future<Map<String, dynamic>> getAwsSignedUrl({
+  //   required String fileName,
+  //   required String filePath,
+  // }) async {
+  //   try {
+  //     final url = '${webApi['domain']}${endPoint['getAwsSignedUrl']}/$fileName';
+  //     final response =
+  //         await RemoteServices.httpRequest(method: 'GET', url: url);
+
+  //     if (response['result'] == 'success') {
+  //       final extension = fileName.split('.').last;
+  //       final s3Response = await http.put(
+  //         Uri.parse(response['data']['signedUrl']),
+  //         body: File(filePath).readAsBytesSync(),
+  //         headers: {
+  //           "Content-Type": 'image/jpeg',
+  //         },
+  //       );
+
+  //       // You can handle the s3Response as needed.
+  //     }
+
+  //     return response;
+  //   } catch (error) {
+  //     return {'result': 'failure', 'message': 'failedToGetSignedUrl'};
+  //   }
+  // }
+
+//  String determineContentType(PlatformFile file) {
+//     if (file.path!.split('.').last == '.jpg' ||
+//         file.path!.split('.').last == '.jpeg') {
+//       return 'image/jpeg';
+//     } else if (file.path!.split('.').last == '.png') {
+//       return 'image/png';
+//     } else {
+//       return 'application/octet-stream';
+//     }
+//   }
+
+  String determineContentType(String filePath) {
+    final extension = filePath.split('.').last.toLowerCase();
+    print('File extension: $extension');
+
+    if (extension == 'jpg' || extension == 'jpeg') {
+      return 'image/jpeg';
+    } else if (extension == 'png') {
+      return 'image/png';
+    } else if (extension == 'pdf') {
+      return 'application/pdf';
+    } else {
+      return 'application/octet-stream';
+    }
+  }
+
   Future getAwsSignedUrl({
     required String fileName,
     required String filePath,
-    // required Map<String, String> files,
-    // required Map<String, String> body,
+    required String contentType,
   }) async {
     //  String? fcmToken = await FirebaseMessaging.instance.getToken();
     // if (fcmToken != null && fcmToken != '') {
@@ -600,12 +658,18 @@ class AuthProvider with ChangeNotifier {
       if (response['result'] == 'success') {
         final s3Response = await http.put(
           Uri.parse(response['data']['signedUrl']),
+          headers: {
+            "Content-Type": determineContentType(filePath),
+          },
           body: File(filePath).readAsBytesSync(),
         );
+        // final s3Response = await http.put(
+        //   Uri.parse(response['data']['signedUrl']),
+        //   body: File(filePath).readAsBytesSync(),
+        //   headers: {"content-type": contentType},
+        // );
 
-        // if (s3Response != null) {
-        //   showSnackbar(s3Response.toString());
-        // }
+        showSnackbar(s3Response.toString());
       }
 
       return response;

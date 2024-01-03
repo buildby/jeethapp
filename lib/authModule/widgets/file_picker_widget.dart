@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:jeeth_app/authModule/models/document_model.dart';
@@ -7,6 +5,7 @@ import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_widgets/circular_loader.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 
+// ignore: must_be_immutable
 class FilePickerWidget extends StatefulWidget {
   Future<void> Function(PlatformFile?) onFileSelected;
   final Function(PlatformFile?) deleteFile;
@@ -55,9 +54,8 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
           isLoading = false;
         });
       }
-    } catch (e) {
-      print('Error picking file: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   void _removeFile() {

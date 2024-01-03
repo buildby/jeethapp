@@ -75,6 +75,7 @@ class MarketplaceWidgetState extends State<MarketplaceWidget> {
   Widget build(BuildContext context) {
     dH = MediaQuery.of(context).size.height;
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 

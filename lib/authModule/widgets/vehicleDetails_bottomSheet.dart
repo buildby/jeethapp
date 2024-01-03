@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
-import 'package:jeeth_app/authModule/models/vehicle_detail_modal.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/widgets/vehicle_fuel_type_bottomSheet.dart';
@@ -15,12 +14,11 @@ import 'package:jeeth_app/common_widgets/custom_button.dart';
 import 'package:jeeth_app/common_widgets/custom_text_field.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:jeeth_app/navigation/navigators.dart';
-import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
 class VehicleDetailsBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
-  VehicleDetailsBottomSheetWidget(
+  const VehicleDetailsBottomSheetWidget(
       {super.key, required this.onUpdatePercentage});
 
   @override

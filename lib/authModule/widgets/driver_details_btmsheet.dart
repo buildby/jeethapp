@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/models/user_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
-import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/widgets/custon_radio_button_bottomsheet.dart';
-import 'package:jeeth_app/authModule/widgets/file_picker_widget.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
 import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
@@ -21,7 +19,7 @@ import '../providers/marketplace_provider.dart';
 class DriverDetailsBottomSheetWidget extends StatefulWidget {
   final void Function(num) onUpdatePercentage;
   final double keybHeight;
-  DriverDetailsBottomSheetWidget(
+  const DriverDetailsBottomSheetWidget(
       {super.key, required this.onUpdatePercentage, required this.keybHeight});
 
   @override
@@ -89,7 +87,7 @@ class DriverDetailsBottomSheetWidgetState
 
   _selectDate(BuildContext context) async {
     DateTime currentDate = DateTime.now();
-    DateTime firstDate = currentDate.subtract(Duration(days: 18 * 365));
+    DateTime firstDate = currentDate.subtract(const Duration(days: 18 * 365));
 
     DateTime? newSelectedDate = await showDatePicker(
       context: context,
@@ -290,7 +288,6 @@ class DriverDetailsBottomSheetWidgetState
       // "avatar": imgPath,
     };
 
-    final Map<String, String> files = {};
     // if (imgPath != '') {
     //   files["avatar"] = imgPath;
     // }
@@ -343,6 +340,7 @@ class DriverDetailsBottomSheetWidgetState
     dW = MediaQuery.of(context).size.width;
     dH = MediaQuery.of(context).size.height;
 
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 

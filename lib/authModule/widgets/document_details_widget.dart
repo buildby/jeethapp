@@ -5,6 +5,7 @@ import 'package:jeeth_app/common_widgets/asset_svg_icon.dart';
 import 'package:jeeth_app/common_widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class DocumentDetailWidget extends StatefulWidget {
   String name;
   String percentage;
@@ -39,6 +40,7 @@ class DocumentDetailWidgetState extends State<DocumentDetailWidget> {
   Widget build(BuildContext context) {
     dH = MediaQuery.of(context).size.height;
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 

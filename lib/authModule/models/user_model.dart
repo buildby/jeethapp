@@ -1,6 +1,4 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jeeth_app/authModule/models/driver_model.dart';
-import 'package:jeeth_app/common_functions.dart';
 
 class User {
   final int id;

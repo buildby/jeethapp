@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:provider/provider.dart';

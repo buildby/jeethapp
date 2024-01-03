@@ -1,5 +1,4 @@
-// ignore_for_file: must_be_immutable
-
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
@@ -9,6 +8,7 @@ import 'package:jeeth_app/common_widgets/text_widget3.dart';
 import 'package:jeeth_app/homeModule/models/my_application_model.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class MyApplicationContainer extends StatelessWidget {
   final MyApplication application;
   // String date;
@@ -27,6 +27,7 @@ class MyApplicationContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dW = MediaQuery.of(context).size.width;
+    // ignore: deprecated_member_use
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
