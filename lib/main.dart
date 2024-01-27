@@ -6,6 +6,7 @@ import 'package:jeeth_app/authModule/providers/document_provider.dart';
 import 'package:jeeth_app/authModule/providers/driver_details_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
 import 'package:jeeth_app/authModule/screens/splash_screen.dart';
+import 'package:jeeth_app/homeModule/providers/earning_provider.dart';
 import 'package:jeeth_app/homeModule/providers/my_application_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +60,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => VehicleDetailProvider()),
         ChangeNotifierProvider(create: (_) => MyApplicationProvider()),
         ChangeNotifierProvider(create: (_) => DocumentProvider()),
+        ChangeNotifierProvider(create: (_) => EarningProvider()),
       ],
       child: Consumer<ThemeNotifier>(
         builder: (context, theme, _) => MaterialApp(

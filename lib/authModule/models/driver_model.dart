@@ -60,6 +60,8 @@ class Driver {
     Earnings earning = Earnings(
       accrued: 0,
       currentMonth: 0,
+
+      // id: '',
     );
 
     final int i = driver['MetaData'] != null
@@ -70,6 +72,19 @@ class Driver {
       final earningsMap = json.decode(driver['MetaData'][i]['value']);
       earning.accrued = earningsMap['Accrued'] ?? 0;
       earning.currentMonth = earningsMap['Current Month'] ?? 0;
+      earning.amountWithDrawn = earningsMap['Amount withdrawn till date'] ?? 0;
+      earning.availableEarnings = earningsMap['Available Earned Wage'] ?? 0;
+
+      // earning.id = earningsMap['id'];
+      // earning.clientsiteId = earningsMap['clientsite_id'] ?? '';
+      // earning.distanceTravelled = earningsMap['distanceTravelled'] ?? '';
+      // earning.escort = earningsMap['escort'] ?? false;
+      // earning.eta = getParseDate(earningsMap['eta']);
+      // earning.ota = getParseDate(earningsMap['ota']);
+      // earning.etd = getParseDate(earningsMap['etd']);
+      // earning.otd = getParseDate(earningsMap['otd']);
+      // earning.shiftTime = getParseDate(earningsMap['shiftTime']);
+      // earning.type = earningsMap['ClientSite']['BusinessModel']['type'] ?? '';
     }
     return Driver(
       id: driver['id'],
@@ -111,11 +126,45 @@ class Driver {
 }
 
 class Earnings {
+  final Performance? performance;
+  String date;
+  List? earning;
+  int? amountWithDrawn;
+  int? availableEarnings;
   num accrued;
   num currentMonth;
 
   Earnings({
+    this.performance,
+    this.earning,
+    this.date = '',
     required this.accrued,
     required this.currentMonth,
   });
+
+  static Earnings jsonToEarning(Map earning) {
+    return Earnings(
+      accrued: earning['Accrued'] ?? 0,
+      currentMonth: earning['Current Month'] ?? 0,
+      performance: Performance.fromJsonPerformance(earning['performance']),
+      earning: earning['earnings'] ?? [],
+    );
+  }
+}
+
+class Performance {
+  final String ota;
+  final String otd;
+
+  Performance({
+    required this.ota,
+    required this.otd,
+  });
+
+  factory Performance.fromJsonPerformance(Map<String, dynamic> performance) {
+    return Performance(
+      ota: performance['ota'] ?? '',
+      otd: performance['otd'] ?? '',
+    );
+  }
 }

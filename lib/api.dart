@@ -68,4 +68,7 @@ var endPoint = {
   'createMyApplication': '/driverApplication',
   'fetchMyApplication': '/driverApplication',
   'isAlreadyAppliedApplication': '/driverApplication',
+
+  // Earnings
+  'fetchPastWeekEarning': '/earning/fetchPastWeekEarning'
 };

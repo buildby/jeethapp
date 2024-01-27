@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jeeth_app/authModule/models/driver_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/homeModule/providers/earning_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
@@ -27,9 +29,20 @@ class ReportsScreenState extends State<ReportsScreen>
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  late List<Earnings> earningsProvider;
+
+  fetchEarnings() async {
+    setState(() => isLoading = true);
+
+    final response = await Provider.of<EarningProvider>(context, listen: false)
+        .fetchEarnings(accessToken: user.accessToken, phone: user.phone);
+    if (response['result'] != null) {}
+    setState(() => isLoading = false);
+  }
 
   fetchData() async {
     setState(() => isLoading = true);
+    await fetchEarnings();
     setState(() => isLoading = false);
   }
 
@@ -37,6 +50,8 @@ class ReportsScreenState extends State<ReportsScreen>
   void initState() {
     super.initState();
 
+    earningsProvider =
+        Provider.of<EarningProvider>(context, listen: false).earnings;
     user = Provider.of<AuthProvider>(context, listen: false).user;
     fetchData();
   }
@@ -71,6 +86,8 @@ class ReportsScreenState extends State<ReportsScreen>
   }
 
   screenBody() {
+    final earnings =
+        Provider.of<EarningProvider>(context, listen: false).earnings;
     return isLoading
         ? const Center(child: CircularLoader())
         : Stack(
@@ -215,13 +232,45 @@ class ReportsScreenState extends State<ReportsScreen>
                                               fontWeight: FontWeight.w400,
                                               fontSize: 18,
                                             ),
-                                            const TextWidget(
-                                              // title: '81${'%'}',
-                                              title: ' --',
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xffEAC02A),
-                                              fontSize: 18,
-                                            ),
+                                            earnings.first.performance!.ota !=
+                                                    'NaN'
+                                                ? TextWidget(
+                                                    // title: '81${'%'}',
+                                                    title:
+                                                        ' ${earnings.first.performance!.ota} %',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: (double.tryParse(earnings
+                                                                    .first
+                                                                    .performance!
+                                                                    .ota) ??
+                                                                0.0) >=
+                                                            90
+                                                        ? const Color(
+                                                            0xff78B84C)
+                                                        : (double.tryParse(earnings
+                                                                            .first
+                                                                            .performance!
+                                                                            .ota) ??
+                                                                        0.0) >=
+                                                                    79 &&
+                                                                (double.tryParse(earnings
+                                                                            .first
+                                                                            .performance!
+                                                                            .ota) ??
+                                                                        0.0) <
+                                                                    90
+                                                            ? const Color(
+                                                                0xffEAC02A)
+                                                            : redColor,
+                                                    fontSize: 18,
+                                                  )
+                                                : const TextWidget(
+                                                    // title: '81${'%'}',
+                                                    title: ' --',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xffEAC02A),
+                                                    fontSize: 18,
+                                                  ),
                                             SizedBox(
                                               width: dW * 0.04,
                                             ),
@@ -230,13 +279,45 @@ class ReportsScreenState extends State<ReportsScreen>
                                               fontWeight: FontWeight.w400,
                                               fontSize: 18,
                                             ),
-                                            const TextWidget(
-                                              // title: '91${'%'}',
-                                              title: ' --',
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff78B84C),
-                                              fontSize: 18,
-                                            ),
+                                            earnings.first.performance!.otd !=
+                                                    'NaN'
+                                                ? TextWidget(
+                                                    // title: '91${'%'}',
+                                                    title:
+                                                        ' ${earnings.first.performance!.otd} %',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: (double.tryParse(earnings
+                                                                    .first
+                                                                    .performance!
+                                                                    .otd) ??
+                                                                0.0) >=
+                                                            90
+                                                        ? const Color(
+                                                            0xff78B84C)
+                                                        : (double.tryParse(earnings
+                                                                            .first
+                                                                            .performance!
+                                                                            .otd) ??
+                                                                        0.0) >=
+                                                                    80 &&
+                                                                (double.tryParse(earnings
+                                                                            .first
+                                                                            .performance!
+                                                                            .otd) ??
+                                                                        0.0) <
+                                                                    90
+                                                            ? const Color(
+                                                                0xffEAC02A)
+                                                            : redColor,
+                                                    fontSize: 18,
+                                                  )
+                                                : const TextWidget(
+                                                    // title: '91${'%'}',
+                                                    title: ' --',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff78B84C),
+                                                    fontSize: 18,
+                                                  ),
                                           ],
                                         ),
                                       ],

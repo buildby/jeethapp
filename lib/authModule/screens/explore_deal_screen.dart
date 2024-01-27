@@ -147,7 +147,10 @@ class ExploreDealScreenState extends State<ExploreDealScreen>
             },
             child: Container(
               margin: EdgeInsets.only(right: dW * 0.04),
-              child: const Icon(Icons.notifications),
+              child: const Icon(
+                Icons.notifications,
+                color: white,
+              ),
             ),
           ),
         ],

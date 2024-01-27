@@ -2,7 +2,10 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:jeeth_app/authModule/models/driver_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
+import 'package:jeeth_app/homeModule/providers/earning_provider.dart';
 import 'package:jeeth_app/homeModule/widgets/custom_container.dart';
 import 'package:jeeth_app/colors.dart';
 import 'package:jeeth_app/common_functions.dart';
@@ -33,123 +36,65 @@ class EarningsScreenState extends State<EarningsScreen> {
   Map language = {};
   bool isLoading = false;
   TextTheme get textTheme => Theme.of(context).textTheme;
+  late List<Earnings> earningsProvider;
 
-  SideTitles get _bottomTitles => SideTitles(
-        showTitles: true,
-        getTitlesWidget: (value, meta) {
-          String text = '';
+  DateTime parseDate(String dateString) {
+    List<String> dateParts = dateString.split('/');
+    if (dateParts.length == 3) {
+      int month = int.tryParse(dateParts[0]) ?? 1;
+      int day = int.tryParse(dateParts[1]) ?? 1;
+      int year = int.tryParse(dateParts[2]) ?? 2000;
 
-          switch (value.toInt()) {
-            case 0:
-              text = 'Mon';
-              break;
-            case 1:
-              text = 'Tue';
-              break;
-            case 2:
-              text = 'Wed';
-              break;
-            case 3:
-              text = 'Thu';
-              break;
-            case 4:
-              text = 'Fri';
-              break;
-            case 5:
-              text = 'Sat';
-              break;
-            case 6:
-              text = 'Sun';
-              break;
-          }
+      return DateTime(year, month, day);
+    } else {
+      throw FormatException("Invalid date format: $dateString");
+    }
+  }
 
+  SideTitles _bottomTitles2(List<String> dateStrings) {
+    return SideTitles(
+      showTitles: true,
+      getTitlesWidget: (value, meta) {
+        int index = value.toInt();
+        if (index >= 0 && index < dateStrings.length) {
+          String dateString = dateStrings[index];
+          DateTime date = parseDate(dateString);
           return TextWidget(
-            title: text,
+            title: DateFormat('EEE').format(date),
             fontSize: 13,
           );
-        },
-      );
+        } else {
+          return const TextWidget(
+            title: '',
+            fontSize: 13,
+          );
+        }
+      },
+    );
+  }
 
-  List<BarChartGroupData> barChartData = [
-    BarChartGroupData(
-      x: 0,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          // y: 500,
-          width: 25,
-          // borderRadius: BorderRadius.circular(8),
-          color: themeColor, toY: 500,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 1,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 1000,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 2,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 1500,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 3,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 2000,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 4,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 2500,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 5,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 3000,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-    BarChartGroupData(
-      x: 6,
-      barsSpace: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 2000,
-          width: 25,
-          color: themeColor,
-        ),
-      ],
-    ),
-  ];
+  double parseEarning(String earning) {
+    String numericPart = earning.replaceAll(RegExp(r'[^0-9.]'), '');
+    return double.tryParse(numericPart) ?? 0.0;
+  }
+
+  List<BarChartGroupData> generateBarChartData(
+      {required List<Earnings> earnings}) {
+    return List.generate(earnings.first.earning!.length, (index) {
+      return BarChartGroupData(
+        x: index,
+        barsSpace: 1,
+        barRods: [
+          BarChartRodData(
+              toY: parseEarning(
+                  earnings.first.earning![index]['earning'].toString()),
+              width: 25,
+              color: themeColor,
+              borderRadius: BorderRadius.zero),
+        ],
+      );
+    });
+  }
 
   num get withrawableAmount => (80 / 100) * user.driver.earnings.accrued;
 
@@ -165,12 +110,58 @@ class EarningsScreenState extends State<EarningsScreen> {
     }
   }
 
+  double calculateMaxY(List<dynamic>? earnings) {
+    if (earnings == null || earnings.isEmpty) {
+      // Handle the case when earnings is null or empty
+      return 0.0;
+    }
+
+    // Extract earning values from the list
+    List<double> earningValues = earnings.map((entry) {
+      String earningString = entry['earning'].toString();
+      return double.tryParse(
+              earningString.replaceAll(RegExp(r'[^0-9.]'), '')) ??
+          0.0;
+    }).toList();
+
+    // Find the maximum earning value
+    double maxEarning = earningValues.isNotEmpty
+        ? earningValues.reduce((a, b) => a > b ? a : b)
+        : 0.0;
+
+    // Calculate the next multiple of 500 greater than maxEarning
+    double maxY = ((maxEarning ~/ 500) + 1) * 500.0;
+
+    return maxY;
+  }
+
+  fetchEarnings() async {
+    setState(() => isLoading = true);
+
+    final response = await Provider.of<EarningProvider>(context, listen: false)
+        .fetchEarnings(accessToken: user.accessToken, phone: user.phone);
+    if (response['result'] != null) {}
+    setState(() => isLoading = false);
+  }
+
+  myInit() async {
+    setState(() {
+      isLoading = true;
+    });
+    await fetchEarnings();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    earningsProvider =
+        Provider.of<EarningProvider>(context, listen: false).earnings;
     user = Provider.of<AuthProvider>(context, listen: false).user;
     refreshUserEarnings();
+    myInit();
   }
 
   @override
@@ -205,6 +196,10 @@ class EarningsScreenState extends State<EarningsScreen> {
   }
 
   screenBody() {
+    // print(earnings[1].etd);
+    final earning =
+        Provider.of<EarningProvider>(context, listen: false).earnings;
+
     return SizedBox(
       height: dH,
       width: dW,
@@ -334,7 +329,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                                       Row(
                                         children: [
                                           TextWidget(
-                                            title: language['accruedEarnings'],
+                                            title:
+                                                language['availableEarnedWage'],
                                             color: const Color(0xff242E42),
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16,
@@ -381,9 +377,13 @@ class EarningsScreenState extends State<EarningsScreen> {
                                               ).createShader(bounds);
                                             },
                                             child: TextWidgetRoboto(
-                                              title: convertAmountString(user
-                                                  .driver.earnings.accrued
-                                                  .toDouble()),
+                                              title:
+                                                  // user.driver.earnings
+                                                  //     .availableEarnings
+                                                  //     .toString(),
+                                                  convertAmountString(user
+                                                      .driver.earnings.accrued
+                                                      .toDouble()),
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700,
                                               color: white,
@@ -431,13 +431,14 @@ class EarningsScreenState extends State<EarningsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       CustomContainer(
-                                        name: language['currentMonthEarnings'],
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
+                                        name: language['amountWithdrawn'],
                                         widgets: Row(
                                           children: [
                                             TextWidgetRoboto(
                                               title:
                                                   'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
-                                              color: const Color(0xff78B84C),
                                               fontWeight: FontWeight.w700,
                                               fontSize: 16,
                                             ),
@@ -448,6 +449,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                                         height: dW * 0.025,
                                       ),
                                       CustomContainer(
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
                                         name: language['eligibleToWithdraw'],
                                         widgets: Row(
                                           children: [
@@ -455,6 +458,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                               title:
                                                   'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
                                               fontWeight: FontWeight.w700,
+                                              color: const Color(0xff78B84C),
                                               fontSize: 16,
                                             ),
                                           ],
@@ -490,61 +494,79 @@ class EarningsScreenState extends State<EarningsScreen> {
                                         fontSize: 13,
                                         fontWeight: FontWeight.w400,
                                       ),
-                                      Container(
-                                        height: dW * 0.51,
-                                        margin: EdgeInsets.only(top: dW * 0.02),
-                                        child: BarChart(
-                                          BarChartData(
-                                            alignment:
-                                                BarChartAlignment.spaceAround,
+                                      if (earning.isNotEmpty)
+                                        Container(
+                                          height: dW * 0.51,
+                                          margin:
+                                              EdgeInsets.only(top: dW * 0.02),
+                                          child: BarChart(
+                                            BarChartData(
+                                                alignment: BarChartAlignment
+                                                    .spaceAround,
+                                                maxY:
+                                                    // maxEarning,
+                                                    calculateMaxY(
+                                                        earning.first.earning),
 
-                                            maxY: 3000,
-                                            // groupsSpace: 5,
-                                            borderData: FlBorderData(
-                                              show: true,
-                                              border: const Border(
-                                                  left: BorderSide(
-                                                    width: 1,
-                                                    color: Color(0xffC8C8C8),
+                                                // groupsSpace: 5,
+                                                borderData: FlBorderData(
+                                                  show: true,
+                                                  border: const Border(
+                                                      left: BorderSide(
+                                                        width: 1,
+                                                        color:
+                                                            Color(0xffC8C8C8),
+                                                      ),
+                                                      bottom: BorderSide(
+                                                        width: 1,
+                                                        color:
+                                                            Color(0xffC8C8C8),
+                                                      )),
+                                                ),
+                                                gridData: const FlGridData(
+                                                  show: false,
+                                                ),
+                                                titlesData: FlTitlesData(
+                                                  topTitles: const AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: false)),
+                                                  rightTitles: const AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: false)),
+                                                  bottomTitles: AxisTitles(
+                                                    // axisNameSize: 10,
+
+                                                    sideTitles: _bottomTitles2(
+                                                        (earning.first.earning
+                                                                as List<
+                                                                    dynamic>)
+                                                            .map((entry) =>
+                                                                entry['date']
+                                                                    .toString())
+                                                            .toList()),
                                                   ),
-                                                  bottom: BorderSide(
-                                                    width: 1,
-                                                    color: Color(0xffC8C8C8),
-                                                  )),
-                                            ),
-                                            gridData: FlGridData(
-                                              show: false,
-                                            ),
-                                            titlesData: FlTitlesData(
-                                              topTitles: AxisTitles(
-                                                  sideTitles: SideTitles(
-                                                      showTitles: false)),
-                                              rightTitles: AxisTitles(
-                                                  sideTitles: SideTitles(
-                                                      showTitles: false)),
-                                              bottomTitles: AxisTitles(
-                                                // axisNameSize: 10,
-                                                sideTitles: _bottomTitles,
-                                              ),
 
-                                              // leftTitles: AxisTitles(
-                                              //   drawBelowEverything: true,
-                                              //   axisNameSize: 16,
-                                              // ),
-                                            ),
-                                            barGroups: barChartData.map((data) {
-                                              return data.copyWith(
-                                                barRods: data.barRods
-                                                    .map((rod) => rod.copyWith(
-                                                          borderRadius:
-                                                              BorderRadius.zero,
-                                                        ))
-                                                    .toList(),
-                                              );
-                                            }).toList(),
+                                                  // leftTitles: AxisTitles(
+                                                  //   drawBelowEverything: true,
+                                                  //   axisNameSize: 16,
+                                                  // ),
+                                                ),
+                                                barGroups: generateBarChartData(
+                                                    earnings: earning)
+
+                                                //     barChartData.map((data) {
+                                                //   return data.copyWith(
+                                                //     barRods: data.barRods
+                                                //         .map((rod) => rod.copyWith(
+                                                //               borderRadius:
+                                                //                   BorderRadius.zero,
+                                                //             ))
+                                                //         .toList(),
+                                                //   );
+                                                // }).toList(),
+                                                ),
                                           ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),

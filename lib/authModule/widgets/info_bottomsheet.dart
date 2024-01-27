@@ -8,6 +8,8 @@ import 'package:jeeth_app/navigation/navigators.dart';
 import 'package:jeeth_app/navigation/routes.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/custom_dialog.dart';
+
 class InfoBottomSheetWidget extends StatefulWidget {
   const InfoBottomSheetWidget({
     super.key,
