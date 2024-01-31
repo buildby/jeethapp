@@ -52,6 +52,9 @@ class EarningsScreenState extends State<EarningsScreen> {
   }
 
   SideTitles _bottomTitles2(List<String> dateStrings) {
+    // Sort dateStrings in ascending order (oldest to newest)
+    dateStrings.sort((a, b) => parseDate(a).compareTo(parseDate(b)));
+
     return SideTitles(
       showTitles: true,
       getTitlesWidget: (value, meta) {
@@ -80,17 +83,21 @@ class EarningsScreenState extends State<EarningsScreen> {
 
   List<BarChartGroupData> generateBarChartData(
       {required List<Earnings> earnings}) {
+    earnings.first.earning!
+        .sort((a, b) => parseDate(a['date']).compareTo(parseDate(b['date'])));
+
     return List.generate(earnings.first.earning!.length, (index) {
       return BarChartGroupData(
         x: index,
         barsSpace: 1,
         barRods: [
           BarChartRodData(
-              toY: parseEarning(
-                  earnings.first.earning![index]['earning'].toString()),
-              width: 25,
-              color: themeColor,
-              borderRadius: BorderRadius.zero),
+            toY: parseEarning(
+                earnings.first.earning![index]['earning'].toString()),
+            width: 25,
+            color: themeColor,
+            borderRadius: BorderRadius.zero,
+          ),
         ],
       );
     });
