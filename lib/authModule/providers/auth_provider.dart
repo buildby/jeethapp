@@ -113,7 +113,7 @@ class AuthProvider with ChangeNotifier {
         "accruedEarnings": "Accrued Earnings",
         'availableEarnedWage': 'Available Earned Wage',
         "currentMonthEarnings": "Current month earnings",
-        'amountWithdrawn': 'Amount withdrawn till date',
+        'amountWithdrawn': 'Amount withdrawn this month',
         "eligibleToWithdraw": "Eligible to withdraw ",
         "withdrawAmount": "Withdraw amount",
         "earningsLastWeek": "Your earnings in the last 7 days",

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jeeth_app/authModule/models/marketplace_model.dart';
 import 'package:jeeth_app/authModule/providers/auth_provider.dart';
 import 'package:jeeth_app/authModule/providers/marketplace_provider.dart';
@@ -105,6 +106,12 @@ class BottomNavBarState extends State<BottomNavBar> {
 
   awaitStoreReady() async {
     await storage.ready;
+  }
+
+  String _getFormattedDate() {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('MMM, y').format(now);
+    return formattedDate;
   }
 
   handleNotificationClick(data) async {
@@ -220,7 +227,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w400,
                             fontSize: tS * 12,
-                            color: Color(0xff9C9C9C)),
+                            color: const Color(0xff9C9C9C)),
                       ),
               ],
             ),
@@ -250,6 +257,15 @@ class BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    String title = _currentIndex == 0
+        ? language['chooseYourClient'] ?? ''
+        : _currentIndex == 1
+            ? '${language['earnings']}'
+            : _currentIndex == 2
+                ? language['reports'] ?? ''
+                : language['help'] ?? '';
+
+    String formattedDate = _getFormattedDate();
     dW = MediaQuery.of(context).size.width;
     tS = MediaQuery.of(context).textScaleFactor;
     dH = MediaQuery.of(context).size.height;
@@ -263,15 +279,42 @@ class BottomNavBarState extends State<BottomNavBar> {
         drawer: MyNavigationDrawer(
           onIndexChanged: onTapped,
         ),
-        appBar: CustomAppBar(
-          title: _currentIndex == 0
-              ? language['chooseYourClient']
-              : _currentIndex == 1
-                  ? language['earnings']
-                  : _currentIndex == 2
-                      ? language['reports']
-                      : language['help'],
-          dW: dW,
+        appBar: AppBar(
+          backgroundColor: getScaffoldBgColor(context),
+          // title: _currentIndex == 0
+          //     ? language['chooseYourClient']
+          //     : _currentIndex == 1
+          //         ? '${language['earnings']} ${_getFormattedDate()}'
+          //         : _currentIndex == 2
+          //             ? language['reports']
+          //             : language['help'],
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Blinker',
+                    color: white),
+              ),
+              if (_currentIndex == 1)
+                Container(
+                  margin: EdgeInsets.only(bottom: dW * 0.01),
+                  child: Text(
+                    '   ($formattedDate)',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: white,
+                      // fontWeight: FontWeight.w600,
+                      fontFamily: 'Blinker',
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          leadingWidth: dW * 0.15,
           leading: GestureDetector(
             onTap: () => _scaffoldKey.currentState?.openDrawer(),
             child: Container(
@@ -334,7 +377,6 @@ class BottomNavBarState extends State<BottomNavBar> {
                     ),
                     label: '',
                   ),
-
                   BottomNavigationBarItem(
                     icon: navbarItemContent(
                       label: language['earnings'],
@@ -362,42 +404,8 @@ class BottomNavBarState extends State<BottomNavBar> {
                     ),
                     label: '',
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: navbarItemContent(
-                  //     label: language['rewards'],
-                  //     colouredsvg: 'coloured_rewards',
-                  //     svg: 'reward',
-                  //     isSelected: _currentIndex == 2,
-                  //   ),
-                  //   label: '',
-                  // ),
-                  // BottomNavigationBarItem(
-                  //   icon: navbarItemContent(
-                  //     label: language['more'],
-                  //     colouredsvg: 'coloured_more',
-                  //     svg: 'more',
-                  //     isSelected: _currentIndex == 3,
-                  //   ),
-                  //   label: '',
-                  // ),
                 ],
               ),
-              // Positioned(
-              //   left: 0,
-              //   right: 0,
-              //   top: 0,
-              //   child: Center(
-              //     child: Container(
-              //       margin: const EdgeInsets.only(top: 13),
-              //       width: 1.5,
-              //       height: dH * 0.05,
-              //       decoration: BoxDecoration(
-              //         color: dividerColor,
-              //         borderRadius: BorderRadius.circular(25),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

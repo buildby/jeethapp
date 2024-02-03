@@ -72,8 +72,8 @@ class Driver {
       final earningsMap = json.decode(driver['MetaData'][i]['value']);
       earning.accrued = earningsMap['Accrued'] ?? 0;
       earning.currentMonth = earningsMap['Current Month'] ?? 0;
-      earning.amountWithDrawn = earningsMap['Amount withdrawn till date'] ?? 0;
-      earning.availableEarnings = earningsMap['Available Earned Wage'] ?? 0;
+      earning.currentMonthEarning = earningsMap['currentMonthEarning'] ?? 0;
+      earning.widthDrawalAmount = earningsMap['widthDrawalAmount'] ?? 0;
 
       // earning.id = earningsMap['id'];
       // earning.clientsiteId = earningsMap['clientsite_id'] ?? '';
@@ -129,15 +129,17 @@ class Earnings {
   final Performance? performance;
   String date;
   List? earning;
-  int? amountWithDrawn;
-  int? availableEarnings;
   num accrued;
   num currentMonth;
+  num? currentMonthEarning;
+  num? widthDrawalAmount;
 
   Earnings({
     this.performance,
     this.earning,
     this.date = '',
+    this.currentMonthEarning,
+    this.widthDrawalAmount,
     required this.accrued,
     required this.currentMonth,
   });
@@ -146,6 +148,8 @@ class Earnings {
     return Earnings(
       accrued: earning['Accrued'] ?? 0,
       currentMonth: earning['Current Month'] ?? 0,
+      currentMonthEarning: earning['currentMonthEarning'] ?? 0,
+      widthDrawalAmount: earning['widthDrawalAmount'] ?? 0,
       performance: Performance.fromJsonPerformance(earning['performance']),
       earning: earning['earnings'] ?? [],
     );

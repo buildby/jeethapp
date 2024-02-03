@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -383,18 +381,29 @@ class EarningsScreenState extends State<EarningsScreen> {
                                                 stops: [0.0, 0.5, 1.0],
                                               ).createShader(bounds);
                                             },
-                                            child: TextWidgetRoboto(
-                                              title:
-                                                  // user.driver.earnings
-                                                  //     .availableEarnings
-                                                  //     .toString(),
-                                                  convertAmountString(user
-                                                      .driver.earnings.accrued
-                                                      .toDouble()),
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: white,
-                                            ),
+                                            child: earning.isEmpty
+                                                ? const TextWidgetRoboto(
+                                                    title: '0',
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: white,
+                                                  )
+                                                : TextWidgetRoboto(
+                                                    title: (earning.first
+                                                                .currentMonthEarning! -
+                                                            earning.first
+                                                                .widthDrawalAmount!)
+                                                        .toString(),
+                                                    // user.driver.earnings
+                                                    //     .availableEarnings
+                                                    //     .toString(),
+                                                    // convertAmountString(user
+                                                    //     .driver.earnings.accrued
+                                                    //     .toDouble()),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: white,
+                                                  ),
                                           ),
                                         ],
                                       ),
@@ -424,15 +433,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                       color: white,
                                       borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
-                                          width: 0.1, color: themeColor)
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //       color: Colors.black.withOpacity(.1),
-                                      //       blurRadius: 20,
-                                      //       spreadRadius: 0,
-                                      //       offset: const Offset(0, -5))
-                                      // ],
-                                      ),
+                                          width: 0.1, color: themeColor)),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -445,6 +446,8 @@ class EarningsScreenState extends State<EarningsScreen> {
                                           children: [
                                             TextWidgetRoboto(
                                               title:
+                                                  // 'Rs. ${earning.first.widthDrawalAmount}',
+
                                                   'Rs. ${convertAmountString(user.driver.earnings.currentMonth.toDouble())}',
                                               fontWeight: FontWeight.w700,
                                               fontSize: 16,
@@ -461,13 +464,25 @@ class EarningsScreenState extends State<EarningsScreen> {
                                         name: language['eligibleToWithdraw'],
                                         widgets: Row(
                                           children: [
-                                            TextWidgetRoboto(
-                                              title:
-                                                  'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff78B84C),
-                                              fontSize: 16,
-                                            ),
+                                            earning.isEmpty
+                                                ? const TextWidgetRoboto(
+                                                    title: 'Rs. 0',
+
+                                                    // 'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xff78B84C),
+                                                    fontSize: 16,
+                                                  )
+                                                : TextWidgetRoboto(
+                                                    title:
+                                                        'Rs. ${earning.first.widthDrawalAmount}',
+
+                                                    // 'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
+                                                    fontWeight: FontWeight.w700,
+                                                    color:
+                                                        const Color(0xff78B84C),
+                                                    fontSize: 16,
+                                                  ),
                                           ],
                                         ),
                                       ),
@@ -479,18 +494,11 @@ class EarningsScreenState extends State<EarningsScreen> {
                                   padding:
                                       EdgeInsets.symmetric(vertical: dW * 0.02),
                                   decoration: BoxDecoration(
-                                      color: white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          width: 0.1, color: themeColor)
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //       color: Colors.black.withOpacity(.1),
-                                      //       blurRadius: 20,
-                                      //       spreadRadius: 0,
-                                      //       offset: const Offset(0, -5))
-                                      // ],
-                                      ),
+                                    color: white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        width: 0.1, color: themeColor),
+                                  ),
                                   child: Column(
                                     children: [
                                       SizedBox(
