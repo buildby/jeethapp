@@ -11,6 +11,7 @@ import '../../authModule/providers/auth_provider.dart';
 import '../../colors.dart';
 import '../../navigation/routes.dart';
 import '../authModule/models/user_model.dart';
+import '../homeModule/providers/earning_provider.dart';
 import '../navigation/arguments.dart';
 
 class MyNavigationDrawer extends StatefulWidget {
@@ -93,6 +94,8 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
     tS = MediaQuery.of(context).textScaleFactor;
     language = Provider.of<AuthProvider>(context).selectedLanguage;
 
+    final earning =
+        Provider.of<EarningProvider>(context, listen: false).earnings;
     customTextTheme = Theme.of(context).textTheme;
 
     return SafeArea(
@@ -189,10 +192,10 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(
-                                          top: dW * 0.01, left: dW * 0.03),
+                                          top: dW * 0.0008, left: dW * 0.03),
                                       child: TextWidgetPoppins(
                                         title:
-                                            '\u20b9 ${user.driver.earnings.accrued}',
+                                            '\u20b9 ${earning.first.currentMonthEarning!}',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 11,
                                         color: themeColor,
@@ -203,7 +206,7 @@ class MyNavigationDrawerState extends State<MyNavigationDrawer> {
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
-                                      size: 12,
+                                      size: 13,
                                       color: Colors.grey,
                                     ),
                                   ],

@@ -390,9 +390,7 @@ class EarningsScreenState extends State<EarningsScreen> {
                                                   )
                                                 : TextWidgetRoboto(
                                                     title: (earning.first
-                                                                .currentMonthEarning! -
-                                                            earning.first
-                                                                .widthDrawalAmount!)
+                                                            .currentMonthEarning!)
                                                         .toString(),
                                                     // user.driver.earnings
                                                     //     .availableEarnings
@@ -438,6 +436,35 @@ class EarningsScreenState extends State<EarningsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      CustomContainer(
+                                        onTap: () => showSnackbar(
+                                            'Coming soon!!', themeColor),
+                                        name: language['currentMonthEarnings'],
+                                        widgets: Row(
+                                          children: [
+                                            earning.isEmpty
+                                                ? const TextWidgetRoboto(
+                                                    title: 'Rs. 0',
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xff78B84C),
+                                                    fontSize: 16,
+                                                  )
+                                                : TextWidgetRoboto(
+                                                    title:
+                                                        'Rs. ${earning.first.currentMonthEarning}',
+
+                                                    // 'Rs. ${convertAmountString(withrawableAmount.toDouble())}',
+                                                    fontWeight: FontWeight.w700,
+                                                    color:
+                                                        const Color(0xff78B84C),
+                                                    fontSize: 16,
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: dW * 0.025,
+                                      ),
                                       CustomContainer(
                                         onTap: () => showSnackbar(
                                             'Coming soon!!', themeColor),
@@ -516,6 +543,12 @@ class EarningsScreenState extends State<EarningsScreen> {
                                               EdgeInsets.only(top: dW * 0.02),
                                           child: BarChart(
                                             BarChartData(
+                                                barTouchData: BarTouchData(
+                                                    touchTooltipData:
+                                                        BarTouchTooltipData(
+                                                  tooltipBgColor: Colors.grey
+                                                      .withOpacity(0.5),
+                                                )),
                                                 alignment: BarChartAlignment
                                                     .spaceAround,
                                                 maxY:
